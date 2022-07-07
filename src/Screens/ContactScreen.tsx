@@ -3,7 +3,7 @@ import * as React from "react";
 import styled from "styled-components/native";
 import ContactTab from "../components/ContactTab";
 import HistoryTab from "../components/HistoryTab";
-import  { ICON } from "../assets/icons/";
+import  { ICON } from "../assets/icons";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 const Text = styled.Text`
@@ -21,7 +21,6 @@ const ContactScreen: React.FC = () => {
     <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarActiveBackgroundColor: '#f7bb74',
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#F2A54A',

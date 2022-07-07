@@ -1,8 +1,8 @@
 import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import  { IMAGE } from "../assets/imgs/";
-import  { ICON } from "../assets/icons/";
+import  { IMAGE } from "../assets/imgs";
+import  { ICON } from "../assets/icons";
 
 
 const Container = styled.View`
@@ -104,19 +104,21 @@ const LoginScreen: React.FC = ({navigation}) => {
         <GrImage source={IMAGE.GR_LOGO} ></GrImage>
       </Section1>
       <Section2>
-        <AppName>Base contact</AppName>
+        <AppName>Base contacts</AppName>
         <AppDes>{'Giải pháp quản lý công việc\n & dự án toàn diện cho doanh nghiệp 4.0'}</AppDes>
         <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
       </Section2>
       <Section3>
         <LoginView>
-        <LoginText>Bạn chưa đăng nhập</LoginText>
+        <LoginText>Bạn chưa đăng nzhập</LoginText>
         <LoginBtn01 onPress={() => {
                 navigation.navigate('BaseScreen');
               }}>
           <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUT</TextLogin01>
         </LoginBtn01>
-          <LoginBtn02>
+          <LoginBtn02 onPress={() => {
+                navigation.navigate('BaseScreen');
+              }}>
             <TextLogin02>ĐĂNG NHẬP THỦ CÔNG</TextLogin02>
           </LoginBtn02>
         </LoginView>

@@ -1,7 +1,9 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import {SafeAreaView, View} from 'react-native';
-import LoginScreen from './src/Screens/LoginScreen';
-import BaseScreen  from "./src/Screens/BaseScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import BaseScreen  from "./src/screens/BaseScreen";
+import UserScreen from './src/screens/UserScreen';
 import {NavigationContainer} from '@react-navigation/native';
  import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // @ts-ignore
@@ -21,6 +23,7 @@ const App: React.FC = () => {
        >
        <Stack.Screen  name="Login" component={LoginScreen} />
        <Stack.Screen  name="BaseScreen" component={BaseScreen} />
+       <Stack.Screen name="UserScreen" component={UserScreen}/>
        </Stack.Navigator>
 
 
