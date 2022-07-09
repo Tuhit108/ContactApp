@@ -2,14 +2,18 @@ import * as React from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
+
+import {statusBarHeight} from "../themes/styles";
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
+
 
 const WraperView = styled.View`
   flex: 1;
   background-color: white;
   justify-content: center;
   align-items: center;
+  padding-top: ${statusBarHeight}px;
 `;
 const HeaderView = styled.View`
   flex: 1;
@@ -146,7 +150,7 @@ const ContactTab: React.FC = ({navigation}) => {
         <HeaderText>Liên Hệ</HeaderText>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('UserScreen');
+            navigation.navigate('NewContactScreen');
           }}>
           <CamImage source={ICON.CamIc} />
         </TouchableOpacity>
@@ -167,28 +171,36 @@ const ContactTab: React.FC = ({navigation}) => {
           <TabListView>
             <TabListText>A</TabListText>
             <TabListContentView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Nguyen Tien Nam</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Nguyen Tien Nam</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Nguyen Tien Nam</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Nguyen Tien Nam</NameText>
@@ -200,35 +212,45 @@ const ContactTab: React.FC = ({navigation}) => {
           <TabListView>
             <TabListText>B</TabListText>
             <TabListContentView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Bui Trong Tung</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Bui Trong Tung</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Bui Trong Tung</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Bui Trong Tung</NameText>
                   <PhoneText>0327942405</PhoneText>
                 </InfoView>
               </ItemListView>
-              <ItemListView>
+              <ItemListView onPress={() => {
+                navigation.navigate('UserScreen');
+              }}>
                 <AvartarImage source={IMAGE.Avartar} />
                 <InfoView>
                   <NameText>Bui Trong Tung</NameText>

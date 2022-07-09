@@ -9,5 +9,13 @@ export const ICON = {
   CamIc :require('./camera.png'),
   DetailIc :require('./detailic.png'),
   PhoneIc :require('./phone.png'),
-  SearchIc :require('./search.png')
+  SearchIc :require('./search.png'),
+  CamAvartarIc : require('./camavartar.png'),
+  BluePlusIc :require('./blueplus.png'),
+  CallIc :require('./call.png'),
+  ChatIc :require('./chat.png'),
+  FacetimeIc :require ('./facetime.png'),
+  EmailIc :require ('./email.png'),
+  BackIc :require('./back.png'),
+  RemoveIc :require ('./remove.png')
 }

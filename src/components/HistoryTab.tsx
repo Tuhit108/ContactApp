@@ -2,6 +2,7 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { View,TouchableOpacity,ScrollView} from 'react-native';
+import {statusBarHeight} from "../themes/styles";
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
 
@@ -15,15 +16,16 @@ const contacts = [
     {id: 7, name: 'Thái Thùy Linh', phone: '0327942405', time: 'Hôm nay'},
     {id: 8, name: 'Nguyễn Nam Tuấn', phone: '0327942405', time: 'Hôm nay'},
     {id: 9, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
-    {id: 9, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
-    {id: 9, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
-    {id: 9, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
+    {id: 10, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
+    {id: 11, name: 'Bùi Trọng Tùs', phone: '0327942405', time: 'Hôm nay'},
+    {id: 12, name: 'Bùi Trọng T', phone: '0327942405', time: 'Hôm nay'},
 ];
 const WraperView = styled.View`
   flex: 1;
   background-color: white;
   justify-content: center;
   align-items: center;
+  padding-top: ${statusBarHeight}px;
 `;
 const HeaderView = styled.View`
   flex: 1;
@@ -118,7 +120,7 @@ const HistoryTab: React.FC = ({navigation}) => {
                     Lịch Sử
                 </HeaderText>
                 <TouchableOpacity onPress={() => {
-                    navigation.navigate('UserScreen');
+                    navigation.navigate('NewContactScreen');
                 }}>
                     <CamImage source={ICON.CamIc}/>
                 </TouchableOpacity>
