@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import {SafeAreaView, View} from 'react-native';
-import LoginScreen from "./src/Screens/LoginScreen";
-import BaseScreen  from "./src/Screens/BaseScreen";
-import UserScreen from './src/Screens/UserScreen';
-import NewContactScreen from './src/Screens/NewContactScreen';
-import EditUserScreen from "./src/Screens/EditUserScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import BaseScreen  from "./src/screens/BaseScreen";
+import UserScreen from './src/screens/UserScreen';
+import NewContactScreen from './src/screens/NewContactScreen';
+import EditUserScreen from "./src/screens/EditUserScreen";
 import {NavigationContainer} from '@react-navigation/native';
  import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { statusBarHeight } from "./src/themes/styles";

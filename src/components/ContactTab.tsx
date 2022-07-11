@@ -27,8 +27,13 @@ const Text = styled.Text``;
 // @ts-ignore
 const ContactTab: React.FC = ({navigation}) => {
   const [text, onChangeText] = React.useState('');
-  let contactresults = contactlists.filter(contact => contact.value.includes(text));
+  const [list, setList]= React.useState(contactlists);
+  let contactresults = list.filter(contact => contact.value.includes(text));
   // @ts-ignore
+  React.useEffect(()=>{
+    console.log('fdsgds1');
+    console.log('check list outside: ', list);
+  },[list])
   return (
     <WraperView>
       <HeaderView>
@@ -41,7 +46,12 @@ const ContactTab: React.FC = ({navigation}) => {
         <HeaderText>Liên Hệ</HeaderText>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('NewContactScreen',{contactlists});
+            navigation.navigate('NewContactScreen',{
+              params: {
+                list: list,
+                setList: setList,
+              }
+            });
           }}>
           <CamImage source={ICON.CamIc} />
         </TouchableOpacity>

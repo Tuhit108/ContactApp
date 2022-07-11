@@ -88,11 +88,13 @@ font-size: 15px;
   
 `;
 // @ts-ignore
-const UserScreen: React.FC = ({navigation,contactlists,route}) => {
+const UserScreen: React.FC = ({navigation, route}) => {
+  console.log(route.params.params);
+  const {list, setList} = route.params.params;
   const [fistnametext, onChangeFistnameText] = React.useState( '');
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( '');
-  const [params, setParams] = React.useState({
+  const [info, setInfo] = React.useState({
     id: '',
     firstName: '',
     lastName: '',
@@ -107,10 +109,12 @@ const UserScreen: React.FC = ({navigation,contactlists,route}) => {
    {id :1, value : 'Nam'}
  ]
 
-contacts.push({
-  id :19,
-  name : fistnametext
-})
+
+  const handleAddContact = () =>{
+    setList([...list,   {key: 16, value: fistnametext, phone: '12312942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19'},
+   ]);
+    console.log(fistnametext);
+  }
 
   return (
 
@@ -120,8 +124,10 @@ contacts.push({
         <CancelText onPress={() => {
           navigation.navigate('BaseScreen');
         }}>Hủy</CancelText>
-        </TouchableOpacity>
+        </TouchableOpacity >
+        <TouchableOpacity onPress={()=> handleAddContact()}>
         <FinishText>Xong</FinishText>
+        </TouchableOpacity>
       </Section01View>
       <Section02View>
 
