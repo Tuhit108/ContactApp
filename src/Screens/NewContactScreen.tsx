@@ -1,8 +1,9 @@
 import * as React from "react";
-import {ScrollView, TouchableOpacity} from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {statusBarHeight} from "../themes/styles";
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
+import {contacts} from "../components/HistoryTab";
 // @ts-ignore
 import styled from "styled-components/native";
 
@@ -87,12 +88,32 @@ font-size: 15px;
   
 `;
 // @ts-ignore
-const UserScreen: React.FC = ({navigation}) => {
+const UserScreen: React.FC = ({navigation,contactlists,route}) => {
   const [fistnametext, onChangeFistnameText] = React.useState( '');
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( '');
+  const [params, setParams] = React.useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    organization: '',
+    avatar: '',
+    phones: [],
+    emails: [],
+    addresses: [],
+    birthday: [],
+  });
+ const arraylist= [
+   {id :1, value : 'Nam'}
+ ]
+
+contacts.push({
+  id :19,
+  name : fistnametext
+})
 
   return (
+
     <ContainerView>
       <Section01View>
         <TouchableOpacity>
@@ -103,6 +124,9 @@ const UserScreen: React.FC = ({navigation}) => {
         <FinishText>Xong</FinishText>
       </Section01View>
       <Section02View>
+
+          
+
         <AvatarView>
           <AvartarImage source={IMAGE.EmptyAvartar} />
           <CamImage source={ICON.CamAvartarIc}/>

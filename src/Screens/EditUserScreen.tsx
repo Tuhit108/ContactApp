@@ -99,22 +99,32 @@ font-size: 15px;
   
 `;
 // @ts-ignore
-const UserScreen: React.FC = ({navigation}) => {
-  const nameInitial = 'Nam'
+const UserScreen: React.FC = ({navigation,route}) => {
+  const nameInitial = route.params.name
+
   const companyInitial ='Base.vn'
   const [fistnametext, onChangeFistnameText] = React.useState( nameInitial);
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( companyInitial);
+
+function AlertDM (){
+   route.params.name=fistnametext
+   alert (route.params.name)
+  return route.params.name
+}
+
 
   return (
     <ContainerView>
       <Section01View>
         <TouchableOpacity>
           <CancelText onPress={() => {
-            navigation.navigate('BaseScreen');
+            navigation.goBack();
           }}>Hủy</CancelText>
-        </TouchableOpacity>
+        </TouchableOpacity >
+        <TouchableOpacity onPress={AlertDM}>
         <FinishText>Xong</FinishText>
+        </TouchableOpacity>
       </Section01View>
       <Section02View>
         <AvatarView>
@@ -146,7 +156,7 @@ const UserScreen: React.FC = ({navigation}) => {
           </RemoveIcon>
           </TouchableOpacity>
           <UserContactInput
-            placeholder="0327954"
+            placeholder={route.params.phoneNum}
           />
 
         </RemoveInfoView>
@@ -166,7 +176,7 @@ const UserScreen: React.FC = ({navigation}) => {
             </RemoveIcon>
           </TouchableOpacity>
           <UserContactInput
-            value="0327954"
+            value="tu@gmail.com"
           />
 
         </RemoveInfoView>

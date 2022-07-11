@@ -95,7 +95,7 @@ color: #F2A54A;
 
 
 // @ts-ignore
-const LoginScreen: React.FC = ({navigation}) => {
+const LoginScreen: React.FC = ({navigation, }) => {
   return (
     <Container>
       <Section1>

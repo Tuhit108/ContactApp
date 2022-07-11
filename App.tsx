@@ -17,6 +17,20 @@ const Container = styled.View`
 
 
 `;
+const contacts = [
+  {id: 1, name: 'Nguyễn Tiến Nam', phone: '0327942405', time: 'Hôm nay'},
+  {id: 2, name: 'Vũ Mạnh Linh', phone: '0327942405', time: 'Hôm nay'},
+  {id: 3, name: 'Trần Thái Hà', phone: '0327942405', time: 'Hôm nay'},
+  {id: 4, name: 'Lê Ngọc Linh', phone: '0327942405', time: 'Hôm nay'},
+  {id: 5, name: 'Trần Kiều Vân', phone: '0327942405', time: 'Hôm nay'},
+  {id: 6, name: 'Kiều Vân Anh', phone: '0327942405', time: 'Hôm nay'},
+  {id: 7, name: 'Thái Thùy Linh', phone: '0327942405', time: 'Hôm nay'},
+  {id: 8, name: 'Nguyễn Nam Tuấn', phone: '0327942405', time: 'Hôm nay'},
+  {id: 9, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
+  {id: 10, name: 'Bùi Trọng Tùng', phone: '0327942405', time: 'Hôm nay'},
+  {id: 11, name: 'Bùi Trọng Tùs', phone: '0327942405', time: 'Hôm nay'},
+  {id: 12, name: 'Bùi Trọng T', phone: '0327942405', time: 'Hôm nay'},
+];
 const Stack = createNativeStackNavigator();
 const App: React.FC = () => {
   return (

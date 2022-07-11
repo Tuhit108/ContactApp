@@ -47,6 +47,9 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvartarImage = styled.Image`
+  width: 100px;
+  height: 100px; 
+  border-radius: 50px;
   
 `;
 const CamImage = styled.Image`
@@ -153,30 +156,33 @@ const UserDeleteText = styled.Text`
 `;
 
 // @ts-ignore
-const UserScreen: React.FC = ({navigation}) => {
+const UserScreen: React.FC = ({navigation, route}) => {
 
 
     return (
       <ContainerView>
           <Section01View>
               <TouchableOpacity onPress={() => {
-                navigation.navigate('BaseScreen');
+                navigation.goBack();
               }}>
                   <BackIconImage source={ICON.BackIc}/>
               </TouchableOpacity >
             <TouchableOpacity onPress={() => {
-              navigation.navigate('EditUser');
+              navigation.navigate('EditUser',{
+                name : route.params.item.value,
+                phoneNum : route.params.item.phone,
+              });
             }}>
               <EditUserText>Sửa</EditUserText>
             </TouchableOpacity >
           </Section01View>
           <Section02View>
               <AvatarView>
-                  <AvartarImage source={IMAGE.UserAvartar} />
+                  <AvartarImage source={{uri: route.params.item.avartar}}/>
                   <CamImage source={ICON.CamAvartarIc}/>
               </AvatarView>
-            <UsernameText>Nguyen Tien Nam</UsernameText>
-            <UserPositionText>UI/UX Design</UserPositionText>
+            <UsernameText>{route.params.item.value}</UsernameText>
+            <UserPositionText>{route.params.item.position}</UserPositionText>
             <ActionView>
               <ActionItemView>
 
@@ -221,11 +227,11 @@ const UserScreen: React.FC = ({navigation}) => {
           <Section03View>
             <UserContactView>
               <UserContactBabel> Điện thoại</UserContactBabel>
-              <UserContactText> 0327942405</UserContactText>
+              <UserContactText> {route.params.item.phone}</UserContactText>
             </UserContactView>
             <UserContactView>
               <UserContactBabel> Email</UserContactBabel>
-              <UserContactText> 0327942405</UserContactText>
+              <UserContactText> {route.params.item.email}</UserContactText>
             </UserContactView>
             <UserContactView>
               <UserContactBabel> Ghi chú</UserContactBabel>

@@ -2,12 +2,111 @@ import * as React from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
-
+import { AlphabetList } from "react-native-section-alphabet-list";
 import {statusBarHeight} from "../themes/styles";
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
 
+const contactlists = [
+  {key: 1, value: 'Nguyễn Tiến Nam', phone: '0327942405', time: 'Hôm nay',position : 'Mobile',email :'nam@gmail.com',avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier'},
+  {key: 2, value: 'Vũ Mạnh Linh', phone: '0327942405', time: 'Hôm nay',position : 'UI/UX Design',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=3'},
+  {key: 3, value: 'Trần Thái Hà', phone: '0321287805', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10'},
+  {key: 4, value: 'Lê Ngọc Linh', phone: '8218242405', time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9'},
+  {key: 5, value: 'Trần Kiều Vân', phone: '23317942405', time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5'},
+  {key: 6, value: 'Kiều Vân Anh', phone: '31232405', time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8'},
+  {key: 7, value: 'Thái Thùy Linh', phone: '12342405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1'},
+  {key: 8, value: 'Nguyễn Nam Tuấn', phone: '3123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1'},
+  {key: 9, value: 'Bùi Trọng Tùng', phone: '123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11'},
+  {key: 10, value: 'Bùi Trọng Tùng', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12'},
+  {key: 11, value: 'Bùi Trọng Tùs', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13'},
+  {key: 12, value: 'Bùi Trọng T', phone: '12312942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19'},
+];
 
+
+const Text = styled.Text``;
+// @ts-ignore
+const ContactTab: React.FC = ({navigation}) => {
+  const [text, onChangeText] = React.useState('');
+  let contactresults = contactlists.filter(contact => contact.value.includes(text));
+  // @ts-ignore
+  return (
+    <WraperView>
+      <HeaderView>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.openDrawer();
+          }}>
+          <MenuImage source={ICON.MoreIc} />
+        </TouchableOpacity>
+        <HeaderText>Liên Hệ</HeaderText>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('NewContactScreen',{contactlists});
+          }}>
+          <CamImage source={ICON.CamIc} />
+        </TouchableOpacity>
+      </HeaderView>
+      <ContentView>
+        <SearchView>
+          <SearchChildView>
+            <SearchIconImage source={ICON.SearchIc} />
+            <SearchTextInput
+              onChangeText={onChangeText}
+              value={text}
+              placeholder="Tìm kiếm danh bạ"
+            />
+          </SearchChildView>
+        </SearchView>
+        <MainContentView>
+
+          <TabListView>
+            <AlphabetList
+              // @ts-ignore
+              data={contactresults}
+              indexLetterStyle={{
+                color: '#f2a54a',
+                fontSize: 14,
+                fontWeight :'400',
+                lineHeight: 22,
+                height: 500,
+              }}
+
+              indexLetterContainerStyle={{
+                margin :3
+              }}
+              indexContainerStyle={{
+                marginRight :8
+
+              }}
+              renderCustomItem={(item:any) => (
+                <ItemListView key={item.key} onPress={() => {
+                  navigation.navigate('UserScreen',{item} );
+                }}>
+
+                  <AvartarImage source={{uri:item.avartar}} />
+                  <InfoView>
+                    <NameText>{item.value}</NameText>
+                    <PhoneText>{item.phone}</PhoneText>
+                  </InfoView>
+                </ItemListView>
+              )}
+              renderCustomSectionHeader={(section) => (
+                <TabListSectionView >
+                  <TabListText>{section.title}</TabListText>
+                </TabListSectionView>
+              )}
+            />
+          </TabListView>
+
+
+
+
+
+        </MainContentView>
+      </ContentView>
+    </WraperView>
+  );
+};
 const WraperView = styled.View`
   flex: 1;
   background-color: white;
@@ -86,10 +185,16 @@ const AlphabetText = styled.Text`
   margin-top: 2px;
   margin-bottom: 2px;
 `;
-
 const TabListView = styled.View`
   background-color: #e0e0e0;
   width: 100%;
+  margin-bottom: 60px;
+ 
+`;
+const TabListSectionView = styled.View`
+  background-color: #e0e0e0;
+  width: 100%;
+ 
 `;
 const TabListText = styled.Text`
   height: 42px;
@@ -98,7 +203,7 @@ const TabListText = styled.Text`
   font-weight: 500;
   margin-left: 16px;
 `;
-const TabListContentView = styled.View``;
+
 
 const ItemListView = styled.TouchableOpacity`
   flex-direction: row;
@@ -117,8 +222,11 @@ const InfoView = styled.View`
 `;
 
 const AvartarImage = styled.Image`
+  width: 40px;
+  height: 40px;
   margin-left: 15px;
   margin-right: 15px;
+  border-radius: 50px;
 `;
 const NameText = styled.Text`
   font-size: 16px;
@@ -132,156 +240,5 @@ const PhoneText = styled.Text`
   color: #828282;
   margin-bottom: 2px;
 `;
-
-const Text = styled.Text``;
-// @ts-ignore
-const ContactTab: React.FC = ({navigation}) => {
-  const [text, onChangeText] = React.useState('');
-
-  return (
-    <WraperView>
-      <HeaderView>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.openDrawer();
-          }}>
-          <MenuImage source={ICON.MoreIc} />
-        </TouchableOpacity>
-        <HeaderText>Liên Hệ</HeaderText>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('NewContactScreen');
-          }}>
-          <CamImage source={ICON.CamIc} />
-        </TouchableOpacity>
-      </HeaderView>
-      <ContentView>
-        <SearchView>
-          <SearchChildView>
-            <SearchIconImage source={ICON.SearchIc} />
-            <SearchTextInput
-              onChangeText={onChangeText}
-              value={text}
-              placeholder="Tìm kiếm danh bạ"
-            />
-          </SearchChildView>
-        </SearchView>
-        <MainContentView>
-          <ScrollView>
-          <TabListView>
-            <TabListText>A</TabListText>
-            <TabListContentView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Nguyen Tien Nam</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Nguyen Tien Nam</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Nguyen Tien Nam</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Nguyen Tien Nam</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-            </TabListContentView>
-          </TabListView>
-          <TabListView>
-            <TabListText>B</TabListText>
-            <TabListContentView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView onPress={() => {
-                navigation.navigate('UserScreen');
-              }}>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-              <ItemListView>
-                <AvartarImage source={IMAGE.Avartar} />
-                <InfoView>
-                  <NameText>Bui Trong Tung</NameText>
-                  <PhoneText>0327942405</PhoneText>
-                </InfoView>
-              </ItemListView>
-            </TabListContentView>
-          </TabListView>
-          </ScrollView>
-
-          <AlphabetView>
-            <AlphabetText>A</AlphabetText>
-            <AlphabetText>B</AlphabetText>
-            <AlphabetText>C</AlphabetText>
-            <AlphabetText>D</AlphabetText>
-            <AlphabetText>E</AlphabetText>
-            <AlphabetText>F</AlphabetText>
-            <AlphabetText>G</AlphabetText>
-            <AlphabetText>H</AlphabetText>
-          </AlphabetView>
-        </MainContentView>
-      </ContentView>
-    </WraperView>
-  );
-};
 
 export default ContactTab;

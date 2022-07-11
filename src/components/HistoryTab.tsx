@@ -2,11 +2,11 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { View,TouchableOpacity,ScrollView} from 'react-native';
-import {statusBarHeight} from "../themes/styles";
+import { statusBarHeight } from "../themes/styles";
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
 
-const contacts = [
+ export const contacts = [
     {id: 1, name: 'Nguyễn Tiến Nam', phone: '0327942405', time: 'Hôm nay'},
     {id: 2, name: 'Vũ Mạnh Linh', phone: '0327942405', time: 'Hôm nay'},
     {id: 3, name: 'Trần Thái Hà', phone: '0327942405', time: 'Hôm nay'},
