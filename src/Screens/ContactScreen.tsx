@@ -27,8 +27,8 @@ const ContactScreen: React.FC = () => {
             height: '10%',
           },
         }}
-        initialRouteName='History'>
-        
+        initialRouteName='Contact'>
+
         <Tab.Screen
           name="Contact"
           component={ContactTab}

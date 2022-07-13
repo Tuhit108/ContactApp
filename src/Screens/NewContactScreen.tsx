@@ -1,11 +1,12 @@
 import * as React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {statusBarHeight} from "../themes/styles";
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
-import {contacts} from "../components/HistoryTab";
+
 // @ts-ignore
 import styled from "styled-components/native";
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ContainerView= styled.View`
   flex: 1;
@@ -48,9 +49,11 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvartarImage = styled.Image`
-  
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
 `;
-const CamImage = styled.Image`
+const CamImage = styled.TouchableOpacity`
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -62,10 +65,25 @@ const UserTextInput = styled.TextInput`
   border-bottom-color: rgba(0, 0, 0, 0.1);
   border-bottom-width: 0.5px;
 `;
-
-
+const UserTextInput02 = styled.TextInput`
+  
+  height: 44px;
+  width: 100%;
+  
+`;
+const AvartarBackground = styled.ImageBackground`
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+`
+;
 const Section03View= styled.View`
   align-items: center;
+
+`;
+const Section03ScrollView= styled.ScrollView`
+  width: 100%;
 
 `;
 const AddInfoView = styled.View`
@@ -73,7 +91,7 @@ const AddInfoView = styled.View`
   align-items: center;
   height: 44px;
   width: 92%;
-  margin-top: 24px;
+  margin-bottom: 24px;
   border-bottom-color: rgba(0, 0, 0, 0.1);
   border-bottom-width: 0.5px;
 `;
@@ -81,36 +99,67 @@ const PlusIconImage = styled.Image`
   margin-right: 16px;
   margin-right: 16px;
 `;
-const TagNameText = styled.Text`
+const RemoveInfoView = styled (AddInfoView)`
+margin-bottom: 0px;
+`;
+const RemoveIcon = styled.View`
+width: 24px;
+  height: 24px;
+  border-radius: 50px;
+  background-color: red;
+  margin-right: 17px;
+`;
+const AddText = styled.Text`
 font-size: 15px;
   font-weight: 400;
   line-height: 22px ;
   
 `;
 // @ts-ignore
-const UserScreen: React.FC = ({navigation,contactlists,route}) => {
-  const [fistnametext, onChangeFistnameText] = React.useState( '');
+const UserScreen: React.FC = ({navigation,route}) => {
+  const {list, setList} = route.params.listitem;
+  const [avartarlink,setAvartar]=React.useState('')
+  const [firstnametext, onChangeFirstnameText] = React.useState( '');
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( '');
-  const [params, setParams] = React.useState({
-    id: '',
+  const [phonetext, onChangePhoneText] = React.useState( '');
+  const [emailtext, onChangeEmailText] = React.useState( '');
+  const [addresstext, onChangeAddressText] = React.useState( '');
+  const [birthdaytext, onChangeBirthdayText] = React.useState( '');
+  const [input, setInput] = React.useState({
     firstName: '',
     lastName: '',
-    organization: '',
+    company: '',
     avatar: '',
-    phones: [],
+    phone: [],
     emails: [],
     addresses: [],
     birthday: [],
   });
- const arraylist= [
-   {id :1, value : 'Nam'}
- ]
 
-contacts.push({
-  id :19,
-  name : fistnametext
-})
+  const [shouldShowPhone, setshouldShowPhone] = React.useState(false);
+  const [shouldShowEmail, setshouldShowEmail] = React.useState(false);
+  const [shouldShowAddress, setshouldShowAddress] = React.useState(false);
+  const [shouldShowBirthday, setshouldShowBirthday] = React.useState(false);
+
+
+  const chooseImage = () =>{
+    ImagePicker.openPicker({
+      width: 100,
+      height: 100,
+      cropping: true
+      }).then(image => {
+      setAvartar(image.path);
+    });
+  }
+
+
+  const handleAddContact = () =>{
+    setList([...list,   {key: list.length + 1, value: firstnametext, lastName:nametext, phone: phonetext, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext]},
+    ]);
+    navigation.navigate('BaseScreen')
+
+  }
 
   return (
 
@@ -121,19 +170,25 @@ contacts.push({
           navigation.navigate('BaseScreen');
         }}>Hủy</CancelText>
         </TouchableOpacity>
-        <FinishText>Xong</FinishText>
+        <TouchableOpacity onPress={()=> handleAddContact()}>
+          <FinishText>Xong</FinishText>
+        </TouchableOpacity>
       </Section01View>
       <Section02View>
 
-          
+
 
         <AvatarView>
-          <AvartarImage source={IMAGE.EmptyAvartar} />
-          <CamImage source={ICON.CamAvartarIc}/>
+          <AvartarBackground source={IMAGE.EmptyAvartar} resizeMode="cover" ><AvartarImage source={{ uri:avartarlink }} /></AvartarBackground>
+
+          <CamImage onPress={chooseImage}>
+          <Image source={ICON.CamAvartarIc}/>
+          </CamImage>
+
         </AvatarView>
         <UserTextInput
-          onChangeText={onChangeFistnameText}
-          value={fistnametext}
+          onChangeText={onChangeFirstnameText}
+          value={firstnametext}
           placeholder="Họ"
         />
         <UserTextInput
@@ -143,36 +198,106 @@ contacts.push({
         />
         <UserTextInput
           onChangeText={onChangeCompanyText}
-          value={companytext}anh
+          value={companytext}
           placeholder="Công Ty"
         />
       </Section02View>
+      <Section03ScrollView>
       <Section03View>
+
+        {shouldShowPhone ?
+          (<RemoveInfoView>
+              <TouchableOpacity onPress={() => setshouldShowPhone(false)}>
+                <RemoveIcon>
+                  <Image source={ICON.RemoveIc}/>
+                </RemoveIcon>
+              </TouchableOpacity>
+              <UserTextInput02
+                autoFocus ={true}
+                onChangeText={onChangePhoneText}
+                value={phonetext}
+              />
+
+            </RemoveInfoView>
+          ) : null}
         <AddInfoView>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setshouldShowPhone(true)}
+          >
           <PlusIconImage source={ICON.BluePlusIc}/>
           </TouchableOpacity>
-          <TagNameText> Thêm số điện thoại</TagNameText>
+          <AddText>Thêm số điện thoại</AddText>
         </AddInfoView>
+
+        {shouldShowEmail ?
+          (<RemoveInfoView>
+              <TouchableOpacity onPress={() => setshouldShowEmail(false)}>
+                <RemoveIcon>
+                  <Image source={ICON.RemoveIc}/>
+                </RemoveIcon>
+              </TouchableOpacity>
+              <UserTextInput02
+                autoFocus ={true}
+                onChangeText={onChangeEmailText}
+                value={emailtext}
+              />
+
+            </RemoveInfoView>
+          ) : null}
         <AddInfoView>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setshouldShowEmail(true)}
+          >
             <PlusIconImage source={ICON.BluePlusIc}/>
           </TouchableOpacity>
-          <TagNameText> Thêm email</TagNameText>
+          <AddText>Thêm email</AddText>
         </AddInfoView>
+        {shouldShowAddress ?
+          (<RemoveInfoView>
+              <TouchableOpacity onPress={() => setshouldShowAddress(false)}>
+                <RemoveIcon>
+                  <Image source={ICON.RemoveIc}/>
+                </RemoveIcon>
+              </TouchableOpacity>
+              <UserTextInput02
+                autoFocus ={true}
+                onChangeText={onChangeAddressText}
+                value={addresstext}
+              />
+
+            </RemoveInfoView>
+          ) : null}
         <AddInfoView>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setshouldShowAddress(true)}
+          >
             <PlusIconImage source={ICON.BluePlusIc}/>
           </TouchableOpacity>
-          <TagNameText> Thêm địa chỉ</TagNameText>
+          <AddText>Thêm dia chi</AddText>
         </AddInfoView>
+
+        {shouldShowBirthday ?
+          (<RemoveInfoView>
+              <TouchableOpacity onPress={() => setshouldShowBirthday(false)}>
+                <RemoveIcon>
+                  <Image source={ICON.RemoveIc}/>
+                </RemoveIcon>
+              </TouchableOpacity>
+              <UserTextInput02
+                autoFocus ={true}
+                onChangeText={onChangeBirthdayText}
+                value={birthdaytext}
+              />
+
+            </RemoveInfoView>
+          ) : null}
         <AddInfoView>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setshouldShowBirthday(true)}
+          >
             <PlusIconImage source={ICON.BluePlusIc}/>
           </TouchableOpacity>
-          <TagNameText> Thêm ngày sinh</TagNameText>
+          <AddText>Thêm ngay sinh</AddText>
         </AddInfoView>
+
       </Section03View>
+    </Section03ScrollView>
     </ContainerView>
   );
 };

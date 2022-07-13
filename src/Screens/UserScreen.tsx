@@ -159,6 +159,12 @@ const UserDeleteText = styled.Text`
 const UserScreen: React.FC = ({navigation, route}) => {
 
 
+
+  const handleEditContact = () =>{
+    //setInfo({...info, lastName :'lisnh'})
+
+  }
+  //
     return (
       <ContainerView>
           <Section01View>
@@ -169,8 +175,13 @@ const UserScreen: React.FC = ({navigation, route}) => {
               </TouchableOpacity >
             <TouchableOpacity onPress={() => {
               navigation.navigate('EditUser',{
-                name : route.params.item.value,
-                phoneNum : route.params.item.phone,
+                firstName : route.params.item.value,
+                lastName :route.params.item.lastName,
+                phone : route.params.item.phone,
+                email :route.params.item.email,
+                address :route.params.item.address,
+                birthday :route.params.item.birthday,
+
               });
             }}>
               <EditUserText>Sửa</EditUserText>
@@ -181,12 +192,12 @@ const UserScreen: React.FC = ({navigation, route}) => {
                   <AvartarImage source={{uri: route.params.item.avartar}}/>
                   <CamImage source={ICON.CamAvartarIc}/>
               </AvatarView>
-            <UsernameText>{route.params.item.value}</UsernameText>
+            <UsernameText>{route.params.item.value+' '+route.params.item.lastName}</UsernameText>
             <UserPositionText>{route.params.item.position}</UserPositionText>
             <ActionView>
               <ActionItemView>
 
-              <ItemView>
+              <ItemView onPress={handleEditContact}>
                 <CallIc source={ICON.CallIc}/>
 
               </ItemView>
@@ -220,7 +231,6 @@ const UserScreen: React.FC = ({navigation, route}) => {
 
                 <ActionText>Gui mail</ActionText>
               </ActionItemView>
-
             </ActionView>
 
           </Section02View>
@@ -235,7 +245,7 @@ const UserScreen: React.FC = ({navigation, route}) => {
             </UserContactView>
             <UserContactView>
               <UserContactBabel> Ghi chú</UserContactBabel>
-              <UserContactText> </UserContactText>
+              <UserContactText> {route.params.item.birthday}</UserContactText>
             </UserContactView>
             <UserActionView>
               <UserChatText> Gửi tin nhắn</UserChatText>

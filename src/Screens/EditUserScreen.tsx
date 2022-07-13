@@ -100,18 +100,14 @@ font-size: 15px;
 `;
 // @ts-ignore
 const UserScreen: React.FC = ({navigation,route}) => {
+  const firstnameInitial = route.params.firstName
   const nameInitial = route.params.name
 
   const companyInitial ='Base.vn'
-  const [fistnametext, onChangeFistnameText] = React.useState( nameInitial);
-  const [nametext, onChangeNameText] = React.useState( '');
+  const [fistnametext, onChangeFistnameText] = React.useState( firstnameInitial);
+  const [nametext, onChangeNameText] = React.useState( nameInitial);
   const [companytext, onChangeCompanyText] = React.useState( companyInitial);
 
-function AlertDM (){
-   route.params.name=fistnametext
-   alert (route.params.name)
-  return route.params.name
-}
 
 
   return (
@@ -122,7 +118,7 @@ function AlertDM (){
             navigation.goBack();
           }}>Hủy</CancelText>
         </TouchableOpacity >
-        <TouchableOpacity onPress={AlertDM}>
+        <TouchableOpacity >
         <FinishText>Xong</FinishText>
         </TouchableOpacity>
       </Section01View>

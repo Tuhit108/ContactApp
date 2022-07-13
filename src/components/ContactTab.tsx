@@ -8,26 +8,29 @@ import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
 
 const contactlists = [
-  {key: 1, value: 'Nguyễn Tiến Nam', phone: '0327942405', time: 'Hôm nay',position : 'Mobile',email :'nam@gmail.com',avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier'},
-  {key: 2, value: 'Vũ Mạnh Linh', phone: '0327942405', time: 'Hôm nay',position : 'UI/UX Design',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=3'},
-  {key: 3, value: 'Trần Thái Hà', phone: '0321287805', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10'},
-  {key: 4, value: 'Lê Ngọc Linh', phone: '8218242405', time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9'},
-  {key: 5, value: 'Trần Kiều Vân', phone: '23317942405', time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5'},
-  {key: 6, value: 'Kiều Vân Anh', phone: '31232405', time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8'},
-  {key: 7, value: 'Thái Thùy Linh', phone: '12342405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1'},
-  {key: 8, value: 'Nguyễn Nam Tuấn', phone: '3123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1'},
-  {key: 9, value: 'Bùi Trọng Tùng', phone: '123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11'},
-  {key: 10, value: 'Bùi Trọng Tùng', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12'},
-  {key: 11, value: 'Bùi Trọng Tùs', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13'},
-  {key: 12, value: 'Bùi Trọng T', phone: '12312942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19'},
+  {key: 1, value: 'Nguyễn',lastName:'Tiến Nam', phone: '0327942405', time: 'Hôm nay',position : 'Mobile',email :'nam@gmail.com',avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier',addresses: [],birthday:['10/3']},
+  {key: 2, value: 'Vũ',lastName:'Mạnh Linh', phone: '0327942405', time: 'Hôm nay',position : 'UI/UX Design',email :['dautu@gmail.com',] ,avartar:'https://source.unsplash.com/random/200x200?sig=3',addresses: [],birthday:[]},
+  {key: 3, value: 'Trần',lastName:'Thái Hà', phone: '0321287805', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10',addresses: [],birthday:[]},
+  {key: 4, value: 'Lê',lastName:'Ngọc Linh', phone: '8218242405', time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9',addresses: [],birthday:[]},
+  {key: 5, value: 'Trần',lastName:'Kiều Ván', phone: '23317942405', time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5',addresses: [],birthday:[]},
+  {key: 6, value: 'Kiều Vân Anh',lastName:'', phone: '31232405', time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8',addresses: [],birthday:[]},
+  {key: 7, value: 'Thái Thùy Linh',lastName:'', phone: '12342405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[]},
+  {key: 8, value: 'Nguyễn Nam Tuấn',lastName:'', phone: '3123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[]},
+  {key: 9, value: 'Bùi Trọng Tùng',lastName:'', phone: '123142405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11',addresses: [],birthday:[]},
+  {key: 10, value: 'Bùi Trọng Tùng',lastName:'', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12',addresses: [],birthday:[]},
+  {key: 11, value: 'Bùi Trọng Tùs',lastName:'', phone: '1231942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13',addresses: [],birthday:[]},
+  {key: 12, value: 'Bùi Trọng T',lastName:'', phone: '12312942405', time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19',addresses: [],birthday:[]},
 ];
 
 
 const Text = styled.Text``;
 // @ts-ignore
 const ContactTab: React.FC = ({navigation}) => {
+  const [list, setList]= React.useState(contactlists);
   const [text, onChangeText] = React.useState('');
-  let contactresults = contactlists.filter(contact => contact.value.includes(text));
+
+  let contactresults = list.filter(contact => (contact.value+' '+contact.lastName).includes(text))
+
   // @ts-ignore
   return (
     <WraperView>
@@ -41,7 +44,12 @@ const ContactTab: React.FC = ({navigation}) => {
         <HeaderText>Liên Hệ</HeaderText>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('NewContactScreen',{contactlists});
+            navigation.navigate('NewContactScreen',{
+              listitem: {
+                list: list,
+                setList: setList,
+              }
+            });
           }}>
           <CamImage source={ICON.CamIc} />
         </TouchableOpacity>
@@ -68,24 +76,29 @@ const ContactTab: React.FC = ({navigation}) => {
                 fontSize: 14,
                 fontWeight :'400',
                 lineHeight: 22,
-                height: 500,
+                height: 25,
+
               }}
 
               indexLetterContainerStyle={{
-                margin :3
+                margin :3,
+
               }}
               indexContainerStyle={{
-                marginRight :8
+                marginRight :8,
+
 
               }}
               renderCustomItem={(item:any) => (
+
                 <ItemListView key={item.key} onPress={() => {
-                  navigation.navigate('UserScreen',{item} );
+
+                  navigation.navigate('UserScreen',{item})
                 }}>
 
                   <AvartarImage source={{uri:item.avartar}} />
                   <InfoView>
-                    <NameText>{item.value}</NameText>
+                    <NameText>{item.value+' '+item.lastName}</NameText>
                     <PhoneText>{item.phone}</PhoneText>
                   </InfoView>
                 </ItemListView>
@@ -189,12 +202,12 @@ const TabListView = styled.View`
   background-color: #e0e0e0;
   width: 100%;
   margin-bottom: 60px;
- 
+
 `;
 const TabListSectionView = styled.View`
   background-color: #e0e0e0;
   width: 100%;
- 
+
 `;
 const TabListText = styled.Text`
   height: 42px;
