@@ -1,12 +1,13 @@
 import * as React from "react";
-import { Image, ScrollView, TouchableOpacity } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import {statusBarHeight} from "../themes/styles";
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
 // @ts-ignore
 import styled from "styled-components/native";
+import ImagePicker from 'react-native-image-crop-picker';
 
-const ContainerView= styled.View`
+const ContainerView= styled.ScrollView`
   flex: 1;
   background-color: #ffffff;
   padding-top: ${statusBarHeight}px;
@@ -29,12 +30,13 @@ const FinishText = styled.Text`
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
-  color: #828282;
+  color: #F2A54A;
   margin-right: 16px;
 `;
 const Section02View= styled.View`
  
   align-items: center;
+  margin-bottom: 24px;
 `;
 const AvatarView = styled.View`
   justify-content: center;
@@ -47,9 +49,19 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvartarImage = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
   
 `;
-const CamImage = styled.Image`
+const AvartarBackground = styled.ImageBackground`
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+`
+;
+const CamImage = styled.TouchableOpacity`
   position: absolute;
   right: 0px;
   bottom: 0px;
@@ -61,7 +73,12 @@ const UserTextInput = styled.TextInput`
   border-bottom-color: rgba(0, 0, 0, 0.1);
   border-bottom-width: 0.5px;
 `;
-
+const UserTextInput02 = styled.TextInput`
+  
+  height: 44px;
+  width: 100%;
+  
+`;
 
 const Section03View= styled.View`
   align-items: center;
@@ -100,15 +117,50 @@ font-size: 15px;
 `;
 // @ts-ignore
 const UserScreen: React.FC = ({navigation,route}) => {
-  const firstnameInitial = route.params.firstName
-  const nameInitial = route.params.name
-
+  const firstnameInitial = route.params.item.value
+  const nameInitial = route.params.item.lastName
+  const list =route.params.list
+  const setList=route.params.setList
   const companyInitial ='Base.vn'
+  const [avartarlink,setAvartar]=React.useState(route.params.item.avartar);
   const [fistnametext, onChangeFistnameText] = React.useState( firstnameInitial);
   const [nametext, onChangeNameText] = React.useState( nameInitial);
   const [companytext, onChangeCompanyText] = React.useState( companyInitial);
+  const [phone, setPhone] = React.useState( route.params.item.phone);
+  const [phonetext, onChangePhoneText] = React.useState( '');
+  const [emailtext, onChangeEmailText] = React.useState( route.params.item.email);
+  const [addresstext, onChangeAddressText] = React.useState( route.params.item.addresses);
+  const [birthdaytext, onChangeBirthdayText] = React.useState( route.params.item.birthday);
 
 
+  const handleEdit = () =>{
+    let foundIndex = list.findIndex((element:any) => element.key === route.params.item.key)
+    list.splice(foundIndex,1,{key: route.params.item.key, value: fistnametext, lastName:nametext, phone: phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday:birthdaytext,addresses: addresstext});
+    navigation.navigate('BaseScreen');
+    setList([...list,
+    ]);
+  }
+  const deletePhoneOnpress= (index) =>{
+    const newList = [...phone]
+    newList.splice(index,1,)
+    setPhone(newList)
+  };
+  const addPhoneOnpress= () =>{
+    setPhone(prev => prev.concat(['']))
+  }
+  const phoneOnChange= (index,text)=>{
+    onChangePhoneText(text)
+    phone.splice(index,1,text)
+  }
+  const chooseImage = () =>{
+    ImagePicker.openPicker({
+      width: 100,
+      height: 100,
+      cropping: true
+    }).then(image => {
+      setAvartar(image.path);
+    });
+  }
 
   return (
     <ContainerView>
@@ -118,14 +170,18 @@ const UserScreen: React.FC = ({navigation,route}) => {
             navigation.goBack();
           }}>Hủy</CancelText>
         </TouchableOpacity >
-        <TouchableOpacity >
+        <TouchableOpacity onPress={handleEdit}>
         <FinishText>Xong</FinishText>
         </TouchableOpacity>
       </Section01View>
       <Section02View>
         <AvatarView>
-          <AvartarImage source={IMAGE.EmptyAvartar} />
-          <CamImage source={ICON.CamAvartarIc}/>
+          <AvartarBackground source={IMAGE.EmptyAvartar} resizeMode="cover">
+          <AvartarImage source={{uri:avartarlink}} />
+          </AvartarBackground>
+          <CamImage onPress={chooseImage}>
+            <Image source={ICON.CamAvartarIc}/>
+          </CamImage>
         </AvatarView>
         <UserTextInput
           onChangeText={onChangeFistnameText}
@@ -145,19 +201,23 @@ const UserScreen: React.FC = ({navigation,route}) => {
       </Section02View>
       <ScrollView>
       <Section03View>
-        <RemoveInfoView>
-          <TouchableOpacity>
-          <RemoveIcon>
-            <Image source={ICON.RemoveIc}/>
-          </RemoveIcon>
-          </TouchableOpacity>
-          <UserContactInput
-            placeholder={route.params.phoneNum}
-          />
-
-        </RemoveInfoView>
+        {phone.map((item, index) =>{ return(
+          <RemoveInfoView key={index}>
+            <TouchableOpacity onPress={()=>deletePhoneOnpress(index)}>
+              <RemoveIcon>
+                <Image source={ICON.RemoveIc}/>
+              </RemoveIcon>
+            </TouchableOpacity>
+            <UserTextInput02
+              keyboardType="numeric"
+              autoFocus ={true}
+              onChangeText={text => phoneOnChange(index, text)}
+              value={phone[index]}
+            />
+          </RemoveInfoView>
+        )})}
         <AddInfoView>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={addPhoneOnpress}>
             <PlusIconImage source={ICON.BluePlusIc}/>
           </TouchableOpacity>
           <UserContactInput
@@ -172,7 +232,8 @@ const UserScreen: React.FC = ({navigation,route}) => {
             </RemoveIcon>
           </TouchableOpacity>
           <UserContactInput
-            value="tu@gmail.com"
+            value={emailtext}
+            onChangeText ={onChangeEmailText}
           />
 
         </RemoveInfoView>
@@ -191,7 +252,8 @@ const UserScreen: React.FC = ({navigation,route}) => {
             </RemoveIcon>
           </TouchableOpacity>
           <UserContactInput
-            value="0327954"
+            value={addresstext}
+            onChangeText ={onChangeAddressText}
           />
 
         </RemoveInfoView>
@@ -210,7 +272,8 @@ const UserScreen: React.FC = ({navigation,route}) => {
             </RemoveIcon>
           </TouchableOpacity>
           <UserContactInput
-            value="0327954"
+            value={birthdaytext}
+            onChangeText ={onChangeBirthdayText}
           />
 
         </RemoveInfoView>

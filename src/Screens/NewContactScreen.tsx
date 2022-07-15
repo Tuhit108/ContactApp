@@ -7,8 +7,9 @@ import {IMAGE} from '../assets/imgs';
 // @ts-ignore
 import styled from "styled-components/native";
 import ImagePicker from 'react-native-image-crop-picker';
+import { useEffect } from "react";
 
-const ContainerView= styled.View`
+const ContainerView= styled.ScrollView`
   flex: 1;
   background-color: #ffffff;
   padding-top: ${statusBarHeight}px;
@@ -19,24 +20,24 @@ const Section01View= styled.View`
   justify-content: space-between;
   align-items: center;
 `;
-const CancelText = styled.Text`
+const AvailableText = styled.Text`
   margin-left: 16px;
+  margin-right: 16px;
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
   color: #F2A54A;
 
 `;
-const FinishText = styled.Text`
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
+const DisableText = styled(AvailableText)`
+  
   color: #828282;
-  margin-right: 16px;
+  
 `;
 const Section02View= styled.View`
  
   align-items: center;
+  margin-bottom: 24px;
 `;
 const AvatarView = styled.View`
   justify-content: center;
@@ -86,7 +87,7 @@ const Section03ScrollView= styled.ScrollView`
   width: 100%;
 
 `;
-const AddInfoView = styled.View`
+const AddInfoView = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   height: 44px;
@@ -118,14 +119,16 @@ font-size: 15px;
 // @ts-ignore
 const UserScreen: React.FC = ({navigation,route}) => {
   const {list, setList} = route.params.listitem;
-  const [avartarlink,setAvartar]=React.useState('')
+  const [avartarlink,setAvartar]=React.useState(null)
   const [firstnametext, onChangeFirstnameText] = React.useState( '');
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( '');
-  const [phonetext, onChangePhoneText] = React.useState( '');
+
   const [emailtext, onChangeEmailText] = React.useState( '');
   const [addresstext, onChangeAddressText] = React.useState( '');
   const [birthdaytext, onChangeBirthdayText] = React.useState( '');
+  const [phone, setPhone] = React.useState( []);
+  const [phonetext, onChangePhoneText] = React.useState( '');
   const [input, setInput] = React.useState({
     firstName: '',
     lastName: '',
@@ -137,7 +140,7 @@ const UserScreen: React.FC = ({navigation,route}) => {
     birthday: [],
   });
 
-  const [shouldShowPhone, setshouldShowPhone] = React.useState(false);
+
   const [shouldShowEmail, setshouldShowEmail] = React.useState(false);
   const [shouldShowAddress, setshouldShowAddress] = React.useState(false);
   const [shouldShowBirthday, setshouldShowBirthday] = React.useState(false);
@@ -152,13 +155,26 @@ const UserScreen: React.FC = ({navigation,route}) => {
       setAvartar(image.path);
     });
   }
-
-
+  const deletePhoneOnpress=(index:number) =>{
+    const newList = [...phone]
+    newList.splice(index,1,)
+    setPhone(newList)
+  };
+  const addPhoneOnpress=() =>{
+    setPhone(prev => prev.concat(['']))
+  }
+  const phoneOnChange=(index:number,text)=>{
+    onChangePhoneText(text)
+    phone.splice(index,1,text)
+  }
+  const maxId = list.reduce(
+    (max :number, selectItem: object) => (selectItem.key > max ? selectItem.key : max),
+    list[0].key
+  );
   const handleAddContact = () =>{
-    setList([...list,   {key: list.length + 1, value: firstnametext, lastName:nametext, phone: phonetext, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext]},
+    setList([...list,   {key: maxId + 1, value: firstnametext, lastName:nametext, phone:phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext]},
     ]);
     navigation.navigate('BaseScreen')
-
   }
 
   return (
@@ -166,17 +182,16 @@ const UserScreen: React.FC = ({navigation,route}) => {
     <ContainerView>
       <Section01View>
         <TouchableOpacity>
-        <CancelText onPress={() => {
+        <AvailableText onPress={() => {
           navigation.navigate('BaseScreen');
-        }}>Hủy</CancelText>
+        }}>Hủy</AvailableText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=> handleAddContact()}>
-          <FinishText>Xong</FinishText>
-        </TouchableOpacity>
+        {firstnametext.length>0||nametext.length>0 ?(<TouchableOpacity onPress={()=> handleAddContact()}>
+          <AvailableText>Xong</AvailableText>
+        </TouchableOpacity>):(<DisableText>Xong</DisableText>)}
+
       </Section01View>
       <Section02View>
-
-
 
         <AvatarView>
           <AvartarBackground source={IMAGE.EmptyAvartar} resizeMode="cover" ><AvartarImage source={{ uri:avartarlink }} /></AvartarBackground>
@@ -204,27 +219,27 @@ const UserScreen: React.FC = ({navigation,route}) => {
       </Section02View>
       <Section03ScrollView>
       <Section03View>
-
-        {shouldShowPhone ?
-          (<RemoveInfoView>
-              <TouchableOpacity onPress={() => setshouldShowPhone(false)}>
+        {phone.map((item, index) =>{ return(
+          <RemoveInfoView key={index}>
+              <TouchableOpacity onPress={()=>deletePhoneOnpress(index)}>
                 <RemoveIcon>
                   <Image source={ICON.RemoveIc}/>
                 </RemoveIcon>
               </TouchableOpacity>
               <UserTextInput02
+                keyboardType="numeric"
                 autoFocus ={true}
-                onChangeText={onChangePhoneText}
-                value={phonetext}
+                onChangeText={text => phoneOnChange(index, text)}
+                value={phone[index]}
+                placehoder={'add phone'}
               />
-
             </RemoveInfoView>
-          ) : null}
-        <AddInfoView>
-          <TouchableOpacity onPress={() => setshouldShowPhone(true)}
-          >
+        )})}
+        <AddInfoView onPress={addPhoneOnpress}>
+
+
           <PlusIconImage source={ICON.BluePlusIc}/>
-          </TouchableOpacity>
+
           <AddText>Thêm số điện thoại</AddText>
         </AddInfoView>
 

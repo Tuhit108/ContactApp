@@ -47,9 +47,6 @@ const App: React.FC = () => {
          <Stack.Screen name="NewContactScreen" component={NewContactScreen}/>
          <Stack.Screen name="EditUser" component={EditUserScreen}/>
        </Stack.Navigator>
-
-
-
      </NavigationContainer>
 
 

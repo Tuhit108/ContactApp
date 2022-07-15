@@ -2,6 +2,7 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import {StyleSheet, View,  Image, SafeAreaView} from 'react-native';
+import {statusBarHeight} from "../themes/styles";
 
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
@@ -16,10 +17,12 @@ const collections = [
 const WraperView = styled.View`
   flex: 1;
   
+  
 `;
 const DrawewHeaderView = styled.View`
   background-color:#F2A54A ;
-  height: 85px;
+  height: 100px;
+  padding-top: ${statusBarHeight+20}px;
 
 `;
 const ChildView = styled.View`
