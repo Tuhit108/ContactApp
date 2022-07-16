@@ -2,7 +2,7 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { View,TouchableOpacity,ScrollView} from 'react-native';
-import { statusBarHeight } from "../themes/styles";
+import {getStatusBarHeight} from "react-native-iphone-x-helper";
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
 
@@ -25,7 +25,7 @@ const WraperView = styled.View`
   background-color: white;
   justify-content: center;
   align-items: center;
-  padding-top: ${statusBarHeight}px;
+  padding-top: ${getStatusBarHeight(true)}px;
 `;
 const HeaderView = styled.View`
   flex: 1;

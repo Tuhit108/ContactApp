@@ -2,7 +2,7 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import {StyleSheet, View,  Image, SafeAreaView} from 'react-native';
-import {statusBarHeight} from "../themes/styles";
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
@@ -22,7 +22,7 @@ const WraperView = styled.View`
 const DrawewHeaderView = styled.View`
   background-color:#F2A54A ;
   height: 100px;
-  padding-top: ${statusBarHeight+20}px;
+  padding-top: ${getStatusBarHeight(true)}px;
 
 `;
 const ChildView = styled.View`

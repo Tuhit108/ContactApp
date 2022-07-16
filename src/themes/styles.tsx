@@ -3,16 +3,8 @@ import {
   getStatusBarHeight,
   isIphoneX,
 } from 'react-native-iphone-x-helper';
-import {StatusBar} from 'react-native';
+import { NativeModules, Platform, StatusBar } from "react-native";
 
-export const statusBarHeight = isIphoneX()
-  ? getStatusBarHeight()
-  : StatusBar.currentHeight || 0;
+export const bottomSpaceHeight = Platform.OS === 'ios' ? getBottomSpace() : 16;
 
-export const bottomSpaceHeight = isIphoneX() ? getBottomSpace() : 16;
 
-export enum TxtBtnPos {
-  start = 'flex-start',
-  end = 'flex-end',
-  center = 'center',
-}

@@ -11,9 +11,12 @@ const Text = styled.Text`
 const BaseScreen: React.FC = () => {
 
     return (
-      <Drawer.Navigator initialRouteName="Home" screenOptions={{
+      <Drawer.Navigator initialRouteName="Home"  screenOptions={{
         headerShown: false,
+        drawerType: "front"
+
       }}  useLegacyImplementation
+
           // @ts-ignore
                         drawerContent={(props) => <MenuDrawer {...props} />}>
         <Drawer.Screen name="Home" component={ContactScreen} />

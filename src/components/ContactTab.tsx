@@ -1,9 +1,10 @@
 import * as React from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
-import {statusBarHeight} from "../themes/styles";
+
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
 
@@ -23,18 +24,33 @@ const contactlists = [
 ];
 
 
-const Text = styled.Text``;
+const DemoView = styled.View`
+  `;
 // @ts-ignore
 const ContactTab: React.FC = ({navigation}) => {
   const [list, setList]= React.useState(contactlists);
   const [text, onChangeText] = React.useState('');
   const [item, setItem]= React.useState({});
-  let contactresults = list.filter(contact => (contact.value+' '+contact.lastName).includes(text))
+  const removeVietnamese = (str) => {
 
-  React.useEffect(() => {
-    // Update the document title using the browser API
-    console.log(list)
-  });
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+    str = str.replace(/đ/g, 'd');
+    // Some system encode vietnamese combining accent as individual utf-8 characters
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ''); // Huyền sắc hỏi ngã nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ''); // Â, Ê, Ă, Ơ, Ư
+    return str;
+  };
+
+
+  let contactresults = list.filter(contact => removeVietnamese(contact.value+' '+contact.lastName).includes(text.toLowerCase()))
+
+
 
 
   // @ts-ignore
@@ -60,6 +76,7 @@ const ContactTab: React.FC = ({navigation}) => {
           <CamImage source={ICON.CamIc} />
         </TouchableOpacity>
       </HeaderView>
+      <DemoView></DemoView>
       <ContentView>
         <SearchView>
           <SearchChildView>
@@ -74,6 +91,7 @@ const ContactTab: React.FC = ({navigation}) => {
         <MainContentView>
           <TabListView>
             <AlphabetList
+              style={{width:'100%'}}
               // @ts-ignore
               data={contactresults}
               indexLetterStyle={{
@@ -124,7 +142,7 @@ const WraperView = styled.View`
  flex:1;
   background-color: white;
 
-  padding-top: ${statusBarHeight+10}px;
+  padding-top: ${getStatusBarHeight(true) }px;
 `;
 const HeaderView = styled.View`
   height: 44px;
@@ -134,9 +152,9 @@ const HeaderView = styled.View`
   background-color: #ffffff;
   width: 100%;
   top: 0;
-  
-  
-  
+
+
+
 `;
 const MenuImage = styled.Image`
   margin-left: 10px;
@@ -151,8 +169,9 @@ const HeaderText = styled.Text`
   color: #333333;
 `;
 const ContentView = styled.View`
-  flex: 10;
-  width: 100%;
+  flex: auto;
+
+
   margin-bottom: 44px;
 `;
 const SearchView = styled.View`
@@ -160,11 +179,11 @@ const SearchView = styled.View`
   background-color: #FFFFFF;
   align-items: center;
   justify-content: center;
-  width: 100%;
+
 `;
 const SearchChildView = styled.View`
   background-color: #f2f2f250;
-  
+
   align-items: center;
   width: 95%;
   height: 36px;
@@ -184,17 +203,16 @@ width: 100%;
 
 const MainContentView = styled.View`
   align-items: center;
-  width: 100%;
+
 `;
 
 
 const TabListView = styled.View`
   width: 100%;
-
 `;
 const TabListSectionView = styled.View`
   background-color: #EBEBEB;
-  
+
   height: 36px;
   width: 100%;
 
@@ -212,16 +230,15 @@ const ItemListView = styled.TouchableOpacity`
   flex-direction: row;
   background-color: #ffffff;
   align-items: center;
-  width: 100%;
   height: 64px;
 `;
 const InfoView = styled.View`
+  flex:1;
   border-bottom-color: #f5f5f5;
   border-bottom-width: 1px;
   height: 100%;
   justify-content: center;
-  width: 100%;
-  margin-right: 40px;
+  margin-right: 26px;
 `;
 
 const AvartarImage = styled.Image`

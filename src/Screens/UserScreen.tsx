@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ScrollView, TouchableOpacity, Linking,View,Alert } from "react-native";
-import { statusBarHeight } from "../themes/styles";
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { ICON } from "../assets/icons";
 import { IMAGE } from "../assets/imgs";
@@ -17,7 +17,7 @@ const Section01View = styled.View`
   justify-content: space-between;
   align-items: center;
   background-color: #F2A54A08;
-  padding-top: ${statusBarHeight + 20}px;
+  padding-top: ${getStatusBarHeight(true)}px;
 
 
 `;

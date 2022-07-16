@@ -5,6 +5,7 @@ import ContactTab from "../components/ContactTab";
 import HistoryTab from "../components/HistoryTab";
 import  { ICON } from "../assets/icons";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 const Tab = createBottomTabNavigator();
 const Text = styled.Text`
   
@@ -24,7 +25,8 @@ const ContactScreen: React.FC = () => {
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#F2A54A',
-            height: '10%',
+            height: 60+getStatusBarHeight(true),
+
           },
         }}
         initialRouteName='Contact'>
@@ -37,8 +39,7 @@ const ContactScreen: React.FC = () => {
               <View
                 style={{
                   alignItems: 'center',
-                  paddingTop: 30,
-                  paddingBottom: 30,
+
                 }}>
                     <ContactImg source={ICON.CONTACT_IC}></ContactImg>
                 <Text style={{fontSize: 10, color: '#FFFFFF'}}> Danh bạ</Text>
@@ -54,8 +55,7 @@ const ContactScreen: React.FC = () => {
               <View
                 style={{
                   alignItems: 'center',
-                  paddingTop: 30,
-                  paddingBottom: 30,
+
                 }}>
                     <ClockImg source={ICON.CLOCK_IC}></ClockImg>
                 <Text style={{fontSize: 10, color: '#FFFFFF'}}> Gần đây</Text>
