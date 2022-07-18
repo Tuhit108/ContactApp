@@ -25,7 +25,7 @@ const ContactScreen: React.FC = () => {
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#F2A54A',
-            height: 60+getStatusBarHeight(true),
+            height: 44+getStatusBarHeight(),
 
           },
         }}
@@ -39,10 +39,11 @@ const ContactScreen: React.FC = () => {
               <View
                 style={{
                   alignItems: 'center',
+                  opacity : focused ? 1 : 0.5
 
                 }}>
                     <ContactImg source={ICON.CONTACT_IC}></ContactImg>
-                <Text style={{fontSize: 10, color: '#FFFFFF'}}> Danh bạ</Text>
+                <Text style={{fontSize: 10, color: '#FFFFFF',marginTop: 8}}> Danh bạ</Text>
               </View>
             ),
           }}
@@ -55,6 +56,7 @@ const ContactScreen: React.FC = () => {
               <View
                 style={{
                   alignItems: 'center',
+                  opacity : focused ? 1 : 0.5
 
                 }}>
                     <ClockImg source={ICON.CLOCK_IC}></ClockImg>

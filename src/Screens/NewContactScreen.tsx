@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import {statusBarHeight} from "../themes/styles";
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
 
@@ -9,10 +9,10 @@ import styled from "styled-components/native";
 import ImagePicker from 'react-native-image-crop-picker';
 import { useEffect } from "react";
 
-const ContainerView= styled.ScrollView`
+const ContainerView= styled.View`
   flex: 1;
   background-color: #ffffff;
-  padding-top: ${statusBarHeight}px;
+  padding-top: ${getStatusBarHeight()}px;
 `;
 const Section01View= styled.View`
   flex-direction: row;
@@ -21,6 +21,7 @@ const Section01View= styled.View`
   align-items: center;
 `;
 const AvailableText = styled.Text`
+
   margin-left: 16px;
   margin-right: 16px;
   font-size: 18px;
@@ -123,7 +124,6 @@ const UserScreen: React.FC = ({navigation,route}) => {
   const [firstnametext, onChangeFirstnameText] = React.useState( '');
   const [nametext, onChangeNameText] = React.useState( '');
   const [companytext, onChangeCompanyText] = React.useState( '');
-
   const [emailtext, onChangeEmailText] = React.useState( '');
   const [addresstext, onChangeAddressText] = React.useState( '');
   const [birthdaytext, onChangeBirthdayText] = React.useState( '');
@@ -172,9 +172,11 @@ const UserScreen: React.FC = ({navigation,route}) => {
     list[0].key
   );
   const handleAddContact = () =>{
-    setList([...list,   {key: maxId + 1, value: firstnametext, lastName:nametext, phone:phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext]},
+    setList([...list,   {key: maxId + 1, value: firstnametext, lastName:nametext, phone:phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext],company: companytext},
     ]);
-    navigation.navigate('BaseScreen')
+    navigation.navigate('UserScreen',{list,setList,item:{
+        key: maxId + 1, value: firstnametext, lastName:nametext, phone:phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext],company:companytext
+      }})
   }
 
   return (
@@ -191,6 +193,7 @@ const UserScreen: React.FC = ({navigation,route}) => {
         </TouchableOpacity>):(<DisableText>Xong</DisableText>)}
 
       </Section01View>
+      <ScrollView>
       <Section02View>
 
         <AvatarView>
@@ -217,7 +220,7 @@ const UserScreen: React.FC = ({navigation,route}) => {
           placeholder="Công Ty"
         />
       </Section02View>
-      <Section03ScrollView>
+
       <Section03View>
         {phone.map((item, index) =>{ return(
           <RemoveInfoView key={index}>
@@ -312,7 +315,8 @@ const UserScreen: React.FC = ({navigation,route}) => {
         </AddInfoView>
 
       </Section03View>
-    </Section03ScrollView>
+
+      </ScrollView>
     </ContainerView>
   );
 };

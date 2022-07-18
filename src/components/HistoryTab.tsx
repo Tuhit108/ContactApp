@@ -25,7 +25,7 @@ const WraperView = styled.View`
   background-color: white;
   justify-content: center;
   align-items: center;
-  padding-top: ${getStatusBarHeight(true)}px;
+  
 `;
 const HeaderView = styled.View`
   flex: 1;
@@ -35,7 +35,8 @@ const HeaderView = styled.View`
   background-color: #FFFFFF ;
   width: 100%;
   top: 0;
-  height: 100%;
+  height: 88px;
+  padding-top: ${getStatusBarHeight(true)}px;
 `;
 const MenuImage = styled.Image`
   margin-left: 10px;
@@ -81,9 +82,12 @@ const RightItemView = styled.View`
 const IconPhoneImage = styled.Image`
   margin-left: 15px;
   margin-right: 15px;
+  top:0px;
+
+  margin-bottom: 24px;
 `;
 const IconDetailImage = styled.Image`
-  margin-left: 15px;
+  margin-left: 29px;
   margin-right: 15px;
 `;
 const NameText = styled.Text`
@@ -96,7 +100,7 @@ const PhoneText = styled.Text`
   font-size: 14px;
   font-weight: 400;
   color: #828282;
-  margin-bottom: 2px;
+  margin-top: 6px;
 `;
 const TimeText = styled.Text`
   font-size: 14px;

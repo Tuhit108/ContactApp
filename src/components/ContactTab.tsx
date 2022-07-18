@@ -6,25 +6,28 @@ import {ScrollView, TouchableOpacity, View} from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 
 import {ICON} from '../assets/icons';
-import {IMAGE} from '../assets/imgs';
+
+
+
 
 const contactlists = [
-  {key: 1, value: 'Nguyễn',lastName:'Tiến Nam', phone: ['0327942405','0266338','0266338','0266338'], time: 'Hôm nay',position : 'Mobile',email :['nam@gmail.com'],avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier',addresses: ['Hai Ba Trung'],birthday:['10/3']},
-  {key: 2, value: 'Vũ',lastName:'Mạnh Linh', phone: ['0327942405'], time: 'Hôm nay',position : 'UI/UX Design',email :['dautu@gmail.com',] ,avartar:'https://source.unsplash.com/random/200x200?sig=3',addresses:[] ,birthday:[]},
-  {key: 3, value: 'Trần',lastName:'Thái Hà', phone: ['0321287805'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10',addresses: [],birthday:[]},
-  {key: 4, value: 'Lê',lastName:'Ngọc Linh', phone: ['8218242405'], time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9',addresses: [],birthday:[]},
-  {key: 5, value: 'Trần',lastName:'Kiều Ván', phone: ['23317942405'], time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5',addresses: [],birthday:[]},
-  {key: 6, value: 'Kiều Vân Anh',lastName:'', phone: ['31232405'], time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8',addresses: [],birthday:[]},
-  {key: 7, value: 'Thái Thùy Linh',lastName:'', phone:['12342405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[]},
-  {key: 8, value: 'Nguyễn Nam Tuấn',lastName:'', phone: ['3123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[]},
-  {key: 9, value: 'Bùi Trọng Tùng',lastName:'', phone: ['123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11',addresses: [],birthday:[]},
-  {key: 10, value: 'Bùi Trọng Tùng',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12',addresses: [],birthday:[]},
-  {key: 11, value: 'Bùi Trọng Tùs',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13',addresses: [],birthday:[]},
-  {key: 12, value: 'Bùi Trọng T',lastName:'', phone: ['12312942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19',addresses: [],birthday:[]},
+  {key: 1, value: 'Nguyễn',lastName:'Tiến Nam', phone: ['0327942405','0266338','0266338','0266338'], time: 'Hôm nay',position : 'Mobile',email :['nam@gmail.com'],avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier',addresses: ['Hai Ba Trung'],birthday:['10/3'],company:'Google'},
+  {key: 2, value: 'Vũ',lastName:'Mạnh Linh', phone: ['0327942405'], time: 'Hôm nay',position : 'UI/UX Design',email :['dautu@gmail.com',] ,avartar:'https://source.unsplash.com/random/200x200?sig=3',addresses:[] ,birthday:[],company:'Google'},
+  {key: 3, value: 'Trần',lastName:'Thái Hà', phone: ['0321287805'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10',addresses: [],birthday:[],company:'Google'},
+  {key: 4, value: 'Lê',lastName:'Ngọc Linh', phone: ['8218242405'], time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9',addresses: [],birthday:[],company:'Google'},
+  {key: 5, value: 'Trần',lastName:'Kiều Ván', phone: ['23317942405'], time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5',addresses: [],birthday:[],company:'Google'},
+  {key: 6, value: 'Kiều Vân Anh',lastName:'', phone: ['31232405'], time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8',addresses: [],birthday:[],company:'Google'},
+  {key: 7, value: 'Thái Thùy Linh',lastName:'', phone:['12342405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[],company:'Google'},
+  {key: 8, value: 'Nguyễn Nam Tuấn',lastName:'', phone: ['3123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[],company:'Google'},
+  {key: 9, value: 'Bùi Trọng Tùng',lastName:'', phone: ['123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11',addresses: [],birthday:[],company:'Google'},
+  {key: 10, value: 'Bùi Trọng Tùng',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12',addresses: [],birthday:[],company:'Google'},
+  {key: 11, value: 'Bùi Trọng Tùs',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13',addresses: [],birthday:[],company:'Google'},
+  {key: 12, value: 'Bùi Trọng T',lastName:'', phone: ['12312942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19',addresses: [],birthday:[],company:'Google'},
 ];
 
 
 const DemoView = styled.View`
+
   `;
 // @ts-ignore
 const ContactTab: React.FC = ({navigation}) => {
@@ -82,6 +85,7 @@ const ContactTab: React.FC = ({navigation}) => {
           <SearchChildView>
             <SearchIconImage source={ICON.SearchIc} />
             <SearchTextInput
+
               onChangeText={onChangeText}
               value={text}
               placeholder="Tìm kiếm danh bạ"
@@ -141,10 +145,12 @@ const ContactTab: React.FC = ({navigation}) => {
 const WraperView = styled.View`
  flex:1;
   background-color: white;
+  font-family: "Roboto";
 
-  padding-top: ${getStatusBarHeight(true) }px;
+  padding-top: ${getStatusBarHeight()}px;
 `;
 const HeaderView = styled.View`
+  flex: 1;
   height: 44px;
   flex-direction: row;
   justify-content: space-between;
@@ -169,12 +175,13 @@ const HeaderText = styled.Text`
   color: #333333;
 `;
 const ContentView = styled.View`
-  flex: auto;
+  flex: 10;
 
 
-  margin-bottom: 44px;
+
 `;
 const SearchView = styled.View`
+
   height: 44px;
   background-color: #FFFFFF;
   align-items: center;
@@ -182,11 +189,11 @@ const SearchView = styled.View`
 
 `;
 const SearchChildView = styled.View`
-  background-color: #f2f2f250;
-
+  background-color: #F9F9F9;
   align-items: center;
   width: 95%;
   height: 36px;
+  bottom: 4px;
   flex-direction: row;
   border-radius: 6px;
 `;
@@ -199,19 +206,24 @@ const SearchIconImage = styled.Image`
 `;
 const SearchTextInput = styled.TextInput`
 width: 100%;
+  
 `;
 
 const MainContentView = styled.View`
+  flex: 10;
   align-items: center;
+  height: 100%;
 
 `;
 
 
 const TabListView = styled.View`
   width: 100%;
+  height: 100%;
+  flex: 10;
 `;
 const TabListSectionView = styled.View`
-  background-color: #EBEBEB;
+  background-color: #F0F0F0;
 
   height: 36px;
   width: 100%;
@@ -252,13 +264,13 @@ const NameText = styled.Text`
   font-size: 16px;
   font-weight: 500;
   color: #333333;
-  margin-bottom: 2px;
+  
 `;
 const PhoneText = styled.Text`
   font-size: 14px;
   font-weight: 400;
   color: #828282;
-  margin-bottom: 2px;
+  margin-top: 6px;
 `;
 
 export default ContactTab;

@@ -1,7 +1,7 @@
 import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import {StyleSheet, View,  Image, SafeAreaView} from 'react-native';
+import { StyleSheet, View, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import {ICON} from "../assets/icons";
@@ -17,11 +17,10 @@ const collections = [
 const WraperView = styled.View`
   flex: 1;
   
-  
 `;
 const DrawewHeaderView = styled.View`
   background-color:#F2A54A ;
-  height: 100px;
+  height: 90px;
   padding-top: ${getStatusBarHeight(true)}px;
 
 `;
@@ -39,14 +38,21 @@ const UserView = styled.View`
   flex-direction: column ;
 `;
 const UserNameText = styled.Text`
-  font-size:  16px;
   font-weight: 500;
+  font-size: 16px;
+
+
+  text-align: center;
+  letter-spacing: 0.12px;
   color :#FFFFFF;
 `;
 const UserPhoneText = styled.Text`
-  font-size:  14px;
+  font-size:  12px;
   font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.12px;
   color :#FFFFFF;
+  margin-top: 3px;
 `;
 const DrawewContentView = styled.View`
   
@@ -66,9 +72,11 @@ margin-left: 20px;
 `;
 const ItemNameText = styled.Text`
   font-size:  15px;
-  font-weight: 500;
+  font-weight: 400;
   color :#333333;
   align-self: center;
+  line-height: 16px;
+  letter-spacing: 0.12px;
 `;
 const ColectionView = styled.View`
   height: 40px;
@@ -78,16 +86,21 @@ const ColectionView = styled.View`
 const DownIconImage = styled.Image`
 margin-left: 16px;
   margin-right: 16px;
-  top :8px;
+  top :6px;
 `;
 const ColectionText = styled.Text`
-  font-size:  14px;
+  font-size:  13px;
   font-weight: 700;
   color :#333333;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  text-transform: uppercase;
 `;
 const ColectionChildText = styled.Text`
   position: absolute;
+  font-style: normal;
   font-size:  13px;
+  line-height: 16px;
   font-weight: 500;
   color :#F2A54A;
   right: 12px;
@@ -101,6 +114,7 @@ const Text = styled.Text`
   
 `;
 const MenuDrawer: React.FC = () => {
+  const [showColection,setShowColection]=React.useState(false)
   return (
       <WraperView >
 
@@ -112,11 +126,11 @@ const MenuDrawer: React.FC = () => {
             />
             <UserView >
               <UserNameText >
-                {' '}
+
                 Nguyễn Tiến Nam
               </UserNameText>
               <UserPhoneText >
-                {' '}
+
                 Admin
               </UserPhoneText>
             </UserView>
@@ -126,35 +140,42 @@ const MenuDrawer: React.FC = () => {
           <NewColectionView
               >
             <ChildColectionView>
+
               <ItemIconImage source={ICON.NewIc} />
+
               <ItemNameText > New collection</ItemNameText>
             </ChildColectionView>
           </NewColectionView>
           <ColectionView
               >
             <ChildColectionView>
+              <TouchableOpacity onPress={() => setShowColection(!showColection)}>
               <DownIconImage
                   source={ICON.PlayIc}
               />
+              </TouchableOpacity>
               <ColectionText >
                 COLLECTIONS
               </ColectionText>
               <ColectionChildText >
-                edit
+                Edit
               </ColectionChildText>
 
             </ChildColectionView>
           </ColectionView>
-          <View>
-            {collections.map(({id, name}) => (
+          { showColection ? (
+            <View>
+              {collections.map(({id, name}) => (
                 <ColectionItemView key={id} >
                   <ChildColectionView style={{flexDirection: 'row'}}>
                     <ItemIconImage source={ICON.ContactIc}  />
                     <ItemNameText > {name} </ItemNameText>
                   </ChildColectionView>
                 </ColectionItemView>
-            ))}
-          </View>
+              ))}
+            </View>
+          ) : null}
+
         </DrawewContentView>
       </WraperView>
   );

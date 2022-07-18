@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, TouchableOpacity, Linking,View,Alert } from "react-native";
+import { ScrollView, TouchableOpacity, Alert ,Linking} from "react-native";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { ICON } from "../assets/icons";
@@ -16,10 +16,9 @@ const Section01View = styled.View`
   //height: 48px;;
   justify-content: space-between;
   align-items: center;
-  background-color: #F2A54A08;
-  padding-top: ${getStatusBarHeight(true)}px;
-
-
+  background-color: #FEFBF6;
+  padding-top: ${getStatusBarHeight()}px;
+  
 `;
 
 const BackIconImage = styled.Image`
@@ -34,7 +33,7 @@ const EditUserText = styled.Text`
 `;
 const Section02View = styled.View`
   align-items: center;
-  background-color: #F2A54A08;
+  background-color: #FEFBF6;
 `;
 const AvatarView = styled.View`
   justify-content: center;
@@ -67,6 +66,9 @@ const CamImage = styled.Image`
 const UsernameText = styled.Text`
   font-size: 18px;
   font-weight: 500;
+  line-height: 22px;
+
+  letter-spacing: -0.41px;
   color: #333333;
 `;
 const ActionView = styled.View`
@@ -81,10 +83,14 @@ const ActionItemView = styled.View`
 
 `;
 const UserPositionText = styled.Text`
-  font-size: 13px;
   font-weight: 400;
-  color: #828282;
+  font-size: 13px;
   line-height: 22px;
+
+
+  letter-spacing: -0.41px;
+  color: #828282;
+
 `;
 const ActionText = styled.Text`
   font-size: 11px;
@@ -140,15 +146,15 @@ const UserContactBabel = styled.Text`
   font-weight: 400;
   line-height: 22px;
   color: #333333;
-  margin-top: 5px;
+  margin-top: 9px;
+  margin-bottom: 3px;
 `;
 const UserContactText = styled.Text`
   flex-direction: row;
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
-  margin-top: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: #2F80ED;
 `;
 const UserActionView = styled.View`
@@ -194,7 +200,6 @@ const UserScreen: React.FC = ({ navigation, route }) => {
   const handleDeleteContact = () => {
     let foundIndex = list.findIndex((element:any) => element.key === route.params.item.key)
     list.splice(foundIndex,1);
-
     setList([...list,
     ]);
     navigation.navigate('BaseScreen');
@@ -205,7 +210,7 @@ const UserScreen: React.FC = ({ navigation, route }) => {
     <ContainerView>
       <Section01View>
         <TouchableOpacity onPress={() => {
-          navigation.goBack();
+          navigation.navigate('BaseScreen');
         }}>
           <BackIconImage source={ICON.BackIc} />
         </TouchableOpacity>
@@ -231,7 +236,7 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         <ActionView>
 
           {route.params.item.phone.length > 0 ? (<ActionItemView>
-            <ItemViewAtive >
+            <ItemViewAtive  onPress={()=>{Linking.openURL(`tel:${route.params.item.phone[0]}`);}}>
               <ActionIc source={ICON.CallIc} />
 
             </ItemViewAtive>
@@ -272,7 +277,7 @@ const UserScreen: React.FC = ({ navigation, route }) => {
             <ActionDisableText>Facetime</ActionDisableText>
           </ActionItemView>)}
           {route.params.item.email.length > 0 ? (<ActionItemView>
-            <ItemViewAtive >
+            <ItemViewAtive onPress={()=>{Linking.openURL(`mailto:${route.params.item.email[0]}`);}}>
               <ActionIc source={ICON.EmailIc} />
 
             </ItemViewAtive>
@@ -297,6 +302,10 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         <UserContactView>
           <UserContactBabel> Email</UserContactBabel>
           <UserContactText> {route.params.item.email}</UserContactText>
+        </UserContactView>
+        <UserContactView>
+          <UserContactBabel> Địa chỉ</UserContactBabel>
+          <UserContactText> {route.params.item.addresses}</UserContactText>
         </UserContactView>
         <UserContactView>
           <UserContactBabel> Ghi chú</UserContactBabel>
