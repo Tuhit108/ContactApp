@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { SafeAreaView, StatusBar, View } from "react-native";
 import {Provider} from 'react-redux';
+import {store} from './src/store'
 import LoginScreen from "./src/Screens/LoginScreen";
 import BaseScreen  from "./src/Screens/BaseScreen";
 import UserScreen from './src/Screens/UserScreen';
@@ -20,7 +21,7 @@ const Container = styled.View`
 const Stack = createNativeStackNavigator();
 const App: React.FC = () => {
   return (
-
+    <Provider store={store}>
     <Container>
       <StatusBar
         translucent={true}
@@ -44,7 +45,7 @@ const App: React.FC = () => {
 
 
     </Container>
-
+</Provider>
   );
 };
 export default App;

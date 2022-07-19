@@ -6,24 +6,14 @@ import {ScrollView, TouchableOpacity, View} from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 
 import {ICON} from '../assets/icons';
+import { useAppSelector } from '../hooks';
+import { RootState } from '../store';
+import contact from '../reducer/contact';
 
 
 
 
-const contactlists = [
-  {key: 1, value: 'Nguyễn',lastName:'Tiến Nam', phone: ['0327942405','0266338','0266338','0266338'], time: 'Hôm nay',position : 'Mobile',email :['nam@gmail.com'],avartar:'https://source.unsplash.com/random/200x200?sig=incrementingkeyentifier',addresses: ['Hai Ba Trung'],birthday:['10/3'],company:'Google'},
-  {key: 2, value: 'Vũ',lastName:'Mạnh Linh', phone: ['0327942405'], time: 'Hôm nay',position : 'UI/UX Design',email :['dautu@gmail.com',] ,avartar:'https://source.unsplash.com/random/200x200?sig=3',addresses:[] ,birthday:[],company:'Google'},
-  {key: 3, value: 'Trần',lastName:'Thái Hà', phone: ['0321287805'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=10',addresses: [],birthday:[],company:'Google'},
-  {key: 4, value: 'Lê',lastName:'Ngọc Linh', phone: ['8218242405'], time: 'Hôm nay',position : 'Tester',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=9',addresses: [],birthday:[],company:'Google'},
-  {key: 5, value: 'Trần',lastName:'Kiều Ván', phone: ['23317942405'], time: 'Hôm nay',position : 'BA',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=5',addresses: [],birthday:[],company:'Google'},
-  {key: 6, value: 'Kiều Vân Anh',lastName:'', phone: ['31232405'], time: 'Hôm nay',position : 'HR',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=8',addresses: [],birthday:[],company:'Google'},
-  {key: 7, value: 'Thái Thùy Linh',lastName:'', phone:['12342405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[],company:'Google'},
-  {key: 8, value: 'Nguyễn Nam Tuấn',lastName:'', phone: ['3123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=1',addresses: [],birthday:[],company:'Google'},
-  {key: 9, value: 'Bùi Trọng Tùng',lastName:'', phone: ['123142405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=11',addresses: [],birthday:[],company:'Google'},
-  {key: 10, value: 'Bùi Trọng Tùng',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=12',addresses: [],birthday:[],company:'Google'},
-  {key: 11, value: 'Bùi Trọng Tùs',lastName:'', phone: ['1231942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=13',addresses: [],birthday:[],company:'Google'},
-  {key: 12, value: 'Bùi Trọng T',lastName:'', phone: ['12312942405'], time: 'Hôm nay',position : 'Mobile',email :[],avartar:'https://source.unsplash.com/random/200x200?sig=19',addresses: [],birthday:[],company:'Google'},
-];
+
 
 
 const DemoView = styled.View`
@@ -31,6 +21,11 @@ const DemoView = styled.View`
   `;
 // @ts-ignore
 const ContactTab: React.FC = ({navigation}) => {
+  const contactlists = useAppSelector((state:RootState) => state.contact.contactList);
+  React.useEffect(()=>{
+    console.log(contactlists)
+
+  })
   const [list, setList]= React.useState(contactlists);
   const [text, onChangeText] = React.useState('');
   const removeVietnamese = (str) => {
@@ -49,7 +44,7 @@ const ContactTab: React.FC = ({navigation}) => {
   };
 
 
-  let contactresults = list.filter(contact => (removeVietnamese(contact.value+' '+contact.lastName)+(contact.value+' '+contact.lastName).toLowerCase()).includes(text.toLowerCase()))
+  let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value+' '+contact.lastName)+(contact.value+' '+contact.lastName).toLowerCase()).includes(text.toLowerCase()))
 
 
 
@@ -68,10 +63,7 @@ const ContactTab: React.FC = ({navigation}) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('NewContactScreen',{
-              listitem: {
-                list: list,
-                setList: setList,
-              }
+              list: contactlists
             });
           }}>
           <CamImage source={ICON.CamIc} />

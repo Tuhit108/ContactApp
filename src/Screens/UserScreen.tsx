@@ -298,7 +298,7 @@ const UserScreen: React.FC = ({ navigation, route }) => {
       <Section03View>
         <UserContactView>
           <UserContactBabel> Điện thoại</UserContactBabel>
-          {phonelist.map((item) =>(<UserContactText> {item}</UserContactText>))}
+          {phonelist.map((item: any) =>(<UserContactText> {item}</UserContactText>))}
 
         </UserContactView>
         <UserContactView>

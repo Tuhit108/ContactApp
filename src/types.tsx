@@ -1,4 +1,4 @@
-export interface ContactState {
+export type ContactState = {
   key: number;
   value: string;
   lastName: string;
@@ -7,6 +7,6 @@ export interface ContactState {
   phone: string[];
   email: string[];
   addresses: string[];
-  birthday: number[];
+  birthday: string[];
   avatar: string;
 }

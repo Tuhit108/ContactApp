@@ -1,4 +1,5 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { useEffect } from "react";
 import {ContactState} from "../types";
 type initialStateType = {
   contactList: ContactState[];
@@ -9,9 +10,9 @@ const contactList:ContactState[] = [
   {key: 3, value: 'Trần',lastName:'Thái Hà', phone: ['0321287805'],position : 'Mobile',email :[],avatar:'https://source.unsplash.com/random/200x200?sig=10',addresses: [],birthday:[],company:'Google'},
 ]
 
-const initialState : initialStateType = {contactList,}
+const initialState: initialStateType = {contactList,};
 export const contact = createSlice({
-    name: 'contactReducer',
+    name: 'contact',
     initialState,
     reducers:{
       addNewContact: (state, action :PayloadAction<ContactState>)=>{
@@ -21,5 +22,7 @@ export const contact = createSlice({
 
   }
 );
+
+
 export const {addNewContact}=contact.actions;
 export default contact.reducer;
