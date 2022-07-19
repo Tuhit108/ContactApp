@@ -1,4 +1,5 @@
 import * as React from "react";
+import { memo } from "react";
 import { ScrollView, TouchableOpacity, Alert ,Linking} from "react-native";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -6,6 +7,7 @@ import { ICON } from "../assets/icons";
 import { IMAGE } from "../assets/imgs";
 // @ts-ignore
 import styled from "styled-components/native";
+
 
 const ContainerView = styled.View`
   flex: 1;
@@ -325,4 +327,4 @@ const UserScreen: React.FC = ({ navigation, route }) => {
     </ContainerView>
   );
 };
-export default UserScreen;
+export default memo(UserScreen);

@@ -33,7 +33,6 @@ const DemoView = styled.View`
 const ContactTab: React.FC = ({navigation}) => {
   const [list, setList]= React.useState(contactlists);
   const [text, onChangeText] = React.useState('');
-  const [item, setItem]= React.useState({});
   const removeVietnamese = (str) => {
 
     str = str.toLowerCase();
@@ -43,15 +42,14 @@ const ContactTab: React.FC = ({navigation}) => {
     str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
     str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
     str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
-    str = str.replace(/đ/g, 'd');
-    // Some system encode vietnamese combining accent as individual utf-8 characters
+    str = str.replace(/đ/g, 'd'); // Some system encode vietnamese combining accent as individual utf-8 characters
     str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ''); // Huyền sắc hỏi ngã nặng
     str = str.replace(/\u02C6|\u0306|\u031B/g, ''); // Â, Ê, Ă, Ơ, Ư
     return str;
   };
 
 
-  let contactresults = list.filter(contact => removeVietnamese(contact.value+' '+contact.lastName).includes(text.toLowerCase()))
+  let contactresults = list.filter(contact => (removeVietnamese(contact.value+' '+contact.lastName)+(contact.value+' '+contact.lastName).toLowerCase()).includes(text.toLowerCase()))
 
 
 

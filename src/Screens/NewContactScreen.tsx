@@ -3,6 +3,8 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {ICON} from '../assets/icons';
 import {IMAGE} from '../assets/imgs';
+import {useAppDispatch} from "../hooks";
+import {addNewContact} from "../reducer/contact";
 
 // @ts-ignore
 import styled from "styled-components/native";
@@ -119,6 +121,7 @@ font-size: 15px;
 `;
 // @ts-ignore
 const UserScreen: React.FC = ({navigation,route}) => {
+  const dispatch =useAppDispatch()
   const {list, setList} = route.params.listitem;
   const [avartarlink,setAvartar]=React.useState(null)
   const [firstnametext, onChangeFirstnameText] = React.useState( '');
@@ -177,6 +180,8 @@ const UserScreen: React.FC = ({navigation,route}) => {
     navigation.navigate('UserScreen',{list,setList,item:{
         key: maxId + 1, value: firstnametext, lastName:nametext, phone:phone, time: '',position : '',email :emailtext,avartar:avartarlink,birthday: [birthdaytext],addresses: [addresstext],company:companytext
       }})
+    ;
+    dispatch(addNewContact({key: maxId + 1, value: firstnametext, lastName:nametext,position :'',avatar:'',addresses: [addresstext],company: companytext}))
   }
 
   return (
