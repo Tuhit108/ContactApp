@@ -4,8 +4,8 @@ export type ContactState = {
   lastName: string;
   position:string;
   company: string;
-  phone: string[];
-  email: string[];
+  phones: string[];
+  emails: string[];
   addresses: string[];
   birthday: string[];
   avatar: string;

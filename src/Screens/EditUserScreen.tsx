@@ -1,20 +1,23 @@
 import * as React from "react";
-import { Image, ScrollView, TouchableOpacity, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { ICON } from "../assets/icons";
 import { IMAGE } from "../assets/imgs";
 // @ts-ignore
 import styled from "styled-components/native";
 import ImagePicker from "react-native-image-crop-picker";
+import {useAppDispatch} from "../hooks";
+import {updateContact} from "../reducer/contact";
+import { InputList } from "../components/InputList";
 
-const ContainerView = styled.View`
+const ContainerView = styled(KeyboardAvoidingView)`
   flex: 1;
   background-color: #ffffff;
   padding-top: ${getStatusBarHeight()}px;
 `;
 const Section01View = styled.View`
   flex-direction: row;
-  height: 48px;;
+  height: 60px;;
   justify-content: space-between;
   align-items: center;
 `;
@@ -48,13 +51,13 @@ const AvatarView = styled.View`
   height: 100px;
   border-radius: 50px;
 `;
-const AvartarImage = styled.Image`
+const AvatarImage = styled.Image`
   width: 100px;
   height: 100px;
   border-radius: 50px;
 
 `;
-const AvartarBackground = styled.ImageBackground`
+const AvatarBackground = styled.ImageBackground`
           width: 80px;
           height: 80px;
           justify-content: center;
@@ -67,7 +70,16 @@ const CamImage = styled.TouchableOpacity`
   bottom: 0px;
 `;
 const UserTextInput = styled.TextInput`
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  /* identical to box height, or 147% */
 
+  letter-spacing: -0.41px;
+
+  /* Gray 1 */
+
+  color: #333333;
   height: 44px;
   width: 92%;
   border-bottom-color: rgba(0, 0, 0, 0.1);
@@ -105,6 +117,18 @@ const RemoveIcon = styled.View`
 `;
 const UserContactInput = styled.TextInput`
 
+
+`;
+const UserContactDefaltInput = styled.TextInput`
+  color: #2F80ED;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  /* identical to box height, or 147% */
+
+  letter-spacing: -0.41px;
+
+
 `;
 const PlusIconImage = styled.Image`
   margin-right: 16px;
@@ -117,80 +141,66 @@ const TagNameText = styled.Text`
 `;
 // @ts-ignore
 const UserScreen: React.FC = ({ navigation, route }) => {
+  const dispatch=useAppDispatch();
   const firstnameInitial = route.params.item.value;
   const nameInitial = route.params.item.lastName;
-  const list = route.params.list;
-  const setList = route.params.setList;
+
   const companyInitial = route.params.item.company;
-  const [avartarlink, setAvartar] = React.useState(route.params.item.avartar);
-  const [fistnametext, onChangeFistnameText] = React.useState(firstnameInitial);
+  const [avatarlink, setAvatar] = React.useState(route.params.item.avatar);
+  const [firstnametext, onChangeFistnameText] = React.useState(firstnameInitial);
   const [nametext, onChangeNameText] = React.useState(nameInitial);
   const [companytext, onChangeCompanyText] = React.useState(companyInitial);
-  const [phone, setPhone] = React.useState(route.params.item.phone);
-  const [phonetext, onChangePhoneText] = React.useState("");
-  const [emailtext, onChangeEmailText] = React.useState(route.params.item.email);
-  const [addresstext, onChangeAddressText] = React.useState(route.params.item.addresses);
-  const [birthdaytext, onChangeBirthdayText] = React.useState(route.params.item.birthday);
-
+  const [phones, setPhones] = React.useState(route.params.item.phones);
+  const [emails, setEmails] = React.useState(route.params.item.emails);
+  const [addresses, setAddreses] = React.useState(route.params.item.addresses);
+  const [birthday, setBirthdays] = React.useState(route.params.item.birthday);
 
   const handleEdit = () => {
-    let foundIndex = list.findIndex((element: any) => element.key === route.params.item.key);
-    list.splice(foundIndex, 1, {
-      key: route.params.item.key,
-      value: fistnametext,
-      lastName: nametext,
-      phone: phone,
-      time: "",
-      position: "",
-      email: emailtext,
-      avartar: avartarlink,
-      birthday: birthdaytext,
-      addresses: addresstext,
-      company: companytext
-    });
+    dispatch(updateContact(
+      {
+        key: route.params.item.key,
+        value: firstnametext,
+        lastName: nametext,
+        phones: phones,
+        position: "",
+        emails: emails,
+        avatar: avatarlink,
+        birthday: birthday,
+        addresses: addresses,
+        company: companytext
+      }));
     navigation.navigate("UserScreen", {
       item:
         {
           key: route.params.item.key,
-          value: fistnametext,
+          value: firstnametext,
           lastName: nametext,
-          phone: phone,
+          phones: phones,
           time: "",
           position: "",
-          email: emailtext,
-          avartar: avartarlink,
-          birthday: birthdaytext,
-          addresses: addresstext,
+          emails: emails,
+          avatar: avatarlink,
+          birthday: birthday,
+          addresses: addresses,
           company: companytext
         }
     });
-    setList([...list
-    ]);
+
   };
-  const deletePhoneOnpress = (index) => {
-    const newList = [...phone];
-    newList.splice(index, 1);
-    setPhone(newList);
-  };
-  const addPhoneOnpress = () => {
-    setPhone(prev => prev.concat([""]));
-  };
-  const phoneOnChange = (index, text) => {
-    onChangePhoneText(text);
-    phone.splice(index, 1, text);
-  };
+
   const chooseImage = () => {
     ImagePicker.openPicker({
       width: 100,
       height: 100,
       cropping: true
     }).then(image => {
-      setAvartar(image.path);
+      setAvatar(image.path);
     });
   };
 
   return (
-    <ContainerView>
+    <ContainerView
+      behavior={Platform.OS == 'ios' ? 'padding' : null}>
       <Section01View>
         <TouchableOpacity>
           <CancelText onPress={() => {
@@ -204,16 +214,16 @@ const UserScreen: React.FC = ({ navigation, route }) => {
       <ScrollView>
         <Section02View>
           <AvatarView>
-            <AvartarBackground source={IMAGE.EmptyAvartar} resizeMode="cover">
-              <AvartarImage source={{ uri: avartarlink }} />
-            </AvartarBackground>
+            <AvatarBackground source={IMAGE.EmptyAvatar} resizeMode="cover">
+              <AvatarImage source={{ uri: avatarlink }} />
+            </AvatarBackground>
             <CamImage onPress={chooseImage}>
-              <Image source={ICON.CamAvartarIc} />
+              <Image source={ICON.CamAvatarIc} />
             </CamImage>
           </AvatarView>
           <UserTextInput
             onChangeText={onChangeFistnameText}
-            value={fistnametext}
+            value={firstnametext}
             placeholder="Họ"
           />
           <UserTextInput
@@ -229,92 +239,30 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         </Section02View>
 
         <Section03View>
-          {phone.map((item, index) => {
-            return (
-              <RemoveInfoView key={index}>
-                <TouchableOpacity onPress={() => deletePhoneOnpress(index)}>
-                  <RemoveIcon>
-                    <Image source={ICON.RemoveIc} />
-                  </RemoveIcon>
-                </TouchableOpacity>
-                <UserTextInput02
-                  keyboardType="numeric"
-                  autoFocus={true}
-                  onChangeText={text => phoneOnChange(index, text)}
-                  value={phone[index]}
-                />
-              </RemoveInfoView>
-            );
-          })}
-          <AddInfoView>
-            <TouchableOpacity onPress={addPhoneOnpress}>
-              <PlusIconImage source={ICON.BluePlusIc} />
-            </TouchableOpacity>
-            <UserContactInput
-              value="thêm số điện thoại"
-            />
-          </AddInfoView>
-
-          <RemoveInfoView>
-            <TouchableOpacity>
-              <RemoveIcon>
-                <Image source={ICON.RemoveIc} />
-              </RemoveIcon>
-            </TouchableOpacity>
-            <UserContactInput
-              value={emailtext}
-              onChangeText={onChangeEmailText}
-            />
-
-          </RemoveInfoView>
-          <AddInfoView>
-            <TouchableOpacity>
-              <PlusIconImage source={ICON.BluePlusIc} />
-            </TouchableOpacity>
-            <UserContactInput
-              value="thêm email"
-            />
-          </AddInfoView>
-          <RemoveInfoView>
-            <TouchableOpacity>
-              <RemoveIcon>
-                <Image source={ICON.RemoveIc} />
-              </RemoveIcon>
-            </TouchableOpacity>
-            <UserContactInput
-              value={addresstext}
-              onChangeText={onChangeAddressText}
-            />
-
-          </RemoveInfoView>
-          <AddInfoView>
-            <TouchableOpacity>
-              <PlusIconImage source={ICON.BluePlusIc} />
-            </TouchableOpacity>
-            <UserContactInput
-              value="thêm địa chỉ"
-            />
-          </AddInfoView>
-          <RemoveInfoView>
-            <TouchableOpacity>
-              <RemoveIcon>
-                <Image source={ICON.RemoveIc} />
-              </RemoveIcon>
-            </TouchableOpacity>
-            <UserContactInput
-              value={birthdaytext}
-              onChangeText={onChangeBirthdayText}
-            />
-
-          </RemoveInfoView>
-          <AddInfoView>
-            <TouchableOpacity>
-              <PlusIconImage source={ICON.BluePlusIc} />
-            </TouchableOpacity>
-            <UserContactInput
-              value="thêm ngày sinh"
-            />
-          </AddInfoView>
+          <InputList
+            title="phone"
+            list={phones}
+            keyboardType="numeric"
+            setList={setPhones}
+          />
+          <InputList
+            title="email"
+            list={emails}
+            keyboardType="numeric"
+            setList={setEmails}
+          />
+          <InputList
+            title="address"
+            list={addresses}
+            keyboardType="numeric"
+            setList={setAddreses}
+          />
+          <InputList
+            title="birthday"
+            list={birthday}
+            keyboardType="numeric"
+            setList={setBirthdays}
+          />
         </Section03View>
       </ScrollView>
     </ContainerView>

@@ -6,6 +6,7 @@ import HistoryTab from "../components/HistoryTab";
 import  { ICON } from "../assets/icons";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { KeyboardAvoidingView, Platform } from "react-native";
 const Tab = createBottomTabNavigator();
 const Text = styled.Text`
   
@@ -13,19 +14,23 @@ const Text = styled.Text`
 const View = styled.View`
   
 `;
+
 const ContactImg = styled.Image`
 
 `;
 const ClockImg = styled.Image``;
 const ContactScreen: React.FC = () => {
   return (
+
     <Tab.Navigator
         screenOptions={{
+
           headerShown: false,
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#F2A54A',
             height: 44+getStatusBarHeight(),
+
 
           },
         }}
@@ -66,6 +71,7 @@ const ContactScreen: React.FC = () => {
           }}
         />
       </Tab.Navigator>
+
   );
 };
 export default ContactScreen;

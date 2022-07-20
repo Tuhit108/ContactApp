@@ -2,7 +2,7 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { View,TouchableOpacity,ScrollView} from 'react-native';
-import {getStatusBarHeight} from "react-native-iphone-x-helper";
+import {getStatusBarHeight} from "react-native-status-bar-height";
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
 
@@ -21,22 +21,21 @@ import {IMAGE} from "../assets/imgs";
     {id: 12, name: 'Bùi Trọng T', phone: '0327942405', time: 'Hôm nay'},
 ];
 const WraperView = styled.View`
-  flex: 1;
+  flex: auto;
   background-color: white;
-  justify-content: center;
-  align-items: center;
+  
+  padding-top: ${getStatusBarHeight()}px;
   
 `;
 const HeaderView = styled.View`
-  flex: 1;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background-color: #FFFFFF ;
   width: 100%;
-  top: 0;
-  height: 88px;
-  padding-top: ${getStatusBarHeight(true)}px;
+  height: 60px;
+
+  
 `;
 const MenuImage = styled.Image`
   margin-left: 10px;
@@ -123,9 +122,7 @@ const HistoryTab: React.FC = ({navigation}) => {
                 >
                     Lịch Sử
                 </HeaderText>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('NewContactScreen');
-                }}>
+                <TouchableOpacity o>
                     <CamImage source={ICON.CamIc}/>
                 </TouchableOpacity>
             </HeaderView>

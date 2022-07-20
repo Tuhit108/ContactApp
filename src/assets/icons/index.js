@@ -10,7 +10,7 @@ export const ICON = {
   DetailIc :require('./detailic.png'),
   PhoneIc :require('./phone.png'),
   SearchIc :require('./search.png'),
-  CamAvartarIc : require('./camavartar.png'),
+  CamAvatarIc : require('./camavatar.png'),
   BluePlusIc :require('./blueplus.png'),
   CallIc :require('./call.png'),
   ChatIc :require('./chat.png'),

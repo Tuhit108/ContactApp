@@ -1,57 +1,45 @@
-import * as React from 'react';
+import * as React from "react";
 // @ts-ignore
-import styled from 'styled-components/native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import styled from "styled-components/native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { AlphabetList } from "react-native-section-alphabet-list";
 
-import {ICON} from '../assets/icons';
-import { useAppSelector } from '../hooks';
-import { RootState } from '../store';
-import contact from '../reducer/contact';
+import { ICON } from "../assets/icons";
+import { useAppSelector } from "../hooks";
+import { RootState } from "../store";
+import { IMAGE } from "../assets/imgs";
 
 
-
-
-
-
-
-const DemoView = styled.View`
-
-  `;
 // @ts-ignore
-const ContactTab: React.FC = ({navigation}) => {
-  const contactlists = useAppSelector((state:RootState) => state.contact.contactList);
-  React.useEffect(()=>{
-    console.log(contactlists)
+const ContactTab: React.FC = ({ navigation }) => {
+  const contactlists = useAppSelector((state: RootState) => state.contact.contactList);
+  React.useEffect(() => {
+    console.log(contactlists);
 
-  })
-  const [list, setList]= React.useState(contactlists);
-  const [text, onChangeText] = React.useState('');
-  const removeVietnamese = (str) => {
-
+  });
+  const [text, onChangeText] = React.useState("");
+  const removeVietnamese = (str: string) => {
     str = str.toLowerCase();
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
-    str = str.replace(/đ/g, 'd'); // Some system encode vietnamese combining accent as individual utf-8 characters
-    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ''); // Huyền sắc hỏi ngã nặng
-    str = str.replace(/\u02C6|\u0306|\u031B/g, ''); // Â, Ê, Ă, Ơ, Ư
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d"); // Some system encode vietnamese combining accent as individual utf-8 characters
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
     return str;
   };
 
 
-  let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value+' '+contact.lastName)+(contact.value+' '+contact.lastName).toLowerCase()).includes(text.toLowerCase()))
-
-
-
-
+  let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value + " " + contact.lastName) + (contact.value + " " + contact.lastName).toLowerCase()).includes(text.toLowerCase()));
   // @ts-ignore
   return (
-    <WraperView>
+    <WraperView
+      behavior={Platform.OS == "ios" ? "padding" : null}
+    >
       <HeaderView>
         <TouchableOpacity
           onPress={() => {
@@ -62,14 +50,14 @@ const ContactTab: React.FC = ({navigation}) => {
         <HeaderText>Liên Hệ</HeaderText>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('NewContactScreen',{
+            navigation.navigate("NewContactScreen", {
               list: contactlists
             });
           }}>
           <CamImage source={ICON.CamIc} />
         </TouchableOpacity>
       </HeaderView>
-      <DemoView></DemoView>
+
       <ContentView>
         <SearchView>
           <SearchChildView>
@@ -85,43 +73,46 @@ const ContactTab: React.FC = ({navigation}) => {
         <MainContentView>
           <TabListView>
             <AlphabetList
-              style={{width:'100%'}}
+              style={{ width: "100%", flex: 1 }}
               // @ts-ignore
               data={contactresults}
               indexLetterStyle={{
-                color: '#f2a54a',
+                color: "#f2a54a",
                 fontSize: 14,
-                fontWeight :'400',
+                fontWeight: "400",
                 lineHeight: 22,
-                height: 25,
+                height: 25
 
               }}
 
               indexLetterContainerStyle={{
-                margin :3,
+                margin: 3
 
               }}
               indexContainerStyle={{
-                marginRight :8,
+                marginRight: 8
 
 
               }}
-              renderCustomItem={(item:any) => (
+              renderCustomItem={(item: any) => (
 
                 <ItemListView key={item.key} onPress={() => {
 
-                  navigation.navigate('UserScreen',{item,list,setList})
+                  navigation.navigate("UserScreen", { item });
                 }}>
-
-                  <AvartarImage source={{uri:item.avartar}} />
+                  <AvatarView>
+                    <AvatarImage source={item.avatar ? { uri: item.avatar } : IMAGE.EmptyAvatar}
+                                 avatar={item.avatar}
+                    />
+                  </AvatarView>
                   <InfoView>
-                    <NameText>{item.value+' '+item.lastName}</NameText>
-                    <PhoneText>{item.phone[0]}</PhoneText>
+                    <NameText>{item.value + " " + item.lastName}</NameText>
+                    <PhoneText numberOfLines={1} >{item.phones.length > 0 ? item.phones.join(' ') : "Không có số điện thoại"}</PhoneText>
                   </InfoView>
                 </ItemListView>
               )}
               renderCustomSectionHeader={(section) => (
-                <TabListSectionView >
+                <TabListSectionView>
                   <TabListText>{section.title}</TabListText>
                 </TabListSectionView>
               )}
@@ -132,20 +123,20 @@ const ContactTab: React.FC = ({navigation}) => {
     </WraperView>
   );
 };
-const WraperView = styled.View`
- flex:1;
+const WraperView = styled(KeyboardAvoidingView)`
+  flex: auto;
   background-color: white;
   font-family: "Roboto";
 
   padding-top: ${getStatusBarHeight()}px;
 `;
 const HeaderView = styled.View`
-  flex: 1;
-  height: 44px;
+
+  height: 60px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+
   width: 100%;
   top: 0;
 
@@ -192,11 +183,11 @@ const SearchIconImage = styled.Image`
   height: 14px;
   margin-left: 10px;
   margin-right: 8px;
-  tint-color:#333333
+  tint-color: #333333
 `;
 const SearchTextInput = styled.TextInput`
-width: 100%;
-  
+  width: 100%;
+
 `;
 
 const MainContentView = styled.View`
@@ -211,6 +202,7 @@ const TabListView = styled.View`
   width: 100%;
   height: 100%;
   flex: 10;
+
 `;
 const TabListSectionView = styled.View`
   background-color: #F0F0F0;
@@ -235,32 +227,41 @@ const ItemListView = styled.TouchableOpacity`
   height: 64px;
 `;
 const InfoView = styled.View`
-  flex:1;
+  flex: 1;
   border-bottom-color: #f5f5f5;
   border-bottom-width: 1px;
   height: 100%;
   justify-content: center;
   margin-right: 26px;
 `;
-
-const AvartarImage = styled.Image`
+const AvatarView = styled.View`
   width: 40px;
   height: 40px;
   margin-left: 15px;
   margin-right: 15px;
+  align-items: center;
+  justify-content: center;
+  background-color: #F2F2F2;
   border-radius: 50px;
+`;
+const AvatarImage = styled.Image<{ avatar?: string }>`
+  height: ${props => (props.avatar ? 40 : 30)}px;
+  width: ${props => (props.avatar ? 40 : 30)}px;
+  border-radius: 50px;
+
 `;
 const NameText = styled.Text`
   font-size: 16px;
   font-weight: 500;
   color: #333333;
-  
+
 `;
 const PhoneText = styled.Text`
   font-size: 14px;
   font-weight: 400;
   color: #828282;
   margin-top: 6px;
+ 
 `;
 
 export default ContactTab;

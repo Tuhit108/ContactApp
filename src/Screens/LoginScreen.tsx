@@ -1,23 +1,23 @@
 import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import  { IMAGE } from "../assets/imgs";
-import  { ICON } from "../assets/icons";
+import { IMAGE } from "../assets/imgs";
+import { ICON } from "../assets/icons";
 
 
 const Container = styled.View`
   flex: 1;
-  
+
 `;
 const Section1 = styled.View`
-  flex: 1;
+  flex: 2;
   justify-content: center;
   align-items: center;
 `;
-const GrImage = styled.Image `
-  
+const GrImage = styled.Image`
+
 `;
-const GrBackGround = styled.Image `
+const GrBackGround = styled.Image`
   position: absolute;
   width: 100%;
   bottom: 0;
@@ -31,20 +31,24 @@ const AppName = styled.Text`
   font-size: 30px;
   font-weight: 700;
   line-height: 35px;
+  margin-top: 22px;
+  margin-bottom: 7px;
+  letter-spacing: 0.12px;
 `;
 const AppDes = styled.Text`
   color: #333333;
   font-size: 15px;
   font-weight: 400;
-  line-height: 17px;
+  line-height: 18px;
   text-align: center;
+  letter-spacing: 0.12px;
 `;
-const LoadIcon = styled.Image `
-  position: absolute;
-  bottom: 50px;
+const LoadIcon = styled.Image`
+margin-bottom: 78px;
+  
 `;
 const Section3 = styled.View`
-  flex: 1;
+  flex: 2;
   align-items: center;
 `;
 const LoginView = styled.View`
@@ -60,8 +64,8 @@ const LoginText = styled.Text`
   font-style: italic;
   color: #828282;
 `;
-const LoginBtn01 =  styled.TouchableOpacity`
-  margin-top: 12px;
+const LoginBtn01 = styled.TouchableOpacity`
+  margin-top: 24px;
   width: 85%;
   height: 46px;
   justify-content: center;
@@ -70,12 +74,12 @@ const LoginBtn01 =  styled.TouchableOpacity`
   border-radius: 4px;
 `;
 const TextLogin01 = styled.Text`
-color: white;
+  color: white;
   font-size: 15px;
   font-weight: 500;
-  
+
 `;
-const LoginBtn02 =  styled.TouchableOpacity`
+const LoginBtn02 = styled.TouchableOpacity`
   margin-top: 12px;
   width: 85%;
   height: 46px;
@@ -86,39 +90,40 @@ const LoginBtn02 =  styled.TouchableOpacity`
   border-color: #F2A54A;
 `;
 const TextLogin02 = styled.Text`
-color: #F2A54A;
+  color: #F2A54A;
   font-size: 15px;
   font-weight: 500;
-  
+
 `;
 
 
-
 // @ts-ignore
-const LoginScreen: React.FC = ({navigation, }) => {
+const LoginScreen: React.FC = ({ navigation }) => {
   return (
     <Container>
       <Section1>
 
-        <GrBackGround source={IMAGE.GR_BACKGROUND} ></GrBackGround>
-        <GrImage source={IMAGE.GR_LOGO} ></GrImage>
+        <GrBackGround source={IMAGE.GR_BACKGROUND}></GrBackGround>
+        <GrImage source={IMAGE.GR_LOGO}></GrImage>
       </Section1>
       <Section2>
         <AppName>Base contacts</AppName>
-        <AppDes>{'Giải pháp quản lý công việc\n & dự án toàn diện cho doanh nghiệp 4.0'}</AppDes>
-        <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
+        <AppDes>{"Giải pháp quản lý công việc\n & dự án toàn diện cho doanh nghiệp 4.0"}</AppDes>
+
       </Section2>
       <Section3>
+
         <LoginView>
-        <LoginText>Bạn chưa đăng nzhập</LoginText>
-        <LoginBtn01 onPress={() => {
-                navigation.navigate('BaseScreen');
-              }}>
-          <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUT</TextLogin01>
-        </LoginBtn01>
+          <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
+          <LoginText>Bạn chưa đăng nhập</LoginText>
+          <LoginBtn01 onPress={() => {
+            navigation.navigate("BaseScreen");
+          }}>
+            <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUT</TextLogin01>
+          </LoginBtn01>
           <LoginBtn02 onPress={() => {
-                navigation.navigate('BaseScreen');
-              }}>
+            navigation.navigate("BaseScreen");
+          }}>
             <TextLogin02>ĐĂNG NHẬP THỦ CÔNG</TextLogin02>
           </LoginBtn02>
         </LoginView>
