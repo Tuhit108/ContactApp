@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { ScrollView, TouchableOpacity, Alert, Linking, Platform, KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useAppDispatch } from "../hooks";
@@ -10,13 +10,14 @@ import { IMAGE } from "../assets/imgs";
 // @ts-ignore
 import styled from "styled-components/native";
 import { ShowInfo } from "../components/ShowInfo";
+import { ActionItem } from "../components/ActionItem";
 
 
 // @ts-ignore
 const UserScreen: React.FC = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
   const contactitem = route.params.item;
-  const DeleteOnpress = () => {
+  const DeleteOnpress =useCallback(  () => {
     Alert.alert(
       "Xoá Liên Hệ",
       "Xác Nhận Xoá",
@@ -28,11 +29,11 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         { text: "OK", onPress: () => handleDeleteContact() }
       ]
     );
-  };
-  const handleDeleteContact = () => {
+  },[]);
+  const handleDeleteContact =useCallback(  () => {
     dispatch(deleteContact({ key: contactitem.key }));
     navigation.navigate("BaseScreen");
-  };
+  },[]);
 
   //
   return (
@@ -62,67 +63,31 @@ const UserScreen: React.FC = ({ navigation, route }) => {
           <UsernameText>{contactitem.value + " " + contactitem.lastName}</UsernameText>
           <UserPositionText>{contactitem.company}</UserPositionText>
           <ActionView>
+            <ActionItem
+              title="Nhấn gọi điện"
+              list={contactitem.phones}
+              itemIcon={ICON.CallIc}
+              link="tel"
+            />
+            <ActionItem
+              title="Nhắn tin"
+              list={contactitem.phones}
+              itemIcon={ICON.ChatIc}
+              link="sms"
+            />
+            <ActionItem
+              title="Facetime"
+              list={contactitem.phones}
+              itemIcon={ICON.FacetimeIc}
+              link="tel"
+            />
+            <ActionItem
+              title="Gửi mail"
+              list={contactitem.emails}
+              itemIcon={ICON.EmailIc}
+              link="mailto"
+            />
 
-            {contactitem.phones.length > 0 ? (<ActionItemView>
-              <ItemViewAtive onPress={() => {
-                Linking.openURL(`tel:${contactitem.phones[0]}`);
-              }}>
-                <ActionIc source={ICON.CallIc} />
-
-              </ItemViewAtive>
-              <ActionText>Nhấn gọi điện</ActionText>
-            </ActionItemView>) : (<ActionItemView>
-              <ItemViewNone>
-                <DisableIc source={ICON.CallIc} />
-
-              </ItemViewNone>
-              <ActionDisableText>Nhấn gọi điện</ActionDisableText>
-            </ActionItemView>)}
-
-
-            {contactitem.phones.length > 0 ? (<ActionItemView>
-              <ItemViewAtive onPress={() => {
-                Linking.openURL(`sms:${contactitem.phones[0]}`);
-              }}>
-                <ActionIc source={ICON.ChatIc} />
-
-              </ItemViewAtive>
-              <ActionText>Nhắn tin</ActionText>
-            </ActionItemView>) : (<ActionItemView>
-              <ItemViewNone>
-                <DisableIc source={ICON.ChatIc} />
-
-              </ItemViewNone>
-              <ActionDisableText>Nhắn tin</ActionDisableText>
-            </ActionItemView>)}
-            {contactitem.phones.length > 0 ? (<ActionItemView>
-              <ItemViewAtive>
-                <ActionIc source={ICON.FacetimeIc} />
-
-              </ItemViewAtive>
-              <ActionText>Facetime</ActionText>
-            </ActionItemView>) : (<ActionItemView>
-              <ItemViewNone>
-                <DisableIc source={ICON.FacetimeIc} />
-              </ItemViewNone>
-              <ActionDisableText>Facetime</ActionDisableText>
-            </ActionItemView>)}
-            {contactitem.emails.length > 0 ? (<ActionItemView>
-              <ItemViewAtive onPress={() => {
-                Linking.openURL(`mailto:${contactitem.emails[0]}`);
-                console.log(contactitem.emails.length);
-              }}>
-                <ActionIc source={ICON.EmailIc} />
-
-              </ItemViewAtive>
-              <ActionText>Gửi email</ActionText>
-            </ActionItemView>) : (<ActionItemView>
-              <ItemViewNone>
-                <DisableIc source={ICON.EmailIc} />
-
-              </ItemViewNone>
-              <ActionDisableText>Gửi Email</ActionDisableText>
-            </ActionItemView>)}
           </ActionView>
 
         </Section02View>
@@ -140,9 +105,13 @@ const UserScreen: React.FC = ({ navigation, route }) => {
             title="Addresses"
             list={contactitem.addresses}
           />
+          <ShowInfo
+            title="Birthday"
+            list={contactitem.birthday}
+          />
           <UserContactView>
             <UserContactBabel> Ghi chú</UserContactBabel>
-            <UserContactText> {contactitem.birthday}</UserContactText>
+            <UserContactText> </UserContactText>
           </UserContactView>
           <UserActionView>
             <UserChatText> Gửi tin nhắn</UserChatText>
@@ -227,11 +196,7 @@ const ActionView = styled.View`
   margin-left: 20px;
   margin-right: 20px;
 `;
-const ActionItemView = styled.View`
-  align-items: center;
-  width: 25%;
 
-`;
 const UserPositionText = styled.Text`
   font-weight: 400;
   font-size: 13px;
@@ -242,44 +207,9 @@ const UserPositionText = styled.Text`
   color: #828282;
 
 `;
-const ActionText = styled.Text`
-  font-size: 11px;
-  font-weight: 400;
-  color: #F2A54A;
-  line-height: 22px;
-  margin-top: 4px;
-`;
-const ActionDisableText = styled.Text`
-  font-size: 11px;
-  font-weight: 400;
-  color: #BDBDBD;
-  line-height: 22px;
-  margin-top: 4px;
-`;
-const ItemViewAtive = styled.TouchableOpacity`
-  width: 40px;
-  height: 40px;
-  background-color: #F2A54A;
-  border-radius: 50px;
-  justify-content: center;
-  align-items: center;
-`;
-const ItemViewNone = styled.TouchableOpacity`
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  justify-content: center;
-  align-items: center;
-  border: 0.5px solid #BDBDBD;
-  background-color: #fff;
-`;
 
-const ActionIc = styled.Image`
-  tint-color: #FFFFFF
-`;
-const DisableIc = styled.Image`
-  tint-color: #BDBDBD
-`;
+
+
 const Section03View = styled.View`
   align-items: center;
 
@@ -290,7 +220,7 @@ const UserContactView = styled.View`
   width: 92%;
   justify-content: center;
   border-bottom-color: rgba(0, 0, 0, 0.1);
-  border-bottom-width: 0.5px;
+  border-bottom-width: 1px;
 
 `;
 const UserContactBabel = styled.Text`
@@ -313,8 +243,8 @@ const UserActionView = styled.TouchableOpacity`
   height: 44px;
   width: 92%;
   justify-content: center;
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-  border-bottom-width: 0.5px;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+  border-bottom-width: 1px;
 `;
 const UserChatText = styled.Text`
   font-size: 15px;

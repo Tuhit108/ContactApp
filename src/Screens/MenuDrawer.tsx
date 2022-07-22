@@ -6,6 +6,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import {ICON} from "../assets/icons";
 import {IMAGE} from "../assets/imgs";
+import { memo } from "react";
 
 const collections = [
   {id: 1, name: 'All'},
@@ -190,4 +191,4 @@ const MenuDrawer: React.FC = () => {
 };
 
 
-export default MenuDrawer;
+export default memo(MenuDrawer);

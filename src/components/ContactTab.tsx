@@ -2,43 +2,25 @@ import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { KeyboardAvoidingView, Platform, TouchableOpacity, StyleSheet } from "react-native";
 import { AlphabetList } from "react-native-section-alphabet-list";
-
 import { ICON } from "../assets/icons";
 import { useAppSelector } from "../hooks";
 import { RootState } from "../store";
 import { IMAGE } from "../assets/imgs";
+import { memo } from "react";
+import { removeVietnamese } from "../themes/helper";
 
 
 // @ts-ignore
 const ContactTab: React.FC = ({ navigation }) => {
   const contactlists = useAppSelector((state: RootState) => state.contact.contactList);
-  React.useEffect(() => {
-    console.log(contactlists);
-
-  });
   const [text, onChangeText] = React.useState("");
-  const removeVietnamese = (str: string) => {
-    str = str.toLowerCase();
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d"); // Some system encode vietnamese combining accent as individual utf-8 characters
-    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng
-    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
-    return str;
-  };
-
-
   let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value + " " + contact.lastName) + (contact.value + " " + contact.lastName).toLowerCase()).includes(text.toLowerCase()));
   // @ts-ignore
   return (
     <WraperView
-      behavior={Platform.OS == "ios" ? "padding" : null}
+      behavior={Platform.OS == "ios" ? "padding" : "padding"}
     >
       <HeaderView>
         <TouchableOpacity
@@ -63,7 +45,6 @@ const ContactTab: React.FC = ({ navigation }) => {
           <SearchChildView>
             <SearchIconImage source={ICON.SearchIc} />
             <SearchTextInput
-
               onChangeText={onChangeText}
               value={text}
               placeholder="Tìm kiếm danh bạ"
@@ -72,28 +53,13 @@ const ContactTab: React.FC = ({ navigation }) => {
         </SearchView>
         <MainContentView>
           <TabListView>
-            <AlphabetList
-              style={{ width: "100%", flex: 1 }}
+            <AlphabetListContact
+
               // @ts-ignore
               data={contactresults}
-              indexLetterStyle={{
-                color: "#f2a54a",
-                fontSize: 14,
-                fontWeight: "400",
-                lineHeight: 22,
-                height: 25
-
-              }}
-
-              indexLetterContainerStyle={{
-                margin: 3
-
-              }}
-              indexContainerStyle={{
-                marginRight: 8
-
-
-              }}
+              indexLetterStyle={styles.indexLetterStyle}
+              indexLetterContainerStyle={styles.indexLetterContainerStyle}
+              indexContainerStyle={styles.indexContainerStyle}
               renderCustomItem={(item: any) => (
 
                 <ItemListView key={item.key} onPress={() => {
@@ -107,11 +73,12 @@ const ContactTab: React.FC = ({ navigation }) => {
                   </AvatarView>
                   <InfoView>
                     <NameText>{item.value + " " + item.lastName}</NameText>
-                    <PhoneText numberOfLines={1} >{item.phones.length > 0 ? item.phones.join(' ') : "Không có số điện thoại"}</PhoneText>
+                    <PhoneText
+                      numberOfLines={1}>{item.phones.length > 0 ? item.phones.join(" ") : "Không có số điện thoại"}</PhoneText>
                   </InfoView>
                 </ItemListView>
               )}
-              renderCustomSectionHeader={(section) => (
+              renderCustomSectionHeader={(section: any) => (
                 <TabListSectionView>
                   <TabListText>{section.title}</TabListText>
                 </TabListSectionView>
@@ -123,6 +90,21 @@ const ContactTab: React.FC = ({ navigation }) => {
     </WraperView>
   );
 };
+const styles = StyleSheet.create({
+  indexLetterStyle: {
+    color: "#f2a54a",
+    fontSize: 14,
+    fontWeight: "400",
+    lineHeight: 22,
+    height: 25
+  },
+  indexLetterContainerStyle: {
+    margin: 3
+  },
+  indexContainerStyle: {
+    marginRight: 8
+  }
+});
 const WraperView = styled(KeyboardAvoidingView)`
   flex: auto;
   background-color: white;
@@ -136,11 +118,10 @@ const HeaderView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   width: 100%;
   top: 0;
 
-
+  
 
 `;
 const MenuImage = styled.Image`
@@ -204,6 +185,10 @@ const TabListView = styled.View`
   flex: 10;
 
 `;
+const AlphabetListContact = styled(AlphabetList)`
+  flex: 1
+
+`;
 const TabListSectionView = styled.View`
   background-color: #F0F0F0;
 
@@ -245,8 +230,8 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvatarImage = styled.Image<{ avatar?: string }>`
-  height: ${props => (props.avatar ? 40 : 30)}px;
-  width: ${props => (props.avatar ? 40 : 30)}px;
+  height: ${(props:any) => (props.avatar ? 40 : 30)}px;
+  width: ${(props:any)=> (props.avatar ? 40 : 30)}px;
   border-radius: 50px;
 
 `;
@@ -261,7 +246,7 @@ const PhoneText = styled.Text`
   font-weight: 400;
   color: #828282;
   margin-top: 6px;
- 
+
 `;
 
-export default ContactTab;
+export default memo(ContactTab);

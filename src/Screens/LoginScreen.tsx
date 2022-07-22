@@ -3,6 +3,7 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { IMAGE } from "../assets/imgs";
 import { ICON } from "../assets/icons";
+import { memo } from "react";
 
 
 const Container = styled.View`
@@ -132,4 +133,4 @@ const LoginScreen: React.FC = ({ navigation }) => {
     </Container>
   );
 };
-export default LoginScreen;
+export default memo(LoginScreen);

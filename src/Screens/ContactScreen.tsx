@@ -7,14 +7,18 @@ import  { ICON } from "../assets/icons";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { memo } from "react";
 const Tab = createBottomTabNavigator();
-const Text = styled.Text`
-  
-`;
-const View = styled.View`
-  
-`;
 
+const TabBarView = styled.View<{focused : boolean}>`
+  align-items: center;
+  opacity: ${(props:any) => (props.focused ? 1 : 0.5)};
+`;
+const TabBarText = styled.Text`
+  font-size: 10px;
+  color: #FFFFFF;
+  margin-top: 8px
+`;
 const ContactImg = styled.Image`
 
 `;
@@ -24,14 +28,11 @@ const ContactScreen: React.FC = () => {
 
     <Tab.Navigator
         screenOptions={{
-
           headerShown: false,
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#F2A54A',
             height: 44+getStatusBarHeight(),
-
-
           },
         }}
         initialRouteName='Contact'>
@@ -41,15 +42,10 @@ const ContactScreen: React.FC = () => {
           component={ContactTab}
           options={{
             tabBarIcon: ({focused}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  opacity : focused ? 1 : 0.5
-
-                }}>
+              <TabBarView focused={focused}>
                     <ContactImg source={ICON.CONTACT_IC}></ContactImg>
-                <Text style={{fontSize: 10, color: '#FFFFFF',marginTop: 8}}> Danh bạ</Text>
-              </View>
+                <TabBarText > Danh bạ</TabBarText>
+              </TabBarView>
             ),
           }}
         />
@@ -58,15 +54,10 @@ const ContactScreen: React.FC = () => {
           component={HistoryTab}
           options={{
             tabBarIcon: ({focused}) => (
-              <View
-                style={{
-                  alignItems: 'center',
-                  opacity : focused ? 1 : 0.5
-
-                }}>
+              <TabBarView focused={focused}>
                     <ClockImg source={ICON.CLOCK_IC}></ClockImg>
-                <Text style={{fontSize: 10, color: '#FFFFFF'}}> Gần đây</Text>
-              </View>
+                <TabBarText > Gần đây</TabBarText>
+              </TabBarView>
             ),
           }}
         />
@@ -74,4 +65,4 @@ const ContactScreen: React.FC = () => {
 
   );
 };
-export default ContactScreen;
+export default memo(ContactScreen);

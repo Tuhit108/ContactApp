@@ -1,10 +1,11 @@
 import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import { View,TouchableOpacity,ScrollView} from 'react-native';
+import { View,TouchableOpacity,} from 'react-native';
 import {getStatusBarHeight} from "react-native-status-bar-height";
 import {ICON} from "../assets/icons";
-import {IMAGE} from "../assets/imgs";
+
+import { memo } from "react";
 
  export const contacts = [
     {id: 1, name: 'Nguyễn Tiến Nam', phone: '0327942405', time: 'Hôm nay'},
@@ -122,7 +123,7 @@ const HistoryTab: React.FC = ({navigation}) => {
                 >
                     Lịch Sử
                 </HeaderText>
-                <TouchableOpacity o>
+                <TouchableOpacity >
                     <CamImage source={ICON.CamIc}/>
                 </TouchableOpacity>
             </HeaderView>
@@ -159,4 +160,4 @@ const HistoryTab: React.FC = ({navigation}) => {
     );
 };
 
-export default HistoryTab;
+export default memo(HistoryTab);

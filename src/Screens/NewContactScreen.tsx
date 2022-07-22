@@ -10,6 +10,7 @@ import styled from 'styled-components/native';
 import ImagePicker from 'react-native-image-crop-picker';
 
 import {InputList} from "../components/InputList";
+import { memo, useCallback } from "react";
 
 
 // @ts-ignore
@@ -24,21 +25,36 @@ const UserScreen: React.FC = ({navigation, route}) => {
   const [addresses, setAddreses] = React.useState([]);
   const [birthday, setBirthdays] = React.useState([]);
 
-  const chooseImage = () => {
+  const chooseImage =useCallback( () => {
     ImagePicker.openPicker({
       width: 100,
       height: 100,
       cropping: true,
-    }).then(image => {
-      setAvatar(image.path);
+    }).then((image:any) => {
+      return setAvatar(image.path);
     });
-  };
+  },[avatarlink]);
   const maxId = route.params.list.reduce(
     (max: number, selectItem :any) =>
       selectItem.key > max ? selectItem.key : max,
     route.params.list[0].key,
   );
-  const handleAddContact = () => {
+  const item = {
+      key: maxId +1,
+      value: firstnametext,
+      lastName: nametext,
+      phones: phones,
+      position: '',
+      emails: emails,
+      // @ts-ignore
+      avatar: avatarlink,
+      addresses: addresses,
+      company: companytext,
+      birthday: birthday,
+
+  }
+
+  const handleAddContact = useCallback(  () => {
 
     dispatch(
       addNewContact({
@@ -53,31 +69,20 @@ const UserScreen: React.FC = ({navigation, route}) => {
         addresses: addresses,
         company: companytext,
         birthday: birthday,
+
       }),
     );
 
 
     navigation.navigate('UserScreen',{
-      item:
-        {
-          key: maxId +1,
-          value: firstnametext,
-          lastName: nametext,
-          phones: phones,
-          position: '',
-          emails: emails,
-          // @ts-ignore
-          avatar: avatarlink,
-          addresses: addresses,
-          company: companytext,
-          birthday: birthday,
-        }
+      item
     });
 
-  };
+  },[item]);
 
   return (
-    <ContainerView behavior={Platform.OS == 'ios' ? 'padding' : null}>
+    <ContainerView behavior={Platform.OS == 'ios' ? 'padding' : null}
+                   keyboardVerticalOffset={Platform.OS === 'ios' ? 50 :0}>
       <Section01View>
         <TouchableOpacity>
           <AvailableText
@@ -133,19 +138,19 @@ const UserScreen: React.FC = ({navigation, route}) => {
           <InputList
             title="email"
             list={emails}
-            keyboardType="numeric"
+            keyboardType="email-address"
             setList={setEmails}
           />
           <InputList
             title="address"
             list={addresses}
-            keyboardType="numeric"
+            keyboardType="default"
             setList={setAddreses}
           />
           <InputList
             title="birthday"
             list={birthday}
-            keyboardType="numeric"
+            keyboardType="default"
             setList={setBirthdays}
           />
 
@@ -203,13 +208,10 @@ const CamImage = styled.TouchableOpacity`
 const UserTextInput = styled.TextInput`
   height: 44px;
   width: 92%;
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-  border-bottom-width: 0.5px;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+  border-bottom-width: 1px;
 `;
-const UserTextInput02 = styled.TextInput`
-  height: 44px;
-  width: 100%;
-`;
+
 const AvatarBackground = styled.ImageBackground`
   width: 80px;
   height: 80px;
@@ -219,35 +221,6 @@ const AvatarBackground = styled.ImageBackground`
 const Section03View = styled.View`
   align-items: center;
 `;
-const Section03ScrollView = styled.ScrollView`
-  width: 100%;
-`;
-const AddInfoView = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  height: 44px;
-  width: 92%;
-  margin-bottom: 24px;
-  border-bottom-color: rgba(0, 0, 0, 0.1);
-  border-bottom-width: 0.5px;
-`;
-const PlusIconImage = styled.Image`
-  margin-right: 16px;
-  margin-right: 16px;
-`;
-const RemoveInfoView = styled(AddInfoView)`
-  margin-bottom: 0px;
-`;
-const RemoveIcon = styled.View`
-  width: 24px;
-  height: 24px;
-  border-radius: 50px;
-  background-color: red;
-  margin-right: 17px;
-`;
-const AddText = styled.Text`
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 22px;
-`;
-export default UserScreen;
+
+
+export default memo(UserScreen);
