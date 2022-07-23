@@ -11,6 +11,7 @@ import { IMAGE } from "../assets/imgs";
 import styled from "styled-components/native";
 import { ShowInfo } from "../components/ShowInfo";
 import { ActionItem } from "../components/ActionItem";
+import FastImage from "react-native-fast-image";
 
 
 // @ts-ignore
@@ -171,7 +172,7 @@ const AvatarBackground = styled.ImageBackground`
           align-items: center;
   `
 ;
-const AvatarImage = styled.Image`
+const AvatarImage = styled(FastImage)`
   width: 100px;
   height: 100px;
   border-radius: 50px;

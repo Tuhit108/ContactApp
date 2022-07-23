@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { KeyboardAvoidingView, Platform, TouchableOpacity, StyleSheet } from "react-native";
 import { AlphabetList } from "react-native-section-alphabet-list";
+import FastImage from "react-native-fast-image";
 import { ICON } from "../assets/icons";
 import { useAppSelector } from "../hooks";
 import { RootState } from "../store";
@@ -96,13 +97,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "400",
     lineHeight: 22,
-    height: 25
+    height: 25,
+
   },
   indexLetterContainerStyle: {
-    margin: 3
+    margin: 4,
+
+    width :16
+
   },
   indexContainerStyle: {
-    marginRight: 8
+    marginRight: 8,
+    width :16
   }
 });
 const WraperView = styled(KeyboardAvoidingView)`
@@ -229,7 +235,7 @@ const AvatarView = styled.View`
   background-color: #F2F2F2;
   border-radius: 50px;
 `;
-const AvatarImage = styled.Image<{ avatar?: string }>`
+const AvatarImage = styled(FastImage)<{ avatar?: string }>`
   height: ${(props:any) => (props.avatar ? 40 : 30)}px;
   width: ${(props:any)=> (props.avatar ? 40 : 30)}px;
   border-radius: 50px;
@@ -239,6 +245,8 @@ const NameText = styled.Text`
   font-size: 16px;
   font-weight: 500;
   color: #333333;
+  line-height: 16px;
+  letter-spacing: 0.12px;
 
 `;
 const PhoneText = styled.Text`
@@ -246,6 +254,8 @@ const PhoneText = styled.Text`
   font-weight: 400;
   color: #828282;
   margin-top: 6px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
 
 `;
 

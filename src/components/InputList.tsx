@@ -29,12 +29,12 @@ const [num,setNum]=useState(0)
     newList.splice(index, 1);
     setList(newList);
   },[list]);
-  const addInputOnpress = useCallback(() => {
+  const addInputOnpress = () => {
     setList((prev: any) => prev.concat([""]));
     setValue('')
     setFocus(true);
 
-  },[list]);
+  };
   const dateOnchange = (text:string  )=> {
 
     list.splice(num, 1, text);
