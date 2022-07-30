@@ -14,7 +14,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
  *
  * project.ext.react = [
  *   // the name of the generated asset file containing your JS bundle
- *   bundleAssetName: "index.android.bundle",
+ *   
  *
  *   // the entry file for bundle generation. If none specified and
  *   // "index.android.js" exists, it will be used. Otherwise "index.js" is
@@ -291,6 +291,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation project(':react-native-splash-screen')
 }
 
 if (isNewArchitectureEnabled()) {

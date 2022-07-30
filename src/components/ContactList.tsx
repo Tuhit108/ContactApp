@@ -1,7 +1,8 @@
 import * as React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
+
+import { statusBarHeight} from "../themes/styles";
 import { KeyboardAvoidingView, Platform, TouchableOpacity, StyleSheet } from "react-native";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import FastImage from "react-native-fast-image";
@@ -10,36 +11,57 @@ import { useAppSelector } from "../hooks";
 import { RootState } from "../store";
 import { IMAGE } from "../assets/imgs";
 import { memo } from "react";
-import { removeVietnamese } from "../themes/helper";
+import { removeVietnamese } from "../helper";
+import { TabHeader } from "./TabHeader";
 
 
 // @ts-ignore
-const ContactTab: React.FC = ({ navigation }) => {
+const ContactList: React.FC = ({ navigation }) => {
+  const customIndex = [
+    "a",
+    "ă",
+    "â",
+    "b",
+    "c",
+    "d",
+    "đ",
+    "e",
+    "ê",
+    "g",
+    "h",
+    "i",
+    "k",
+    "l",
+    "m",
+
+    "n",
+    "o",
+    "ô",
+    "ơ",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "ư",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z"
+
+  ];
   const contactlists = useAppSelector((state: RootState) => state.contact.contactList);
   const [text, onChangeText] = React.useState("");
   let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value + " " + contact.lastName) + (contact.value + " " + contact.lastName).toLowerCase()).includes(text.toLowerCase()));
-  // @ts-ignore
+
+
   return (
     <WraperView
       behavior={Platform.OS == "ios" ? "padding" : "padding"}
     >
-      <HeaderView>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.openDrawer();
-          }}>
-          <MenuImage source={ICON.MoreIc} />
-        </TouchableOpacity>
-        <HeaderText>Liên Hệ</HeaderText>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("NewContactScreen", {
-              list: contactlists
-            });
-          }}>
-          <CamImage source={ICON.CamIc} />
-        </TouchableOpacity>
-      </HeaderView>
+      <TabHeader title="Liên hệ"/>
 
       <ContentView>
         <SearchView>
@@ -61,11 +83,10 @@ const ContactTab: React.FC = ({ navigation }) => {
               indexLetterStyle={styles.indexLetterStyle}
               indexLetterContainerStyle={styles.indexLetterContainerStyle}
               indexContainerStyle={styles.indexContainerStyle}
+              index={customIndex}
               renderCustomItem={(item: any) => (
-
                 <ItemListView key={item.key} onPress={() => {
-
-                  navigation.navigate("UserScreen", { item });
+                  navigation.navigate("ContactDetailScreen", { item });
                 }}>
                   <AvatarView>
                     <AvatarImage source={item.avatar ? { uri: item.avatar } : IMAGE.EmptyAvatar}
@@ -75,7 +96,7 @@ const ContactTab: React.FC = ({ navigation }) => {
                   <InfoView>
                     <NameText>{item.value + " " + item.lastName}</NameText>
                     <PhoneText
-                      numberOfLines={1}>{item.phones.length > 0 ? item.phones.join(" ") : "Không có số điện thoại"}</PhoneText>
+                      numberOfLines={1}>{item.phones.length > 0 ? item.phones.join(", ") : "Không có số điện thoại"}</PhoneText>
                   </InfoView>
                 </ItemListView>
               )}
@@ -91,56 +112,33 @@ const ContactTab: React.FC = ({ navigation }) => {
     </WraperView>
   );
 };
+
 const styles = StyleSheet.create({
   indexLetterStyle: {
     color: "#f2a54a",
     fontSize: 14,
     fontWeight: "400",
     lineHeight: 22,
-    height: 25,
+    height: 25
 
   },
   indexLetterContainerStyle: {
     margin: 4,
 
-    width :16
+    width: 16
 
   },
   indexContainerStyle: {
     marginRight: 8,
-    width :16
+    width: 16
   }
 });
 const WraperView = styled(KeyboardAvoidingView)`
   flex: auto;
   background-color: white;
-  font-family: "Roboto";
 
-  padding-top: ${getStatusBarHeight()}px;
-`;
-const HeaderView = styled.View`
 
-  height: 60px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  top: 0;
-
-  
-
-`;
-const MenuImage = styled.Image`
-  margin-left: 10px;
-`;
-const CamImage = styled.Image`
-  margin-right: 10px;
-`;
-const HeaderText = styled.Text`
-  left: 0;
-  font-size: 24px;
-  font-weight: 500;
-  color: #333333;
+  padding-top: ${statusBarHeight}px;
 `;
 const ContentView = styled.View`
   flex: 10;
@@ -236,8 +234,8 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvatarImage = styled(FastImage)<{ avatar?: string }>`
-  height: ${(props:any) => (props.avatar ? 40 : 30)}px;
-  width: ${(props:any)=> (props.avatar ? 40 : 30)}px;
+  height: ${(props: any) => (props.avatar ? 40 : 30)}px;
+  width: ${(props: any) => (props.avatar ? 40 : 30)}px;
   border-radius: 50px;
 
 `;
@@ -245,7 +243,7 @@ const NameText = styled.Text`
   font-size: 16px;
   font-weight: 500;
   color: #333333;
-  line-height: 16px;
+  line-height: 18px;
   letter-spacing: 0.12px;
 
 `;
@@ -259,4 +257,4 @@ const PhoneText = styled.Text`
 
 `;
 
-export default memo(ContactTab);
+export default memo(ContactList);

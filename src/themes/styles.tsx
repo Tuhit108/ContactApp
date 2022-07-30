@@ -1,10 +1,7 @@
-import {
-  getBottomSpace,
-  getStatusBarHeight,
-  isIphoneX,
-} from 'react-native-iphone-x-helper';
-import { NativeModules, Platform, StatusBar } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { Platform } from "react-native";
 
-export const bottomSpaceHeight = Platform.OS === 'ios' ? getBottomSpace() : 16;
-
+export const statusBarHeight = Platform.OS == "ios"
+  ? getStatusBarHeight() - 10
+  : getStatusBarHeight();
 

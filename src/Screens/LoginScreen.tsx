@@ -4,8 +4,6 @@ import styled from "styled-components/native";
 import { IMAGE } from "../assets/imgs";
 import { ICON } from "../assets/icons";
 import { memo } from "react";
-
-
 const Container = styled.View`
   flex: 1;
 
@@ -45,16 +43,19 @@ const AppDes = styled.Text`
   letter-spacing: 0.12px;
 `;
 const LoadIcon = styled.Image`
-margin-bottom: 78px;
-  
+  margin-bottom: 78px;
+
 `;
 const Section3 = styled.View`
   flex: 2;
   align-items: center;
+
+  justify-content: flex-end;
+  margin-bottom: 40px;
 `;
+
 const LoginView = styled.View`
-  position: absolute;
-  bottom: 40px;
+ 
   width: 100%;
   align-items: center;
 `;
@@ -118,12 +119,12 @@ const LoginScreen: React.FC = ({ navigation }) => {
           <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
           <LoginText>Bạn chưa đăng nhập</LoginText>
           <LoginBtn01 onPress={() => {
-            navigation.navigate("BaseScreen");
+            navigation.navigate("MenuDrawerScreen");
           }}>
             <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUT</TextLogin01>
           </LoginBtn01>
           <LoginBtn02 onPress={() => {
-            navigation.navigate("BaseScreen");
+            navigation.navigate("MenuDrawerScreen");
           }}>
             <TextLogin02>ĐĂNG NHẬP THỦ CÔNG</TextLogin02>
           </LoginBtn02>

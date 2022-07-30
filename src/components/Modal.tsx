@@ -3,14 +3,12 @@ import * as React from "react";
 
 // @ts-ignore
 import styled from "styled-components/native";
-import { memo, useState } from "react";
+import { memo } from "react";
 import {
 
   Linking,
-
   Modal,
   TouchableWithoutFeedback,
-
   Dimensions
 } from "react-native";
 
@@ -21,28 +19,30 @@ interface ItemProps {
 
   itemIcon: any;
   list: string[];
-  link:string;
+  link: string;
   visible: boolean;
-  setModalVisible :(prev: any) => void;
+  setModalVisible: (prev: any) => void;
 
 }
 
 export const CutomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
-  const { list,itemIcon,link,visible,setModalVisible } = props;
+  const { list, itemIcon, link, visible, setModalVisible } = props;
   return (
     <>
       <Modal
-        animationType="slide"
+        animationType="none"
         transparent={true}
         visible={visible}
       >
-        <ModalView >
+        <ModalView>
           <ListModalView>
             <ListItemView>
               {list.map((item: any, index: number) => (
-                <TouchItem  key={index} onPress={()=>Linking.openURL(`${link}:${item}`)} >
+                <TouchItem
+                  key={index}
+                  onPress={() => Linking.openURL(`${link}:${item}`)}>
                   <ListItemIcon source={itemIcon} />
-                  <ListItem > {item} </ListItem>
+                  <ListItem> {item} </ListItem>
                 </TouchItem>
               ))}
             </ListItemView>
@@ -59,9 +59,9 @@ export const CutomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
 });
 
 const CloseModalView = styled.View`
-  height:${windowHeight}px;
-  width:${windowWidth}px;
-  position:absolute;
+  height: ${windowHeight}px;
+  width: ${windowWidth}px;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
@@ -71,8 +71,9 @@ const CloseModalView = styled.View`
 const ModalView = styled.View`
   justify-content: center;
   align-items: center;
+  background-color: #33333370;
 
-  height:${windowHeight}px;
+  height: ${windowHeight}px;
 `;
 const ListModalView = styled.View`
   position: relative;
@@ -84,28 +85,28 @@ const ListModalView = styled.View`
   border-color: #F2A54A;
   border-radius: 10px;
 `;
-const ListItemView=styled.ScrollView`
+const ListItemView = styled.ScrollView`
 
-`
-const TouchItem =styled.TouchableOpacity`
+`;
+const TouchItem = styled.TouchableOpacity`
   flex-direction: row;
   height: 44px;
   align-items: center;
-  
-  
+
+
 
 `;
 const ListItem = styled.Text`
   line-height: 20px;
   margin: 8px;
   font-size: 16px;
-  
+
 `;
 const ListItemIcon = styled.Image`
   width: 20px;
   height: 20px;
-  tint-color:#F2A54A;
- 
+  tint-color: #F2A54A;
+
   margin-top: 8px;
   margin-left: 10px;
   margin-bottom: 8px;

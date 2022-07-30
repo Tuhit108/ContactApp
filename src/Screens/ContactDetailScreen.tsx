@@ -1,9 +1,10 @@
 import * as React from "react";
-import { memo, useCallback } from "react";
-import { ScrollView, TouchableOpacity, Alert, Linking, Platform, KeyboardAvoidingView } from "react-native";
+import { memo, useCallback, useState } from "react";
+import { Alert, KeyboardAvoidingView, Linking, Platform, ScrollView, TouchableOpacity } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useAppDispatch } from "../hooks";
-import { deleteContact } from "../reducer/contact";
+import { deleteContact } from "../store/contact/contactSlice";
+import { statusBarHeight } from "../themes/styles";
 
 import { ICON } from "../assets/icons";
 import { IMAGE } from "../assets/imgs";
@@ -12,13 +13,14 @@ import styled from "styled-components/native";
 import { ShowInfo } from "../components/ShowInfo";
 import { ActionItem } from "../components/ActionItem";
 import FastImage from "react-native-fast-image";
+import { CutomModal } from "../components/Modal";
 
 
 // @ts-ignore
-const UserScreen: React.FC = ({ navigation, route }) => {
+const ContactDetailScreen: React.FC = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
-  const contactitem = route.params.item;
-  const DeleteOnpress =useCallback(  () => {
+  const contactItem = route.params.item;
+  const DeleteOnpress = useCallback(() => {
     Alert.alert(
       "Xoá Liên Hệ",
       "Xác Nhận Xoá",
@@ -30,61 +32,73 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         { text: "OK", onPress: () => handleDeleteContact() }
       ]
     );
-  },[]);
-  const handleDeleteContact =useCallback(  () => {
-    dispatch(deleteContact({ key: contactitem.key }));
-    navigation.navigate("BaseScreen");
-  },[]);
+  }, []);
+  const handleDeleteContact = useCallback(() => {
+    dispatch(deleteContact({ key: contactItem.key }));
+    navigation.navigate("MenuDrawerScreen");
+  }, []);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const ActionItemOnpress = useCallback(() => {
+    if (contactItem.phones.length > 1) {
+      setModalVisible(!modalVisible);
+    } else {
+      Linking.openURL(`sms:${contactItem.phones[0]}`);
+    }
+
+  }, []);
   //
   return (
     <ContainerView behavior={Platform.OS == "ios" ? "padding" : null}>
       <Section01View>
         <TouchableOpacity onPress={() => {
-          navigation.navigate("BaseScreen");
+          navigation.navigate("MenuDrawerScreen");
         }}>
           <BackIconImage source={ICON.BackIc} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          navigation.navigate("EditUser", {
-            item: contactitem
+          navigation.navigate("AddEditContactScreen", {
+            item: contactItem
           });
         }}>
-          <EditUserText>Sửa</EditUserText>
+          <EditContactText>Sửa</EditContactText>
         </TouchableOpacity>
       </Section01View>
       <ScrollView>
         <Section02View>
           <AvatarView>
-            <AvatarBackground source={IMAGE.EmptyAvatar} resizeMode="cover">
-              <AvatarImage source={{ uri: contactitem.avatar }} />
+            <AvatarBackground
+              source={IMAGE.EmptyAvatar}
+              resizeMode="cover"
+            >
+              <AvatarImage source={{ uri: contactItem.avatar }} />
             </AvatarBackground>
-            <CamImage source={ICON.CamAvatarIc} />
+
           </AvatarView>
-          <UsernameText>{contactitem.value + " " + contactitem.lastName}</UsernameText>
-          <UserPositionText>{contactitem.company}</UserPositionText>
+          <ContactnameText>{contactItem.value + " " + contactItem.lastName}</ContactnameText>
+          <ContactPositionText>{contactItem.company}</ContactPositionText>
           <ActionView>
             <ActionItem
               title="Nhấn gọi điện"
-              list={contactitem.phones}
+              list={contactItem.phones}
               itemIcon={ICON.CallIc}
               link="tel"
             />
             <ActionItem
               title="Nhắn tin"
-              list={contactitem.phones}
+              list={contactItem.phones}
               itemIcon={ICON.ChatIc}
               link="sms"
             />
             <ActionItem
               title="Facetime"
-              list={contactitem.phones}
+              list={contactItem.phones}
               itemIcon={ICON.FacetimeIc}
               link="tel"
             />
             <ActionItem
               title="Gửi mail"
-              list={contactitem.emails}
+              list={contactItem.emails}
               itemIcon={ICON.EmailIc}
               link="mailto"
             />
@@ -96,31 +110,37 @@ const UserScreen: React.FC = ({ navigation, route }) => {
         <Section03View>
           <ShowInfo
             title="Phones"
-            list={contactitem.phones}
+            list={contactItem.phones}
           />
           <ShowInfo
             title="Emails"
-            list={contactitem.emails}
+            list={contactItem.emails}
           />
           <ShowInfo
             title="Addresses"
-            list={contactitem.addresses}
+            list={contactItem.addresses}
           />
           <ShowInfo
             title="Birthday"
-            list={contactitem.birthday}
+            list={contactItem.birthday}
           />
-          <UserContactView>
-            <UserContactBabel> Ghi chú</UserContactBabel>
-            <UserContactText> </UserContactText>
-          </UserContactView>
-          <UserActionView>
-            <UserChatText> Gửi tin nhắn</UserChatText>
-          </UserActionView>
-          <UserActionView onPress={DeleteOnpress}>
+          <ContactContactView>
+            <ContactContactBabel> Ghi chú</ContactContactBabel>
+            <ContactContactText> </ContactContactText>
+          </ContactContactView>
+          <CutomModal
+            itemIcon={ICON.ChatIc}
+            list={contactItem.phones}
+            link="sms"
+            visible={modalVisible}
+            setModalVisible={setModalVisible} />
+          <ContactActionView onPress={ActionItemOnpress}>
+            <ContactChatText> Gửi tin nhắn</ContactChatText>
+          </ContactActionView>
+          <ContactActionView onPress={DeleteOnpress}>
 
-            <UserDeleteText> Xoá người gọi</UserDeleteText>
-          </UserActionView>
+            <ContactDeleteText> Xoá người gọi</ContactDeleteText>
+          </ContactActionView>
 
         </Section03View>
       </ScrollView>
@@ -131,20 +151,21 @@ const ContainerView = styled(KeyboardAvoidingView)`
   flex: 1;
   background-color: #ffffff;
 `;
+
 const Section01View = styled.View`
   flex-direction: row;
-  height: ${getStatusBarHeight() + 60}px;
+  height: ${statusBarHeight + 60}px;
   justify-content: space-between;
   align-items: center;
   background-color: #FEFBF6;
-  padding-top: ${getStatusBarHeight()}px;;
+  padding-top: ${statusBarHeight}px;
 `;
 
 
 const BackIconImage = styled.Image`
   margin-left: 16px;
 `;
-const EditUserText = styled.Text`
+const EditContactText = styled.Text`
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
@@ -159,7 +180,7 @@ const AvatarView = styled.View`
   justify-content: center;
   align-items: center;
   background-color: #F2F2F2;
-  margin-top: 10px;
+
   margin-bottom: 20px;
   width: 100px;
   height: 100px;
@@ -178,12 +199,8 @@ const AvatarImage = styled(FastImage)`
   border-radius: 50px;
 
 `;
-const CamImage = styled.Image`
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-`;
-const UsernameText = styled.Text`
+
+const ContactnameText = styled.Text`
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
@@ -198,24 +215,19 @@ const ActionView = styled.View`
   margin-right: 20px;
 `;
 
-const UserPositionText = styled.Text`
+const ContactPositionText = styled.Text`
   font-weight: 400;
   font-size: 13px;
   line-height: 22px;
-
-
   letter-spacing: -0.41px;
   color: #828282;
-
 `;
-
-
-
 const Section03View = styled.View`
   align-items: center;
+  padding-bottom: ${getStatusBarHeight()}px;
 
 `;
-const UserContactView = styled.View`
+const ContactContactView = styled.View`
 
   min-height: 64px;
   width: 92%;
@@ -224,7 +236,7 @@ const UserContactView = styled.View`
   border-bottom-width: 1px;
 
 `;
-const UserContactBabel = styled.Text`
+const ContactContactBabel = styled.Text`
   font-size: 13px;
   font-weight: 400;
   line-height: 22px;
@@ -232,7 +244,7 @@ const UserContactBabel = styled.Text`
   margin-top: 9px;
   margin-bottom: 3px;
 `;
-const UserContactText = styled.Text`
+const ContactContactText = styled.Text`
   flex-direction: row;
   font-size: 17px;
   font-weight: 400;
@@ -240,23 +252,23 @@ const UserContactText = styled.Text`
   margin-bottom: 6px;
   color: #2F80ED;
 `;
-const UserActionView = styled.TouchableOpacity`
+const ContactActionView = styled.TouchableOpacity`
   height: 44px;
   width: 92%;
   justify-content: center;
   border-bottom-color: rgba(0, 0, 0, 0.05);
   border-bottom-width: 1px;
 `;
-const UserChatText = styled.Text`
+const ContactChatText = styled.Text`
   font-size: 15px;
   font-weight: 400;
   line-height: 22px;
   color: #333333;
 `;
-const UserDeleteText = styled.Text`
+const ContactDeleteText = styled.Text`
   font-size: 15px;
   font-weight: 400;
   line-height: 22px;
   color: #FF4A4A;
 `;
-export default memo(UserScreen);
+export default memo(ContactDetailScreen);

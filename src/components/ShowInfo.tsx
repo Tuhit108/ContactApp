@@ -1,9 +1,8 @@
 import * as React from "react";
-
-
 // @ts-ignore
 import styled from "styled-components/native";
 import { memo } from "react";
+import { Linking, TouchableOpacity } from "react-native";
 
 interface Props {
   title: string;
@@ -13,12 +12,23 @@ interface Props {
 export const ShowInfo: React.FC<Props> = memo((props: Props) => {
   const { list, title } = props;
 
+
   return (
     <UserContactView>
       <UserContactBabel> {title}</UserContactBabel>{
       list.length > 0 ?
-        list.map((item: any, index: number) => (<UserContactText key={index}> {item}</UserContactText>))
-        : (<UserContactText> empty </UserContactText>)}
+        list.map((item: any, index: number) => (
+          <TouchableOpacity key={index} onPress={() => {
+            if (title === "Phones") {
+              Linking.openURL(`tel:${item}`);
+            }
+            if (title === "Emails") {
+              Linking.openURL(`mailto:${item}`);
+            }
+          }}>
+            <UserContactText> {item}</UserContactText>
+          </TouchableOpacity>))
+        : (<InfoEmptyText> Empty </InfoEmptyText>)}
     </UserContactView>
   );
 
@@ -48,5 +58,8 @@ const UserContactText = styled.Text`
   margin-bottom: 6px;
   color: #2F80ED;
 `;
+const InfoEmptyText = styled(UserContactText)`
+  color: #828282;
+`
 
 

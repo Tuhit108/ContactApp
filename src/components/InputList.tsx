@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Image, Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { memo, useCallback, useState } from "react";
+import { Image, TouchableOpacity } from "react-native";
 import { ICON } from "../assets/icons";
 // @ts-ignore
 import styled from "styled-components/native";
-import { memo, useCallback, useState } from "react";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -15,34 +15,34 @@ interface InputProps {
   setList: (prev: any) => void;
 }
 
-export const InputList: React.FC<InputProps> = (props: InputProps) => {
-const [num,setNum]=useState(0)
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState('');
+export const InputList: React.FC<InputProps> = memo((props: InputProps) => {
+
+  const [num, setNum] = useState(0);
+  const [open, setOpen] = useState(false);
   const [focus, setFocus] = useState(false);
   const { list, keyboardType, setList, title } = props;
 
 
-
-  const deleteInputOnpress =useCallback( (index: number) => {
+  const deleteInputOnpress = useCallback((index: number) => {
     const newList = [...list];
     newList.splice(index, 1);
     setList(newList);
-  },[list]);
+  }, [list]);
   const addInputOnpress = () => {
     setList((prev: any) => prev.concat([""]));
-    setValue('')
     setFocus(true);
-
   };
-  const dateOnchange = (text:string  )=> {
-
-    list.splice(num, 1, text);
+  const dateOnchange = (text: string) => {
+    const newList = [...list];
+    newList.splice(num, 1, text);
+    setList(newList);
+    setOpen(false);
   };
-  const inputOnChange = (index: number, text:string )=> {
-    setValue(text);
-      list.splice(index, 1, text);
-  };
+  const inputOnChange = useCallback((index: number, text: string) => {
+    const newList = [...list];
+    newList.splice(index, 1, text);
+    setList(newList);
+  }, [list]);
 
   return (
     <ContainerView>
@@ -54,21 +54,27 @@ const [num,setNum]=useState(0)
                 <Image source={ICON.RemoveIc} />
               </RemoveIcon>
             </TouchableOpacity>
-            {title=='birthday'?(<BirthdayView >
+            {title == "birthday" ? (<BirthdayView>
               <DateTimePickerModal
-
-              isVisible={open}
-              mode="date"
-              onConfirm={(date) => {dateOnchange( date.toDateString());setOpen(false)}}
-              onCancel={()=>setOpen(false)}
+                isVisible={open}
+                mode="date"
+                onConfirm={(date) => {
+                  dateOnchange(date.toDateString());
+                }}
+                onCancel={() => setOpen(false)}
               />
-              <BirthdayTouch onPress={()=>{setOpen(true);setNum(index)}}>
-               <BirthdayText hasday={list[index]}>{list[index].length>0?list[index]: 'add birthday'}</BirthdayText>
+              <BirthdayTouch onPress={() => {
+                setOpen(true);
+                setNum(index);
+              }}>
+                <BirthdayText
+                  hasday={list[index]}>{list[index].length > 0 ? list[index] : "add birthday"}</BirthdayText>
               </BirthdayTouch>
-            </BirthdayView>):(<UserTextInput02
+            </BirthdayView>) : (<ContactTextInput
               keyboardType={keyboardType}
               placeholder={`add ${title}`}
-              onChangeText={(text:string) => {inputOnChange(index, text);
+              onChangeText={(text: string) => {
+                inputOnChange(index, text);
               }}
               value={list[index]}
               autoFocus={focus}
@@ -85,13 +91,13 @@ const [num,setNum]=useState(0)
     </ContainerView>
   );
 
-};
+});
 const ContainerView = styled.View`
   width: 100%;
   align-items: center;
 `;
 
-const UserTextInput02 = styled.TextInput`
+const ContactTextInput = styled.TextInput`
   height: 44px;
   width: 100%;
 `;
@@ -107,10 +113,10 @@ const AddInfoView = styled.TouchableOpacity`
 `;
 const PlusIconImage = styled.Image`
   margin-right: 16px;
-  margin-right: 16px;
+
 `;
 const RemoveInfoView = styled(AddInfoView)`
-  margin-bottom: 0px;
+  margin-bottom: 0;
 `;
 const RemoveIcon = styled.View`
   width: 24px;
@@ -125,14 +131,14 @@ const AddText = styled.Text`
   line-height: 22px;
   color: #333333;
 `;
-const  BirthdayView=styled.View`
-width: 100%;
-height: 100%;
+const BirthdayView = styled.View`
+  width: 100%;
+  height: 100%;
 `;
-const  BirthdayText=styled.Text<{ hasday?:string }>`
-color : ${(props:any) => (props.hasday ? '#333333' : "#BDBDBD")}
+const BirthdayText = styled.Text<{ hasday?: string }>`
+  color: ${(props: any) => (props.hasday ? "#333333" : "#BDBDBD")}
 `;
-const  BirthdayTouch=styled.TouchableOpacity`
+const BirthdayTouch = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
   justify-content: center;
