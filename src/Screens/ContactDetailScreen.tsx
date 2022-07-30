@@ -14,12 +14,17 @@ import { ShowInfo } from "../components/ShowInfo";
 import { ActionItem } from "../components/ActionItem";
 import FastImage from "react-native-fast-image";
 import { CutomModal } from "../components/Modal";
+import { useSelectContacts } from "../store";
 
 
 // @ts-ignore
 const ContactDetailScreen: React.FC = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
-  const contactItem = route.params.item;
+  const contacts = useSelectContacts();
+ const contactKey = route.params.key;
+
+  // @ts-ignore
+  const contactItem = contacts.byKey[contactKey]
   const DeleteOnpress = useCallback(() => {
     Alert.alert(
       "Xoá Liên Hệ",
@@ -34,7 +39,7 @@ const ContactDetailScreen: React.FC = ({ navigation, route }) => {
     );
   }, []);
   const handleDeleteContact = useCallback(() => {
-    dispatch(deleteContact({ key: contactItem.key }));
+    dispatch(deleteContact({ key: contactItem.key.toString() }));
     navigation.navigate("MenuDrawerScreen");
   }, []);
 

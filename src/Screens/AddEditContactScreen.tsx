@@ -11,14 +11,16 @@ import { updateContact } from "../store/contact/contactSlice";
 import { InputList } from "../components/InputList";
 import { memo, useCallback } from "react";
 import FastImage from "react-native-fast-image";
-import { RootState } from "../store";
+import { RootState, useSelectContacts } from "../store";
 import { statusBarHeight } from "../themes/styles";
 
 
 // @ts-ignore
 const ContactDetailScreen: React.FC = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
-  const contactLists = useAppSelector((state: RootState) => state.contact.contactList);
+  const contacts = useSelectContacts()
+  // @ts-ignore
+  let contactLists =contacts.query['all'].map(key => contacts.byKey[key])
   const { value, lastName, phones, emails, avatar, birthday, addresses, company } = route.params.item;
   const [avatarLink, setAvatar] = React.useState(avatar);
   const [firstnameText, setFirstNameText] = React.useState(value);
@@ -52,7 +54,7 @@ const ContactDetailScreen: React.FC = ({ navigation, route }) => {
       submitItem));
       navigation.navigate("ContactDetailScreen",
       {
-        item:submitItem
+        key:submitItem.key
       });
 
   },[submitItem]);

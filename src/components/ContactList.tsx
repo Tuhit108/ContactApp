@@ -8,7 +8,7 @@ import { AlphabetList } from "react-native-section-alphabet-list";
 import FastImage from "react-native-fast-image";
 import { ICON } from "../assets/icons";
 import { useAppSelector } from "../hooks";
-import { RootState } from "../store";
+import { RootState, useSelectContacts } from "../store";
 import { IMAGE } from "../assets/imgs";
 import { memo } from "react";
 import { removeVietnamese } from "../helper";
@@ -52,7 +52,11 @@ const ContactList: React.FC = ({ navigation }) => {
     "z"
 
   ];
-  const contactlists = useAppSelector((state: RootState) => state.contact.contactList);
+  const contacts = useSelectContacts()
+  // @ts-ignore
+  let contactlists =contacts.query['all'].map(key => contacts.byKey[key])
+  console.log(contactlists)
+  console.log(contacts)
   const [text, onChangeText] = React.useState("");
   let contactresults = contactlists.filter(contact => (removeVietnamese(contact.value + " " + contact.lastName) + (contact.value + " " + contact.lastName).toLowerCase()).includes(text.toLowerCase()));
 
@@ -86,7 +90,7 @@ const ContactList: React.FC = ({ navigation }) => {
               index={customIndex}
               renderCustomItem={(item: any) => (
                 <ItemListView key={item.key} onPress={() => {
-                  navigation.navigate("ContactDetailScreen", { item });
+                  navigation.navigate("ContactDetailScreen", { key :item.key });
                 }}>
                   <AvatarView>
                     <AvatarImage source={item.avatar ? { uri: item.avatar } : IMAGE.EmptyAvatar}
