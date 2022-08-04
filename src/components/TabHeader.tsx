@@ -1,54 +1,35 @@
 import * as React from "react";
+import { memo, useCallback } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import { memo } from "react";
 import { TouchableOpacity } from "react-native";
 import { ICON } from "../assets/icons";
 import { useNavigation } from "@react-navigation/native";
 
-
 interface Props {
   title: string;
-
 }
 
-export const TabHeader: React.FC<Props> = memo((props: Props,) => {
-  const navigation = useNavigation()
-  const { title} = props;
-
-  const OnpressAddContact=()=> {
-    // @ts-ignore
-    navigation.navigate("AddEditContactScreen", {
-      item: {
-        key: "",
-        value: "",
-        lastName: "",
-        position: "",
-        company: "",
-        phones: [],
-        emails: [],
-        addresses: [],
-        birthday: [],
-        avatar: ""
-      }
-    })
-  };
+export const TabHeader = memo((props: Props) => {
+  const navigation = useNavigation<any>();
+  const { title } = props;
+  const onPressAddContact = useCallback(() => {
+    navigation.navigate("AddEditContactScreen", { id: "" });
+  }, []);
+  const onOpenDrawer = useCallback(() => {navigation.openDrawer()},[])
   return (
     <HeaderView>
       <TouchableOpacity
-        onPress={()=>{ // @ts-ignore
-          navigation.openDrawer()}
-        }>
+        onPress={onOpenDrawer}>
         <MenuImage source={ICON.MoreIc} />
       </TouchableOpacity>
       <HeaderText>{title}</HeaderText>
       <TouchableOpacity
-        onPress={OnpressAddContact}>
+        onPress={onPressAddContact}>
         <CamImage source={ICON.CamIc} />
       </TouchableOpacity>
     </HeaderView>
   );
-
 });
 const HeaderView = styled.View`
   height: 60px;
@@ -57,14 +38,15 @@ const HeaderView = styled.View`
   align-items: center;
   width: 100%;
   top: 0;
-  
-
 `;
 const MenuImage = styled.Image`
-  margin-left: 10px;
+  height: 24px;
+  width: 24px;
+  margin: 18px 18px 18px 10px;
 `;
 const CamImage = styled.Image`
-  margin-right: 10px;
+  
+  margin: 18px 10px 18px 18px;
 `;
 const HeaderText = styled.Text`
   left: 0;

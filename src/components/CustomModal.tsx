@@ -1,32 +1,26 @@
 import * as React from "react";
 
-
-// @ts-ignore
 import styled from "styled-components/native";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import {
-
   Linking,
   Modal,
   TouchableWithoutFeedback,
   Dimensions
 } from "react-native";
-
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-
 interface ItemProps {
-
   itemIcon: any;
   list: string[];
   link: string;
   visible: boolean;
   setModalVisible: (prev: any) => void;
-
 }
-
-export const CutomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
+export const CustomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
   const { list, itemIcon, link, visible, setModalVisible } = props;
+  const hideModal = useCallback(() => { setModalVisible(false)
+  },[setModalVisible]);
   return (
     <>
       <Modal
@@ -37,7 +31,7 @@ export const CutomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
         <ModalView>
           <ListModalView>
             <ListItemView>
-              {list.map((item: any, index: number) => (
+              {list?.map((item: any, index: number) => (
                 <TouchItem
                   key={index}
                   onPress={() => Linking.openURL(`${link}:${item}`)}>
@@ -47,12 +41,11 @@ export const CutomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
               ))}
             </ListItemView>
           </ListModalView>
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <TouchableWithoutFeedback onPress={hideModal}>
             <CloseModalView></CloseModalView>
           </TouchableWithoutFeedback>
         </ModalView>
       </Modal>
-
     </>
   );
 

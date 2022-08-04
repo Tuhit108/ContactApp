@@ -2,12 +2,8 @@ import * as React from "react";
 import { memo, useCallback, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { ICON } from "../assets/icons";
-// @ts-ignore
 import styled from "styled-components/native";
-
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-
 interface InputProps {
   title: string;
   list: string[];
@@ -15,7 +11,7 @@ interface InputProps {
   setList: (prev: any) => void;
 }
 
-export const InputList: React.FC<InputProps> = memo((props: InputProps) => {
+export const InputList = memo((props: InputProps) => {
 
   const [num, setNum] = useState(0);
   const [open, setOpen] = useState(false);
@@ -23,33 +19,39 @@ export const InputList: React.FC<InputProps> = memo((props: InputProps) => {
   const { list, keyboardType, setList, title } = props;
 
 
-  const deleteInputOnpress = useCallback((index: number) => {
+  const deleteInputOnPress = useCallback((index: number) => {
     const newList = [...list];
     newList.splice(index, 1);
     setList(newList);
   }, [list]);
-  const addInputOnpress = () => {
+  const addInputOnPress = useCallback(() => {
     setList((prev: any) => prev.concat([""]));
     setFocus(true);
-  };
-  const dateOnchange = (text: string) => {
+
+  }, []);
+  const dateOnchange = useCallback((text: string) => {
     const newList = [...list];
     newList.splice(num, 1, text);
     setList(newList);
     setOpen(false);
-  };
+    setFocus(false);
+  }, [list, num]);
   const inputOnChange = useCallback((index: number, text: string) => {
     const newList = [...list];
     newList.splice(index, 1, text);
     setList(newList);
   }, [list]);
+  const openDateModal = useCallback((index:number) => {
+    setOpen(true);
+    setNum(index);
+  },[open,num])
 
   return (
     <ContainerView>
-      {list.map((item, index) => {
+      {list?.map((item, index) => {
         return (
           <RemoveInfoView key={index}>
-            <TouchableOpacity onPress={() => deleteInputOnpress(index)}>
+            <TouchableOpacity onPress={() => deleteInputOnPress(index)}>
               <RemoveIcon>
                 <Image source={ICON.RemoveIc} />
               </RemoveIcon>
@@ -58,33 +60,25 @@ export const InputList: React.FC<InputProps> = memo((props: InputProps) => {
               <DateTimePickerModal
                 isVisible={open}
                 mode="date"
-                onConfirm={(date) => {
-                  dateOnchange(date.toDateString());
-                }}
+                onConfirm={(date) => {dateOnchange(date.toDateString())}}
                 onCancel={() => setOpen(false)}
               />
-              <BirthdayTouch onPress={() => {
-                setOpen(true);
-                setNum(index);
-              }}>
-                <BirthdayText
-                  hasday={list[index]}>{list[index].length > 0 ? list[index] : "add birthday"}</BirthdayText>
+              <BirthdayTouch onPress={() => openDateModal(index)}>
+                <BirthdayText hasDay={list[index]}>
+                  {list[index].length > 0 ? list[index] : "add birthday"}
+                </BirthdayText>
               </BirthdayTouch>
             </BirthdayView>) : (<ContactTextInput
               keyboardType={keyboardType}
               placeholder={`add ${title}`}
-              onChangeText={(text: string) => {
-                inputOnChange(index, text);
-              }}
+              onChangeText={(text: string) => {inputOnChange(index, text)}}
               value={list[index]}
               autoFocus={focus}
             />)}
-
           </RemoveInfoView>
         );
-      })
-      }
-      <AddInfoView onPress={addInputOnpress}>
+      })}
+      <AddInfoView onPress={addInputOnPress}>
         <PlusIconImage source={ICON.BluePlusIc} />
         <AddText>add {title}</AddText>
       </AddInfoView>
@@ -135,8 +129,8 @@ const BirthdayView = styled.View`
   width: 100%;
   height: 100%;
 `;
-const BirthdayText = styled.Text<{ hasday?: string }>`
-  color: ${(props: any) => (props.hasday ? "#333333" : "#BDBDBD")}
+const BirthdayText = styled.Text<{ hasDay?: string }>`
+  color: ${(props: any) => (props.hasDay ? "#333333" : "#BDBDBD")}
 `;
 const BirthdayTouch = styled.TouchableOpacity`
   width: 100%;

@@ -1,12 +1,10 @@
 import * as React from "react";
-// @ts-ignore
 import styled from "styled-components/native";
 import { IMAGE } from "../assets/imgs";
 import { ICON } from "../assets/icons";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 const Container = styled.View`
   flex: 1;
-
 `;
 const Section1 = styled.View`
   flex: 2;
@@ -14,7 +12,6 @@ const Section1 = styled.View`
   align-items: center;
 `;
 const GrImage = styled.Image`
-
 `;
 const GrBackGround = styled.Image`
   position: absolute;
@@ -44,18 +41,14 @@ const AppDes = styled.Text`
 `;
 const LoadIcon = styled.Image`
   margin-bottom: 78px;
-
 `;
 const Section3 = styled.View`
   flex: 2;
   align-items: center;
-
   justify-content: flex-end;
   margin-bottom: 40px;
 `;
-
 const LoginView = styled.View`
- 
   width: 100%;
   align-items: center;
 `;
@@ -79,7 +72,6 @@ const TextLogin01 = styled.Text`
   color: white;
   font-size: 15px;
   font-weight: 500;
-
 `;
 const LoginBtn02 = styled.TouchableOpacity`
   margin-top: 12px;
@@ -95,42 +87,33 @@ const TextLogin02 = styled.Text`
   color: #F2A54A;
   font-size: 15px;
   font-weight: 500;
-
 `;
-
-
-// @ts-ignore
-const LoginScreen: React.FC = ({ navigation }) => {
+const LoginScreen= ({ navigation }:any) => {
+  const onPressLogin = useCallback(() => {
+    navigation.navigate("MenuDrawerScreen");
+  },[navigation])
   return (
     <Container>
       <Section1>
-
         <GrBackGround source={IMAGE.GR_BACKGROUND}></GrBackGround>
         <GrImage source={IMAGE.GR_LOGO}></GrImage>
       </Section1>
       <Section2>
         <AppName>Base contacts</AppName>
         <AppDes>{"Giải pháp quản lý công việc\n & dự án toàn diện cho doanh nghiệp 4.0"}</AppDes>
-
       </Section2>
       <Section3>
-
         <LoginView>
           <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
           <LoginText>Bạn chưa đăng nhập</LoginText>
-          <LoginBtn01 onPress={() => {
-            navigation.navigate("MenuDrawerScreen");
-          }}>
-            <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUT</TextLogin01>
+          <LoginBtn01 onPress={onPressLogin}>
+            <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUNT</TextLogin01>
           </LoginBtn01>
-          <LoginBtn02 onPress={() => {
-            navigation.navigate("MenuDrawerScreen");
-          }}>
+          <LoginBtn02 onPress={onPressLogin}>
             <TextLogin02>ĐĂNG NHẬP THỦ CÔNG</TextLogin02>
           </LoginBtn02>
         </LoginView>
       </Section3>
-
     </Container>
   );
 };

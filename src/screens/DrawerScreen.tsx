@@ -1,6 +1,5 @@
 import * as React from "react";
-import { memo } from "react";
-// @ts-ignore
+import { memo, useCallback, useState } from "react";
 import styled from "styled-components/native";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { ICON } from "../assets/icons";
@@ -14,10 +13,10 @@ const collections = [
   { id: 4, name: "Lead" },
   { id: 5, name: "VIP" }
 ];
-const WraperView = styled.View`
+const WrapperView = styled.View`
   flex: 1;
 `;
-const DrawewHeaderView = styled.View`
+const DrawerHeaderView = styled.View`
   background-color: #F2A54A;
   height: ${statusBarHeight + 60}px;
 `;
@@ -49,15 +48,15 @@ const UserPhoneText = styled.Text`
   color: #FFFFFF;
   margin-top: 3px;
 `;
-const DrawewContentView = styled.View`
+const DrawerContentView = styled.View`
 
 `;
-const NewColectionView = styled.View`
+const NewCollectionView = styled.View`
   height: 60px;
   justify-content: center;
   background-color: #FFFFFF;
 `;
-const ChildColectionView = styled.View`
+const ChildCollectionView = styled.View`
   flex-direction: row;
   align-items: center;
   height: 44px;
@@ -75,7 +74,7 @@ const ItemNameText = styled.Text`
   line-height: 16px;
   letter-spacing: 0.12px;
 `;
-const ColectionView = styled.View`
+const CollectionView = styled.View`
   height: 44px;
   justify-content: center;
   background-color: rgba(242, 165, 74, 0.1);
@@ -86,7 +85,7 @@ const DownIconImage = styled.Image`
   margin-right: 16px;
 
 `;
-const ColectionText = styled.Text`
+const CollectionText = styled.Text`
   font-size: 13px;
   font-weight: 700;
   color: #333333;
@@ -94,7 +93,7 @@ const ColectionText = styled.Text`
   letter-spacing: 0.12px;
   text-transform: uppercase;
 `;
-const ColectionChildText = styled.Text`
+const CollectionChildText = styled.Text`
   position: absolute;
   font-style: normal;
   font-size: 13px;
@@ -103,17 +102,19 @@ const ColectionChildText = styled.Text`
   color: #F2A54A;
   right: 12px;
 `;
-const ColectionItemView = styled.View`
+const CollectionItemView = styled.View`
   height: 40px;
   justify-content: center;
 
 `;
-
-const DrawerScreen: React.FC = () => {
-  const [showColection, setShowColection] = React.useState(false);
+const DrawerScreen = () => {
+  const [showCollection, setShowCollection] = useState(false);
+  const onShowCollection = useCallback(() => {
+    setShowCollection(!showCollection);
+  }, [showCollection]);
   return (
-    <WraperView>
-      <DrawewHeaderView>
+    <WrapperView>
+      <DrawerHeaderView>
         <ChildView>
           <AvatarImage
             source={IMAGE.Avatar}
@@ -129,48 +130,46 @@ const DrawerScreen: React.FC = () => {
             </UserPhoneText>
           </UserView>
         </ChildView>
-      </DrawewHeaderView>
+      </DrawerHeaderView>
       <ScrollView>
-        <DrawewContentView>
-          <NewColectionView
-          >
-            <ChildColectionView>
+        <DrawerContentView>
+          <NewCollectionView>
+            <ChildCollectionView>
               <ItemIconImage source={ICON.NewIc} />
-              <ItemNameText> New collection</ItemNameText>
-            </ChildColectionView>
-          </NewColectionView>
-          <ColectionView
-          >
-            <TouchableOpacity onPress={() => setShowColection(!showColection)}>
-              <ChildColectionView>
+              <ItemNameText> New collection </ItemNameText>
+            </ChildCollectionView>
+          </NewCollectionView>
+          <CollectionView>
+            <TouchableOpacity onPress={onShowCollection}>
+              <ChildCollectionView>
                 <DownIconImage
-                  style={{ transform: [{ scaleY: showColection ? 1 : -1 }] }}
+                  style={{ transform: [{ rotate: showCollection ? "0deg" : "-90deg" }] }}
                   source={ICON.PlayIc}
                 />
-                <ColectionText>
+                <CollectionText>
                   COLLECTIONS
-                </ColectionText>
-              </ChildColectionView>
+                </CollectionText>
+              </ChildCollectionView>
             </TouchableOpacity>
-            <ColectionChildText>
+            <CollectionChildText>
               Edit
-            </ColectionChildText>
-          </ColectionView>
-          {showColection ? (
+            </CollectionChildText>
+          </CollectionView>
+          {showCollection ? (
             <View>
               {collections.map(({ id, name }) => (
-                <ColectionItemView key={id}>
-                  <ChildColectionView style={{ flexDirection: "row" }}>
+                <CollectionItemView key={id}>
+                  <ChildCollectionView>
                     <ItemIconImage source={ICON.ContactIc} />
                     <ItemNameText> {name} </ItemNameText>
-                  </ChildColectionView>
-                </ColectionItemView>
+                  </ChildCollectionView>
+                </CollectionItemView>
               ))}
             </View>
           ) : null}
-        </DrawewContentView>
+        </DrawerContentView>
       </ScrollView>
-    </WraperView>
+    </WrapperView>
   );
 };
 

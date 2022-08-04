@@ -1,12 +1,10 @@
 import * as React from "react";
-// @ts-ignore
 import styled from "styled-components/native";
-import { View, TouchableOpacity } from "react-native";
+import { View} from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { ICON } from "../assets/icons";
-
 import { memo } from "react";
-import { TabHeader } from "./TabHeader";
+import { TabHeader } from "../components/TabHeader";
 
 export const contacts = [
   { id: 1, name: "Nguyễn Tiến Nam", phone: "0327942405", time: "Hôm nay" },
@@ -22,14 +20,11 @@ export const contacts = [
   { id: 11, name: "Bùi Trọng Tùs", phone: "0327942405", time: "Hôm nay" },
   { id: 12, name: "Bùi Trọng T", phone: "0327942405", time: "Hôm nay" }
 ];
-const WraperView = styled.View`
+const WrapperView = styled.View`
   flex: auto;
   background-color: white;
-
   padding-top: ${getStatusBarHeight()}px;
-
 `;
-
 const ContentView = styled.View`
   flex: 10;
   width: 100%;
@@ -60,8 +55,7 @@ const RightItemView = styled.View`
 const IconPhoneImage = styled.Image`
   margin-left: 15px;
   margin-right: 15px;
-  top: 0px;
-
+  top: 0;
   margin-bottom: 24px;
 `;
 const IconDetailImage = styled.Image`
@@ -86,16 +80,15 @@ const TimeText = styled.Text`
   color: #828282;
 `;
 
-// @ts-ignore
-const HistoryList: React.FC = ({ navigation }) => {
+
+const HistoryScreen = () => {
   return (
-    <WraperView>
+    <WrapperView>
       <TabHeader title="Lịch Sử"/>
       <ContentView>
         <ContentScrollView>
-          {contacts.map(({ id, name, phone, time }) => (
-            <ListView key={id}
-            >
+          {contacts.map(({ id , name, phone, time }) => (
+            <ListView key={id}>
               <LeftItemView>
                 <IconPhoneImage source={ICON.PhoneIc} />
                 <View>
@@ -107,8 +100,7 @@ const HistoryList: React.FC = ({ navigation }) => {
                   </PhoneText>
                 </View>
               </LeftItemView>
-              <RightItemView
-              >
+              <RightItemView>
                 <TimeText>
                   {time}
                 </TimeText>
@@ -120,8 +112,8 @@ const HistoryList: React.FC = ({ navigation }) => {
           ))}
         </ContentScrollView>
       </ContentView>
-    </WraperView>
+    </WrapperView>
   );
 };
 
-export default memo(HistoryList);
+export default memo(HistoryScreen);

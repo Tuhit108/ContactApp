@@ -1,34 +1,34 @@
 import * as React from "react";
 import { memo, useCallback, useState } from "react";
-// @ts-ignore
 import styled from "styled-components/native";
 import { Linking } from "react-native";
-import { CutomModal } from "./Modal";
+import { CustomModal } from "./CustomModal";
+
 interface ItemProps {
   title: string;
   itemIcon: any;
   list: string[];
   link: string;
 }
-export const ActionItem: React.FC<ItemProps> = memo((props: ItemProps) => {
+
+export const ActionItem = memo((props: ItemProps) => {
   const { list, title, itemIcon, link } = props;
   const [modalVisible, setModalVisible] = useState(false);
-  const ActionItemOnpress = useCallback(() => {
-    if (list.length > 1) {
+  const actionItemOnPress = useCallback(() => {
+    if (list?.length > 1) {
       setModalVisible(!modalVisible);
     } else {
       Linking.openURL(`${link}:${list[0]}`);
     }
-
-  }, [list]);
+  }, [list,link,modalVisible]);
   return (
     <>
-      <CutomModal itemIcon={itemIcon} list={list} link={link} visible={modalVisible}
-                  setModalVisible={setModalVisible} />
-      {list.length > 0 ? (<ActionItemView>
-        <ItemViewAtive onPress={ActionItemOnpress}>
+      <CustomModal itemIcon={itemIcon} list={list} link={link} visible={modalVisible}
+                   setModalVisible={setModalVisible} />
+      {list?.length > 0 ? (<ActionItemView>
+        <ItemViewActive onPress={actionItemOnPress}>
           <ActionIc source={itemIcon} />
-        </ItemViewAtive>
+        </ItemViewActive>
         <ActionText>{title}</ActionText>
       </ActionItemView>) : (<ActionItemView>
         <ItemViewNone>
@@ -60,7 +60,7 @@ const ActionDisableText = styled.Text`
   line-height: 22px;
   margin-top: 4px;
 `;
-const ItemViewAtive = styled.TouchableOpacity`
+const ItemViewActive = styled.TouchableOpacity`
   width: 40px;
   height: 40px;
   background-color: #F2A54A;

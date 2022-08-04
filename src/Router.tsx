@@ -1,18 +1,17 @@
 import * as React from "react";
-import LoginScreen from "./Screens/LoginScreen";
-import ContactDetailScreen from "./Screens/ContactDetailScreen";
-import AddEditContactScreen from "./Screens/AddEditContactScreen";
+import LoginScreen from "./screens/LoginScreen";
+import ContactDetailScreen from "./screens/ContactDetailScreen";
+import AddEditContactScreen from "./screens/AddEditContactScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// @ts-ignore
 import styled from "styled-components/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Dimensions } from "react-native";
-import DrawerScreen from "./Screens/DrawerScreen";
+import DrawerScreen from "./screens/DrawerScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import ContactList from "./components/ContactList";
-import HistoryList from "./components/HistoryList";
+import ContactScreen from "./screens/ContactScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import { ICON } from "./assets/icons";
 
 const Stack = createNativeStackNavigator();
@@ -31,11 +30,9 @@ const TabBarText = styled.Text`
   color: #FFFFFF;
   margin-top: 8px
 `;
-const ContactImg = styled.Image`
-
-`;
+const ContactImg = styled.Image``;
 const ClockImg = styled.Image``;
-const HomeStack: React.FC = () => {
+const HomeStack = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -46,11 +43,10 @@ const HomeStack: React.FC = () => {
           height: 44 + getStatusBarHeight()
         }
       }}
-      initialRouteName="ContactList">
-
+      initialRouteName="ContactScreen">
       <Tab.Screen
-        name="ContactList"
-        component={ContactList}
+        name="ContactScreen"
+        component={ContactScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarView focused={focused}>
@@ -61,8 +57,8 @@ const HomeStack: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="HistoryList"
-        component={HistoryList}
+        name="HistoryScreen"
+        component={HistoryScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarView focused={focused}>
@@ -76,7 +72,7 @@ const HomeStack: React.FC = () => {
 
   );
 };
-const MenuDrawerStack: React.FC = () => {
+const MenuDrawerStack = () => {
 
   return (
     <ContainerView>
@@ -84,16 +80,17 @@ const MenuDrawerStack: React.FC = () => {
         initialRouteName="HomeScreen"
         screenOptions={{
           headerShown: false,
-          drawerType: "front"
+          drawerType: "front",
+          swipeEdgeWidth: 0
         }} useLegacyImplementation
         // @ts-ignore
         drawerContent={(props) => <DrawerScreen {...props} />}>
-        <Drawer.Screen name="HomeSceen" component={HomeStack} />
+        <Drawer.Screen name="HomeScreen" component={HomeStack} />
       </Drawer.Navigator>
     </ContainerView>
   );
 };
-const Router: React.FC = () => {
+const Router = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator

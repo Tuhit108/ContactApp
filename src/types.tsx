@@ -1,6 +1,6 @@
-export type ContactState = {
-  key: number;
-  value: string;
+export interface RawContact  {
+  id: string;
+  firstName: string;
   lastName: string;
   position:string;
   company: string;
@@ -9,4 +9,8 @@ export type ContactState = {
   addresses: string[];
   birthday: string[];
   avatar: string;
+}
+export interface RawRenderContact {
+  key : string;
+  value : string;
 }

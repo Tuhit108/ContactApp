@@ -1,63 +1,68 @@
-import * as React from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from "react-native";
-
 import { ICON } from "../assets/icons";
 import { IMAGE } from "../assets/imgs";
-// @ts-ignore
 import styled from "styled-components/native";
 import ImagePicker from "react-native-image-crop-picker";
-import { useAppDispatch, useAppSelector } from "../hooks";
 import { updateContact } from "../store/contact/contactSlice";
 import { InputList } from "../components/InputList";
-import { memo, useCallback } from "react";
 import FastImage from "react-native-fast-image";
-import { RootState, useSelectContacts } from "../store";
+import { useContact } from "../store";
 import { statusBarHeight } from "../themes/styles";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
-
-// @ts-ignore
-const ContactDetailScreen: React.FC = ({ navigation, route }) => {
-  const dispatch = useAppDispatch();
-  const contacts = useSelectContacts()
-  // @ts-ignore
-  let contactLists =contacts.query['all'].map(key => contacts.byKey[key])
-  const { value, lastName, phones, emails, avatar, birthday, addresses, company } = route.params.item;
-  const [avatarLink, setAvatar] = React.useState(avatar);
-  const [firstnameText, setFirstNameText] = React.useState(value);
-  const [nameText, setNameText] = React.useState(lastName);
-  const [companyText, setCompanyText] = React.useState(company);
-  const [listPhones, setPhones] = React.useState(phones);
-  const [listEmails, setEmails] = React.useState(emails);
-  const [listAddresses, setAddresses] = React.useState(addresses);
-  const [listBirthday, setBirthdays] = React.useState(birthday);
-
-
-  const maxId = contactLists.reduce(
-    (max: number, selectItem: any) =>
-      selectItem.key > max ? selectItem.key : max,
-    0
-  );
-  const submitItem={
-    key: route.params.item.key ? route.params.item.key : maxId + 1,
-    value: firstnameText,
-    lastName: nameText,
-    phones: listPhones.filter((listValue:string) => listValue !== ''),
+const ContactDetailScreen = ({ route }: any) => {
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch();
+  const contactId = route?.params?.id || "";
+  const contact = useContact(contactId);
+  const contactItem = contact || {
+    id: "",
+    firstName: "",
+    lastName: "",
     position: "",
-    emails: listEmails.filter((listValue:string) => listValue !== ''),
+    company: "",
+    phones: [],
+    emails: [],
+    addresses: [],
+    birthday: [],
+    avatar: ""
+  };
+
+  const { firstName, lastName, phones, emails, avatar, birthday, addresses, company } = contactItem;
+  const [avatarLink, setAvatar] = useState(avatar);
+  const [firstnameText, setFirstNameText] = useState(firstName);
+  const [nameText, setNameText] = useState(lastName);
+  const [companyText, setCompanyText] = useState(company);
+  const [listPhones, setPhones] = useState(phones);
+  const [listEmails, setEmails] = useState(emails);
+  const [listAddresses, setAddresses] = useState(addresses);
+  const [listBirthday, setBirthdays] = useState(birthday);
+
+  const submitItem = {
+    id: route?.params?.id ? route?.params?.id : moment().unix().toString(),
+    firstName: firstnameText,
+    lastName: nameText,
+    phones: listPhones.filter((listValue: string) => listValue !== ""),
+    position: "",
+    emails: listEmails.filter((listValue: string) => listValue !== ""),
     avatar: avatarLink,
     birthday: listBirthday,
-    addresses: listAddresses.filter((listValue:string) => listValue !== ''),
+    addresses: listAddresses.filter((listValue: string) => listValue !== ""),
     company: companyText
-  }
-  const handleEdit =useCallback (() => {
-    dispatch(updateContact(
-      submitItem));
-      navigation.navigate("ContactDetailScreen",
-      {
-        key:submitItem.key
-      });
+  };
 
-  },[submitItem]);
+  const handleEdit = useCallback(() => {
+    dispatch(updateContact(submitItem));
+    navigation.goBack();
+    navigation.navigate("ContactDetailScreen", { id: submitItem.id });
+  }, [submitItem]);
+
+  const onBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
 
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
@@ -67,25 +72,23 @@ const ContactDetailScreen: React.FC = ({ navigation, route }) => {
     }).then(image => {
       setAvatar(image.path);
     });
-  }, []);
+  }, [avatarLink]);
+
   return (
-    <ContainerView
-      behavior={Platform.OS == "ios" ? "padding" : null}>
+    <ContainerView behavior={Platform.OS == "ios" ? "padding" : undefined}>
       <Section01View>
-        <TouchableOpacity>
-          <AvailableText onPress={() => {
-            navigation.goBack();
-          }}>Hủy</AvailableText>
+        <TouchableOpacity onPress={onBack}>
+          <AvailableText>Hủy</AvailableText>
         </TouchableOpacity>
         {firstnameText.length > 0 || nameText.length > 0 ? (
-          <TouchableOpacity onPress={() => handleEdit()}>
+          <TouchableOpacity onPress={handleEdit}>
             <AvailableText>Xong</AvailableText>
           </TouchableOpacity>
         ) : (
           <DisableText>Xong</DisableText>
         )}
       </Section01View>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Section02View>
           <AvatarView>
             <AvatarBackground source={IMAGE.EmptyAvatar} resizeMode="cover">
@@ -111,7 +114,6 @@ const ContactDetailScreen: React.FC = ({ navigation, route }) => {
             placeholder="Công Ty"
           />
         </Section02View>
-
         <Section03View>
           <InputList
             title="phone"
@@ -146,18 +148,15 @@ const ContainerView = styled(KeyboardAvoidingView)`
   flex: 1;
   background-color: #ffffff;
   padding-top: ${statusBarHeight}px;
-
 `;
 const Section01View = styled.View`
   flex-direction: row;
   height: 60px;;
   justify-content: space-between;
   align-items: center;
-
 `;
 const AvailableText = styled.Text`
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 16px;
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
@@ -167,7 +166,6 @@ const DisableText = styled(AvailableText)`
   color: #828282;
 `;
 const Section02View = styled.View`
-
   align-items: center;
   margin-bottom: 24px;
 `;
@@ -185,7 +183,6 @@ const AvatarImage = styled(FastImage)`
   width: 100px;
   height: 100px;
   border-radius: 50px;
-
 `;
 const AvatarBackground = styled.ImageBackground`
           width: 80px;
@@ -204,19 +201,13 @@ const ContactTextInput = styled.TextInput`
   font-size: 15px;
   line-height: 22px;
   letter-spacing: -0.41px;
-
-
   color: #333333;
   height: 44px;
   width: 92%;
   border-bottom-color: rgba(0, 0, 0, 0.05);
   border-bottom-width: 1px;
 `;
-
 const Section03View = styled.View`
   align-items: center;
-
 `;
-
-
 export default memo(ContactDetailScreen);
