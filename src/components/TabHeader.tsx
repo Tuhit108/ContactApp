@@ -21,12 +21,12 @@ export const TabHeader = memo((props: Props) => {
     <HeaderView>
       <TouchableOpacity
         onPress={onOpenDrawer}>
-        <MenuImage source={ICON.MoreIc} />
+        <MenuImage source={ICON.MENU_IC} />
       </TouchableOpacity>
       <HeaderText>{title}</HeaderText>
       <TouchableOpacity
         onPress={onPressAddContact}>
-        <CamImage source={ICON.CamIc} />
+        <CameraImage source={ICON.CAMERA_ICON} />
       </TouchableOpacity>
     </HeaderView>
   );
@@ -44,8 +44,7 @@ const MenuImage = styled.Image`
   width: 24px;
   margin: 18px 18px 18px 10px;
 `;
-const CamImage = styled.Image`
-  
+const CameraImage = styled.Image`
   margin: 18px 10px 18px 18px;
 `;
 const HeaderText = styled.Text`

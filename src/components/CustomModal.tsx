@@ -21,6 +21,9 @@ export const CustomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
   const { list, itemIcon, link, visible, setModalVisible } = props;
   const hideModal = useCallback(() => { setModalVisible(false)
   },[setModalVisible]);
+
+  const onItemPress = (item :string) => Linking.openURL(`${link}:${item}`)
+
   return (
     <>
       <Modal
@@ -34,7 +37,7 @@ export const CustomModal: React.FC<ItemProps> = memo((props: ItemProps) => {
               {list?.map((item: any, index: number) => (
                 <TouchItem
                   key={index}
-                  onPress={() => Linking.openURL(`${link}:${item}`)}>
+                  onPress={onItemPress}>
                   <ListItemIcon source={itemIcon} />
                   <ListItem> {item} </ListItem>
                 </TouchItem>

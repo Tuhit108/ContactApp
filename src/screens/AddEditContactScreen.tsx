@@ -41,24 +41,24 @@ const ContactDetailScreen = ({ route }: any) => {
   const [listAddresses, setAddresses] = useState(addresses);
   const [listBirthday, setBirthdays] = useState(birthday);
 
-  const submitItem = {
-    id: route?.params?.id ? route?.params?.id : moment().unix().toString(),
-    firstName: firstnameText,
-    lastName: nameText,
-    phones: listPhones.filter((listValue: string) => listValue !== ""),
-    position: "",
-    emails: listEmails.filter((listValue: string) => listValue !== ""),
-    avatar: avatarLink,
-    birthday: listBirthday,
-    addresses: listAddresses.filter((listValue: string) => listValue !== ""),
-    company: companyText
-  };
-
   const handleEdit = useCallback(() => {
+    const submitItem = {
+      id: route?.params?.id ? route?.params?.id : moment().unix().toString(),
+      firstName: firstnameText,
+      lastName: nameText,
+      phones: listPhones.filter((listValue: string) => listValue !== ""),
+      position: "",
+      emails: listEmails.filter((listValue: string) => listValue !== ""),
+      avatar: avatarLink,
+      birthday: listBirthday.filter((listValue: string) => listValue !== ""),
+      addresses: listAddresses.filter((listValue: string) => listValue !== ""),
+      company: companyText
+    };
+
     dispatch(updateContact(submitItem));
     navigation.goBack();
     navigation.navigate("ContactDetailScreen", { id: submitItem.id });
-  }, [submitItem]);
+  }, [route, firstnameText, nameText, listPhones, listEmails, avatarLink, listBirthday, listAddresses, companyText]);
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -80,7 +80,7 @@ const ContactDetailScreen = ({ route }: any) => {
         <TouchableOpacity onPress={onBack}>
           <AvailableText>Hủy</AvailableText>
         </TouchableOpacity>
-        {firstnameText.length > 0 || nameText.length > 0 ? (
+        {firstnameText?.length > 0 || nameText?.length > 0 ? (
           <TouchableOpacity onPress={handleEdit}>
             <AvailableText>Xong</AvailableText>
           </TouchableOpacity>
@@ -91,11 +91,11 @@ const ContactDetailScreen = ({ route }: any) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <Section02View>
           <AvatarView>
-            <AvatarBackground source={IMAGE.EmptyAvatar} resizeMode="cover">
+            <AvatarBackground source={IMAGE.EmptyAvatar_IMG} resizeMode="cover">
               <AvatarImage source={{ uri: avatarLink }} />
             </AvatarBackground>
             <CamImage onPress={chooseImage}>
-              <Image source={ICON.CamAvatarIc} />
+              <Image source={ICON.ADD_AVATAR_IC} />
             </CamImage>
           </AvatarView>
           <ContactTextInput
@@ -185,11 +185,10 @@ const AvatarImage = styled(FastImage)`
   border-radius: 50px;
 `;
 const AvatarBackground = styled.ImageBackground`
-          width: 80px;
-          height: 80px;
-          justify-content: center;
-          align-items: center;
-  `
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center`
 ;
 const CamImage = styled.TouchableOpacity`
   position: absolute;

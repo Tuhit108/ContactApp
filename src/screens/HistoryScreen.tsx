@@ -90,7 +90,7 @@ const HistoryScreen = () => {
           {contacts.map(({ id , name, phone, time }) => (
             <ListView key={id}>
               <LeftItemView>
-                <IconPhoneImage source={ICON.PhoneIc} />
+                <IconPhoneImage source={ICON.PHONE_IC} />
                 <View>
                   <NameText>
                     {name}
@@ -105,7 +105,7 @@ const HistoryScreen = () => {
                   {time}
                 </TimeText>
                 <IconDetailImage
-                  source={ICON.DetailIc}
+                  source={ICON.DETAIL_IC}
                 />
               </RightItemView>
             </ListView>

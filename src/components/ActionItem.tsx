@@ -23,19 +23,24 @@ export const ActionItem = memo((props: ItemProps) => {
   }, [list,link,modalVisible]);
   return (
     <>
-      <CustomModal itemIcon={itemIcon} list={list} link={link} visible={modalVisible}
-                   setModalVisible={setModalVisible} />
-      {list?.length > 0 ? (<ActionItemView>
-        <ItemViewActive onPress={actionItemOnPress}>
-          <ActionIc source={itemIcon} />
-        </ItemViewActive>
-        <ActionText>{title}</ActionText>
-      </ActionItemView>) : (<ActionItemView>
-        <ItemViewNone>
-          <DisableIc source={itemIcon} />
-        </ItemViewNone>
-        <ActionDisableText>{title}</ActionDisableText>
-      </ActionItemView>)
+      <CustomModal
+        itemIcon={itemIcon}
+        list={list} link={link}
+        visible={modalVisible}
+        setModalVisible={setModalVisible} />
+      {list?.length > 0
+        ? (<ActionItemView>
+          <ItemViewActive onPress={actionItemOnPress}>
+            <ActionIc source={itemIcon} />
+          </ItemViewActive>
+          <ActionText>{title}</ActionText>
+        </ActionItemView>)
+        : (<ActionItemView>
+          <ItemViewNone>
+            <DisableIc source={itemIcon} />
+          </ItemViewNone>
+          <ActionDisableText>{title}</ActionDisableText>
+        </ActionItemView>)
       }
     </>
   );
@@ -79,6 +84,8 @@ const ItemViewNone = styled.TouchableOpacity`
 `;
 
 const ActionIc = styled.Image`
+  width: 24px;
+  height: 24px;
   tint-color: #FFFFFF
 `;
 const DisableIc = styled.Image`

@@ -26,6 +26,8 @@ const ChildView = styled.View`
   bottom: 0;
 `;
 const AvatarImage = styled.Image`
+  width: 40px;
+  height: 40px;
   margin-left: 20px;
   margin-right: 12px;
   margin-bottom: 12px;
@@ -64,7 +66,9 @@ const ChildCollectionView = styled.View`
 const ItemIconImage = styled.Image`
   margin-left: 20px;
   margin-right: 20px;
-
+  width: 16px;
+  height: 16px;
+  tint-color : #F2A54A
 `;
 const ItemNameText = styled.Text`
   font-size: 15px;
@@ -117,15 +121,13 @@ const DrawerScreen = () => {
       <DrawerHeaderView>
         <ChildView>
           <AvatarImage
-            source={IMAGE.Avatar}
+            source={IMAGE.UserAvatar_IMG}
           />
           <UserView>
             <UserNameText>
-
               Nguyễn Tiến Nam
             </UserNameText>
             <UserPhoneText>
-
               Admin
             </UserPhoneText>
           </UserView>
@@ -135,7 +137,7 @@ const DrawerScreen = () => {
         <DrawerContentView>
           <NewCollectionView>
             <ChildCollectionView>
-              <ItemIconImage source={ICON.NewIc} />
+              <ItemIconImage source={ICON.NEW_COLLECTION_IC} />
               <ItemNameText> New collection </ItemNameText>
             </ChildCollectionView>
           </NewCollectionView>
@@ -144,7 +146,7 @@ const DrawerScreen = () => {
               <ChildCollectionView>
                 <DownIconImage
                   style={{ transform: [{ rotate: showCollection ? "0deg" : "-90deg" }] }}
-                  source={ICON.PlayIc}
+                  source={ICON.DROPDOWN_IC}
                 />
                 <CollectionText>
                   COLLECTIONS
@@ -160,7 +162,7 @@ const DrawerScreen = () => {
               {collections.map(({ id, name }) => (
                 <CollectionItemView key={id}>
                   <ChildCollectionView>
-                    <ItemIconImage source={ICON.ContactIc} />
+                    <ItemIconImage source={ICON.CONTACT_IC} />
                     <ItemNameText> {name} </ItemNameText>
                   </ChildCollectionView>
                 </CollectionItemView>

@@ -30,7 +30,9 @@ const TabBarText = styled.Text`
   color: #FFFFFF;
   margin-top: 8px
 `;
-const ContactImg = styled.Image``;
+const ContactImg = styled.Image`
+
+`;
 const ClockImg = styled.Image``;
 const HomeStack = () => {
   return (

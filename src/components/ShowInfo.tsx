@@ -23,7 +23,7 @@ export const ShowInfo= memo((props: Props) => {
   return (
     <UserContactView>
       <UserContactBabel> {title}</UserContactBabel>{
-      list.length > 0 ?
+      list?.length > 0 ?
         list?.map((item: any, index: number) => (
           <TouchableOpacity key={index} onPress = {onPressItem}>
             <UserContactText> {item}</UserContactText>

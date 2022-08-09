@@ -4,6 +4,7 @@ import { Image, TouchableOpacity } from "react-native";
 import { ICON } from "../assets/icons";
 import styled from "styled-components/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 interface InputProps {
   title: string;
   list: string[];
@@ -28,14 +29,14 @@ export const InputList = memo((props: InputProps) => {
     setList((prev: any) => prev.concat([""]));
     setFocus(true);
 
-  }, []);
+  }, [list,focus]);
   const dateOnchange = useCallback((text: string) => {
     const newList = [...list];
     newList.splice(num, 1, text);
     setList(newList);
     setOpen(false);
     setFocus(false);
-  }, [list, num]);
+  }, [list, num,open,focus]);
   const inputOnChange = useCallback((index: number, text: string) => {
     const newList = [...list];
     newList.splice(index, 1, text);
@@ -44,7 +45,7 @@ export const InputList = memo((props: InputProps) => {
   const openDateModal = useCallback((index:number) => {
     setOpen(true);
     setNum(index);
-  },[open,num])
+  },[open,num]);
 
   return (
     <ContainerView>
@@ -52,26 +53,30 @@ export const InputList = memo((props: InputProps) => {
         return (
           <RemoveInfoView key={index}>
             <TouchableOpacity onPress={() => deleteInputOnPress(index)}>
-              <RemoveIcon>
-                <Image source={ICON.RemoveIc} />
-              </RemoveIcon>
+              <REMOVE_ICon>
+                <Image source={ICON.REMOVE_IC} />
+              </REMOVE_ICon>
             </TouchableOpacity>
             {title == "birthday" ? (<BirthdayView>
               <DateTimePickerModal
                 isVisible={open}
                 mode="date"
-                onConfirm={(date) => {dateOnchange(date.toDateString())}}
+                onConfirm={(date) => {
+                  dateOnchange(date.toLocaleDateString());
+                }}
                 onCancel={() => setOpen(false)}
               />
               <BirthdayTouch onPress={() => openDateModal(index)}>
                 <BirthdayText hasDay={list[index]}>
-                  {list[index].length > 0 ? list[index] : "add birthday"}
+                  {list[index]?.length > 0 ? list[index] : "add birthday"}
                 </BirthdayText>
               </BirthdayTouch>
             </BirthdayView>) : (<ContactTextInput
               keyboardType={keyboardType}
               placeholder={`add ${title}`}
-              onChangeText={(text: string) => {inputOnChange(index, text)}}
+              onChangeText={(text: string) => {
+                inputOnChange(index, text);
+              }}
               value={list[index]}
               autoFocus={focus}
             />)}
@@ -79,7 +84,7 @@ export const InputList = memo((props: InputProps) => {
         );
       })}
       <AddInfoView onPress={addInputOnPress}>
-        <PlusIconImage source={ICON.BluePlusIc} />
+        <PlusIconImage source={ICON.PLUS_IC} />
         <AddText>add {title}</AddText>
       </AddInfoView>
     </ContainerView>
@@ -112,7 +117,7 @@ const PlusIconImage = styled.Image`
 const RemoveInfoView = styled(AddInfoView)`
   margin-bottom: 0;
 `;
-const RemoveIcon = styled.View`
+const REMOVE_ICon = styled.View`
   width: 24px;
   height: 24px;
   border-radius: 50px;

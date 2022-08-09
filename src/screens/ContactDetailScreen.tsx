@@ -20,7 +20,14 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
   const contactId = useMemo(() => {
     return route?.params?.id || '';
   }, [route]);
+
   const contact = useContact(contactId);
+
+  const handleDeleteContact = useCallback(() => {
+    navigation.navigate("MenuDrawerScreen");
+    dispatch(deleteContact({ id: contactId }));
+  }, [contactId]);
+
   const onDeleteOnPress = useCallback(() => {
     Alert.alert(
       "Xoá Liên Hệ",
@@ -33,18 +40,15 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
         { text: "OK", onPress: () => handleDeleteContact() }
       ]
     );
-  }, []);
+  }, [handleDeleteContact]);
 
-  const handleDeleteContact = useCallback(() => {
-    navigation.navigate("MenuDrawerScreen");
-    dispatch(deleteContact({ id: contact.id }));
-  }, [contact]);
+
 
   const ActionItemOnPress = useCallback(() => {
-    if (contact.phones.length > 1) {
+    if (contact?.phones.length > 1) {
       setModalVisible(!modalVisible);
-    } else if (contact.phones.length == 1) {
-      Linking.openURL(`sms:${contact.phones[0]}`);
+    } else if (contact?.phones.length == 1) {
+      Linking.openURL(`sms:${contact?.phones[0]}`);
     }
   }, [contact, modalVisible]);
 
@@ -53,15 +57,17 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
       id: contactId
     });
   }, [contactId]);
+
   const onBack = useCallback(() => {
     navigation.navigate("MenuDrawerScreen");
-  },[navigation])
+  },[])
+
   return (
     <ContainerView behavior={Platform.OS == "ios" ? "padding" : undefined}>
-      <UnderView />
+      <UnderView/>
       <Section01View>
         <TouchableOpacity onPress={onBack}>
-          <BackIconImage source={ICON.BackIc} />
+          <BACK_IConImage source={ICON.BACK_IC} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onEditContact}>
           <EditContactText>Sửa</EditContactText>
@@ -71,37 +77,37 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
         <Section02View>
           <AvatarView>
             <AvatarBackground
-              source={IMAGE.EmptyAvatar}
+              source={IMAGE.EmptyAvatar_IMG}
               resizeMode="cover"
             >
               <AvatarImage source={{ uri: contact.avatar }} />
             </AvatarBackground>
           </AvatarView>
-          <ContactnameText>{contact.firstName + " " + contact.lastName}</ContactnameText>
+          <ContactNameText>{contact.firstName + " " + contact.lastName}</ContactNameText>
           <ContactPositionText>{contact.company}</ContactPositionText>
           <ActionView>
             <ActionItem
               title="Nhấn gọi điện"
               list={contact.phones}
-              itemIcon={ICON.CallIc}
+              itemIcon={ICON.CALL_IC}
               link="tel"
             />
             <ActionItem
               title="Nhắn tin"
               list={contact.phones}
-              itemIcon={ICON.ChatIc}
+              itemIcon={ICON.MASSAGE_IC}
               link="sms"
             />
             <ActionItem
               title="Facetime"
               list={contact.phones}
-              itemIcon={ICON.FacetimeIc}
+              itemIcon={ICON.FACETIME_IC}
               link="tel"
             />
             <ActionItem
               title="Gửi mail"
               list={contact.emails}
-              itemIcon={ICON.EmailIc}
+              itemIcon={ICON.EMAIL_IC}
               link="mailto"
             />
           </ActionView>
@@ -128,7 +134,7 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
             <ContactContactText> </ContactContactText>
           </ContactContactView>
           <CustomModal
-            itemIcon={ICON.ChatIc}
+            itemIcon={ICON.MASSAGE_IC}
             list={contact.phones}
             link="sms"
             visible={modalVisible}
@@ -156,7 +162,7 @@ const Section01View = styled.View`
   background-color: #FEFBF6;
   padding-top: ${statusBarHeight}px;
 `;
-const BackIconImage = styled.Image`
+const BACK_IConImage = styled.Image`
   margin: 16px;
 `;
 const EditContactText = styled.Text`
@@ -188,17 +194,17 @@ const AvatarView = styled.View`
   border-radius: 50px;
 `;
 const AvatarBackground = styled.ImageBackground`
-          width: 80px;
-          height: 80px;
-          justify-content: center;
-          align-items: center;
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
   `;
 const AvatarImage = styled(FastImage)`
   width: 100px;
   height: 100px;
   border-radius: 50px;
 `;
-const ContactnameText = styled.Text`
+const ContactNameText = styled.Text`
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;

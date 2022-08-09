@@ -10,13 +10,12 @@ import { useContacts } from "../store";
 import { IMAGE } from "../assets/imgs";
 import { removeVietnamese } from "../helper";
 import { TabHeader } from "../components/TabHeader";
-import { NavigationContainer } from "@react-navigation/native";
 
 const customIndex = [
   "a", "ă", "â", "b", "c", "d", "đ", "e", "ê", "g", "h", "i", "k", "l", "m", "n", "o", "ô", "ơ", "p", "q", "r", "s", "t", "u", "ư", "v", "w", "x", "y", "z"
 ];
 
-const ContactScreen = ( {navigation}:any ) => {
+const ContactScreen = ({ navigation }: any) => {
   const [searchText, onChangeSearchText] = useState("");
   const contacts = useContacts();
   const contactRenderLists = useMemo(() => {
@@ -29,11 +28,14 @@ const ContactScreen = ( {navigation}:any ) => {
     });
   }, [contacts]);
 
-  let contactResults = contactRenderLists.filter(contact => (removeVietnamese(contact.firstName + " " + contact.lastName) + (contact.firstName + " " + contact.lastName).toLowerCase()).includes(searchText.toLowerCase()));
+  let contactResults = useMemo(() => {
+    return contactRenderLists.filter(contact => (removeVietnamese(contact.firstName + " " + contact.lastName) + (contact.firstName + " " + contact.lastName).toLowerCase()).includes(searchText.toLowerCase()))
+  }, [searchText,contactRenderLists]);
 
   const onPressContact = useCallback((id: string) => {
     navigation.navigate("ContactDetailScreen", { id: id });
   }, []);
+
 
   const _render = useCallback((item: any) => {
     return <ItemListView onPress={() => onPressContact(item.id)}>
@@ -51,6 +53,7 @@ const ContactScreen = ( {navigation}:any ) => {
       </InfoView>
     </ItemListView>;
   }, []);
+
   return (
     <WrapperView
       behavior={Platform.OS == "ios" ? "padding" : "padding"}
@@ -59,7 +62,7 @@ const ContactScreen = ( {navigation}:any ) => {
       <ContentView>
         <SearchView>
           <SearchChildView>
-            <SearchIconImage source={ICON.SearchIc} />
+            <SEARCH_IConImage source={ICON.SEARCH_IC} />
             <SearchTextInput
               onChangeText={onChangeSearchText}
               value={searchText}
@@ -129,7 +132,7 @@ const SearchChildView = styled.View`
   flex-direction: row;
   border-radius: 6px;
 `;
-const SearchIconImage = styled.Image`
+const SEARCH_IConImage = styled.Image`
   width: 14px;
   height: 14px;
   margin-left: 10px;
