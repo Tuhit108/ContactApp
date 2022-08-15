@@ -1,5 +1,4 @@
 import * as React from "react";
-// @ts-ignore
 import styled from "styled-components/native";
 import { memo, useCallback } from "react";
 import { Linking, TouchableOpacity } from "react-native";

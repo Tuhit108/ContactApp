@@ -2,10 +2,73 @@ import * as React from "react";
 import { memo, useCallback, useState } from "react";
 import styled from "styled-components/native";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import { ICON } from "../assets/icons";
-import { IMAGE } from "../assets/imgs";
-import { statusBarHeight } from "../themes/styles";
+import { statusBarHeight } from "@/themes/styles";
+import { IC_CONTACT, IC_DROPDOWN, IC_NEW_COLLECTION, IMG_USER_AVATAR } from "@/assets";
 
+
+const DrawerScreen = () => {
+  const [showCollection, setShowCollection] = useState(false);
+  const onShowCollection = useCallback(() => {
+    setShowCollection(!showCollection);
+  }, [showCollection]);
+  return (
+    <WrapperView>
+      <DrawerHeaderView>
+        <ChildView>
+          <AvatarImage
+            source={IMG_USER_AVATAR}
+          />
+          <UserView>
+            <UserNameText>
+              Nguyễn Tiến Nam
+            </UserNameText>
+            <UserPhoneText>
+              Admin
+            </UserPhoneText>
+          </UserView>
+        </ChildView>
+      </DrawerHeaderView>
+      <ScrollView>
+        <DrawerContentView>
+          <NewCollectionView>
+            <ChildCollectionView>
+              <AddCollectionIcon source={IC_NEW_COLLECTION} />
+              <ItemNameText> New collection </ItemNameText>
+            </ChildCollectionView>
+          </NewCollectionView>
+          <CollectionView>
+            <TouchableOpacity onPress={onShowCollection}>
+              <ChildCollectionView>
+                <DownIconImage
+                  style={{ transform: [{ rotate: showCollection ? "0deg" : "-90deg" }] }}
+                  source={IC_DROPDOWN}
+                />
+                <CollectionText>
+                  COLLECTIONS
+                </CollectionText>
+              </ChildCollectionView>
+            </TouchableOpacity>
+            <CollectionChildText>
+              Edit
+            </CollectionChildText>
+          </CollectionView>
+          {showCollection ? (
+            <View>
+              {collections.map(({ id, name }) => (
+                <CollectionItemView key={id}>
+                  <ChildCollectionView>
+                    <ItemIconImage source={IC_CONTACT} />
+                    <ItemNameText> {name} </ItemNameText>
+                  </ChildCollectionView>
+                </CollectionItemView>
+              ))}
+            </View>
+          ) : null}
+        </DrawerContentView>
+      </ScrollView>
+    </WrapperView>
+  );
+};
 const collections = [
   { id: 1, name: "All" },
   { id: 2, name: "General" },
@@ -66,10 +129,14 @@ const ChildCollectionView = styled.View`
 const ItemIconImage = styled.Image`
   margin-left: 20px;
   margin-right: 20px;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   tint-color : #F2A54A
 `;
+const AddCollectionIcon = styled(ItemIconImage)`
+  width: 16px;
+  height: 16px
+`
 const ItemNameText = styled.Text`
   font-size: 15px;
   font-weight: 400;
@@ -111,69 +178,5 @@ const CollectionItemView = styled.View`
   justify-content: center;
 
 `;
-const DrawerScreen = () => {
-  const [showCollection, setShowCollection] = useState(false);
-  const onShowCollection = useCallback(() => {
-    setShowCollection(!showCollection);
-  }, [showCollection]);
-  return (
-    <WrapperView>
-      <DrawerHeaderView>
-        <ChildView>
-          <AvatarImage
-            source={IMAGE.UserAvatar_IMG}
-          />
-          <UserView>
-            <UserNameText>
-              Nguyễn Tiến Nam
-            </UserNameText>
-            <UserPhoneText>
-              Admin
-            </UserPhoneText>
-          </UserView>
-        </ChildView>
-      </DrawerHeaderView>
-      <ScrollView>
-        <DrawerContentView>
-          <NewCollectionView>
-            <ChildCollectionView>
-              <ItemIconImage source={ICON.NEW_COLLECTION_IC} />
-              <ItemNameText> New collection </ItemNameText>
-            </ChildCollectionView>
-          </NewCollectionView>
-          <CollectionView>
-            <TouchableOpacity onPress={onShowCollection}>
-              <ChildCollectionView>
-                <DownIconImage
-                  style={{ transform: [{ rotate: showCollection ? "0deg" : "-90deg" }] }}
-                  source={ICON.DROPDOWN_IC}
-                />
-                <CollectionText>
-                  COLLECTIONS
-                </CollectionText>
-              </ChildCollectionView>
-            </TouchableOpacity>
-            <CollectionChildText>
-              Edit
-            </CollectionChildText>
-          </CollectionView>
-          {showCollection ? (
-            <View>
-              {collections.map(({ id, name }) => (
-                <CollectionItemView key={id}>
-                  <ChildCollectionView>
-                    <ItemIconImage source={ICON.CONTACT_IC} />
-                    <ItemNameText> {name} </ItemNameText>
-                  </ChildCollectionView>
-                </CollectionItemView>
-              ))}
-            </View>
-          ) : null}
-        </DrawerContentView>
-      </ScrollView>
-    </WrapperView>
-  );
-};
-
 
 export default memo(DrawerScreen);

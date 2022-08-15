@@ -1,12 +1,11 @@
 import "react-native-gesture-handler";
 import * as React from "react";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { StatusBar } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./src/store";
-import Router from "./src/Router";
+import Routes from "./src/Routes";
 import SplashScreen from "react-native-splash-screen";
-// @ts-ignore
 import styled from "styled-components/native";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
@@ -18,7 +17,7 @@ const Container = styled.View`
 
 `;
 let persistor = persistStore(store);
-const App: React.FC = () => {
+const App = () => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -28,14 +27,13 @@ const App: React.FC = () => {
         <Container>
           <StatusBar
             translucent={true}
-
             backgroundColor="transparent"
             barStyle="dark-content"
           />
-          <Router />
+          <Routes />
         </Container>
       </PersistGate>
 </Provider>
   );
 };
-export default App;
+export default memo(App);

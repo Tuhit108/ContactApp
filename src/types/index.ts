@@ -10,7 +10,6 @@ export interface RawContact  {
   birthday: string[];
   avatar: string;
 }
-export interface RawRenderContact {
-  key : string;
-  value : string;
+export interface DetailScreenProps {
+  id : string;
 }

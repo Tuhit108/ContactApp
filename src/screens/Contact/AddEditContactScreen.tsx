@@ -1,49 +1,35 @@
 import React, { memo, useCallback, useState } from "react";
 import { Image, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from "react-native";
-import { ICON } from "../assets/icons";
-import { IMAGE } from "../assets/imgs";
 import styled from "styled-components/native";
 import ImagePicker from "react-native-image-crop-picker";
-import { updateContact } from "../store/contact/contactSlice";
-import { InputList } from "../components/InputList";
+import { InputList } from "@/components/InputList";
 import FastImage from "react-native-fast-image";
-import { useContact } from "../store";
-import { statusBarHeight } from "../themes/styles";
+import {  useContact } from "@/store/contact";
+import { statusBarHeight } from "@/themes/styles";
 import moment from "moment";
-import { useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigationParams } from "@/hooks/useNavigationParams";
+import { DetailScreenProps } from "@/types";
+import { goBack, navigateToDetailScreen } from "@/utils/navigation";
+import { updateContact } from "@/store/contact";
+import { IC_ADD_AVATAR, IMG_DEFAULT_AVATAR } from "@/assets";
 
-const ContactDetailScreen = ({ route }: any) => {
-  const navigation = useNavigation<any>();
-  const dispatch = useDispatch();
-  const contactId = route?.params?.id || "";
-  const contact = useContact(contactId);
-  const contactItem = contact || {
-    id: "",
-    firstName: "",
-    lastName: "",
-    position: "",
-    company: "",
-    phones: [],
-    emails: [],
-    addresses: [],
-    birthday: [],
-    avatar: ""
-  };
+const ContactDetailScreen = () => {
+  const params = useNavigationParams<DetailScreenProps>()
+  const contactId = params?.id || "";
+  const contact = useContact(contactId)
 
-  const { firstName, lastName, phones, emails, avatar, birthday, addresses, company } = contactItem;
-  const [avatarLink, setAvatar] = useState(avatar);
-  const [firstnameText, setFirstNameText] = useState(firstName);
-  const [nameText, setNameText] = useState(lastName);
-  const [companyText, setCompanyText] = useState(company);
-  const [listPhones, setPhones] = useState(phones);
-  const [listEmails, setEmails] = useState(emails);
-  const [listAddresses, setAddresses] = useState(addresses);
-  const [listBirthday, setBirthdays] = useState(birthday);
+  const [avatarLink, setAvatar] = useState(contact?.avatar || "");
+  const [firstnameText, setFirstNameText] = useState(contact?.firstName || "");
+  const [nameText, setNameText] = useState(contact?.lastName || "");
+  const [companyText, setCompanyText] = useState(contact?.company || "");
+  const [listPhones, setPhones] = useState(contact?.phones || []);
+  const [listEmails, setEmails] = useState(contact?.emails || []);
+  const [listAddresses, setAddresses] = useState(contact?.addresses || []);
+  const [listBirthday, setBirthdays] = useState(contact?.birthday || []);
 
   const handleEdit = useCallback(() => {
     const submitItem = {
-      id: route?.params?.id ? route?.params?.id : moment().unix().toString(),
+      id: contactId ? contactId : moment().unix().toString(),
       firstName: firstnameText,
       lastName: nameText,
       phones: listPhones.filter((listValue: string) => listValue !== ""),
@@ -54,15 +40,10 @@ const ContactDetailScreen = ({ route }: any) => {
       addresses: listAddresses.filter((listValue: string) => listValue !== ""),
       company: companyText
     };
-
-    dispatch(updateContact(submitItem));
-    navigation.goBack();
-    navigation.navigate("ContactDetailScreen", { id: submitItem.id });
-  }, [route, firstnameText, nameText, listPhones, listEmails, avatarLink, listBirthday, listAddresses, companyText]);
-
-  const onBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    updateContact([submitItem]);
+    goBack();
+    navigateToDetailScreen( { id: submitItem.id });
+  }, [contactId, firstnameText, nameText, listPhones, listEmails, avatarLink, listBirthday, listAddresses, companyText]);
 
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
@@ -77,7 +58,7 @@ const ContactDetailScreen = ({ route }: any) => {
   return (
     <ContainerView behavior={Platform.OS == "ios" ? "padding" : undefined}>
       <Section01View>
-        <TouchableOpacity onPress={onBack}>
+        <TouchableOpacity onPress={goBack}>
           <AvailableText>Hủy</AvailableText>
         </TouchableOpacity>
         {firstnameText?.length > 0 || nameText?.length > 0 ? (
@@ -91,11 +72,11 @@ const ContactDetailScreen = ({ route }: any) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <Section02View>
           <AvatarView>
-            <AvatarBackground source={IMAGE.EmptyAvatar_IMG} resizeMode="cover">
+            <AvatarBackground source={IMG_DEFAULT_AVATAR} resizeMode="cover">
               <AvatarImage source={{ uri: avatarLink }} />
             </AvatarBackground>
             <CamImage onPress={chooseImage}>
-              <Image source={ICON.ADD_AVATAR_IC} />
+              <Image source={IC_ADD_AVATAR} />
             </CamImage>
           </AvatarView>
           <ContactTextInput

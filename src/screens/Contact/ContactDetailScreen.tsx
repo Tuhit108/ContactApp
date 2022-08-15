@@ -2,30 +2,35 @@ import * as React from "react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { Alert, KeyboardAvoidingView, Linking, Platform, ScrollView, TouchableOpacity } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { useAppDispatch } from "../hooks";
-import { deleteContact } from "../store/contact/contactSlice";
-import { statusBarHeight } from "../themes/styles";
-import { ICON } from "../assets/icons";
-import { IMAGE } from "../assets/imgs";
+import { statusBarHeight } from "@/themes/styles";
 import styled from "styled-components/native";
-import { ShowInfo } from "../components/ShowInfo";
-import { ActionItem } from "../components/ActionItem";
+import { ShowInfo } from "@/components/ShowInfo";
+import { ActionItem } from "@/components/ActionItem";
 import FastImage from "react-native-fast-image";
-import { CustomModal } from "../components/CustomModal";
-import { useContact } from "../store";
+import { CustomModal } from "@/components/CustomModal";
+import { useContact } from "@/store/contact";
+import { useNavigationParams } from "@/hooks/useNavigationParams";
+import { DetailScreenProps, RawContact } from "@/types";
+import {
+  goBack,
+  navigateToAddEditContactScreen,
+  replaceWithMainScreen
+} from "@/utils/navigation";
+import { removeContact } from "@/store/contact";
+import { IC_BACK, IC_CALL, IC_EMAIL, IC_FACETIME, IC_MESSAGE, IMG_DEFAULT_AVATAR } from "@/assets";
 
-const ContactDetailScreen = ({ navigation, route } :any) => {
-  const dispatch = useAppDispatch();
+const ContactDetailScreen = () => {
+  const params = useNavigationParams<DetailScreenProps>()
   const [modalVisible, setModalVisible] = useState(false);
   const contactId = useMemo(() => {
-    return route?.params?.id || '';
-  }, [route]);
+    return params?.id || '';
+  }, [params]);
 
-  const contact = useContact(contactId);
+  const contact: RawContact = useContact(contactId);
 
   const handleDeleteContact = useCallback(() => {
-    navigation.navigate("MenuDrawerScreen");
-    dispatch(deleteContact({ id: contactId }));
+    replaceWithMainScreen();
+    removeContact(contactId);
   }, [contactId]);
 
   const onDeleteOnPress = useCallback(() => {
@@ -42,9 +47,7 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
     );
   }, [handleDeleteContact]);
 
-
-
-  const ActionItemOnPress = useCallback(() => {
+  const sendMessageOnPress = useCallback(() => {
     if (contact?.phones.length > 1) {
       setModalVisible(!modalVisible);
     } else if (contact?.phones.length == 1) {
@@ -53,21 +56,19 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
   }, [contact, modalVisible]);
 
   const onEditContact = useCallback(() => {
-    navigation.navigate("AddEditContactScreen", {
+    navigateToAddEditContactScreen({
       id: contactId
     });
   }, [contactId]);
 
-  const onBack = useCallback(() => {
-    navigation.navigate("MenuDrawerScreen");
-  },[])
+
 
   return (
     <ContainerView behavior={Platform.OS == "ios" ? "padding" : undefined}>
       <UnderView/>
       <Section01View>
-        <TouchableOpacity onPress={onBack}>
-          <BACK_IConImage source={ICON.BACK_IC} />
+        <TouchableOpacity onPress={goBack}>
+          <IC_BACKonImage source={IC_BACK} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onEditContact}>
           <EditContactText>Sửa</EditContactText>
@@ -77,7 +78,7 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
         <Section02View>
           <AvatarView>
             <AvatarBackground
-              source={IMAGE.EmptyAvatar_IMG}
+              source={IMG_DEFAULT_AVATAR}
               resizeMode="cover"
             >
               <AvatarImage source={{ uri: contact.avatar }} />
@@ -89,25 +90,25 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
             <ActionItem
               title="Nhấn gọi điện"
               list={contact.phones}
-              itemIcon={ICON.CALL_IC}
+              itemIcon={IC_CALL}
               link="tel"
             />
             <ActionItem
               title="Nhắn tin"
               list={contact.phones}
-              itemIcon={ICON.MASSAGE_IC}
+              itemIcon={IC_MESSAGE}
               link="sms"
             />
             <ActionItem
               title="Facetime"
               list={contact.phones}
-              itemIcon={ICON.FACETIME_IC}
+              itemIcon={IC_FACETIME}
               link="tel"
             />
             <ActionItem
               title="Gửi mail"
               list={contact.emails}
-              itemIcon={ICON.EMAIL_IC}
+              itemIcon={IC_EMAIL}
               link="mailto"
             />
           </ActionView>
@@ -134,15 +135,15 @@ const ContactDetailScreen = ({ navigation, route } :any) => {
             <ContactContactText> </ContactContactText>
           </ContactContactView>
           <CustomModal
-            itemIcon={ICON.MASSAGE_IC}
+            itemIcon={IC_MESSAGE}
             list={contact.phones}
             link="sms"
             visible={modalVisible}
             setModalVisible={setModalVisible} />
-          <ContactActionView onPress={ActionItemOnPress}>
+          <ContactActionView onPress={sendMessageOnPress}>
             <ContactChatText> Gửi tin nhắn</ContactChatText>
           </ContactActionView>
-          <ContactActionView onPress={onDeleteOnPress}>
+          <ContactActionView onPress={ onDeleteOnPress }>
             <ContactDeleteText> Xoá người gọi</ContactDeleteText>
           </ContactActionView>
         </Section03View>
@@ -162,7 +163,7 @@ const Section01View = styled.View`
   background-color: #FEFBF6;
   padding-top: ${statusBarHeight}px;
 `;
-const BACK_IConImage = styled.Image`
+const IC_BACKonImage = styled.Image`
   margin: 16px;
 `;
 const EditContactText = styled.Text`

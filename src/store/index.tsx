@@ -1,32 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { combineReducers } from "redux";
-import { persistReducer } from "redux-persist";
-import thunk from "redux-thunk";
+import {applyMiddleware, createStore, combineReducers} from 'redux';
+import { persistReducer} from 'redux-persist';
+import {setContactStore, contactReducer} from './contact';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {composeWithDevTools} from 'redux-devtools-extension';
+const middlewares: any[] = [];
 
-import { contactSlice } from "./contact/contactSlice";
-import { useSelector } from "react-redux";
+const enhancer = composeWithDevTools(applyMiddleware(...middlewares));
 
 const reducers = combineReducers({
-  contact: contactSlice.reducer
+  contacts: contactReducer,
 });
+
 const persistConfig = {
-  key: "root",
-  storage: AsyncStorage
+  key: 'root',
+  storage: AsyncStorage,
 };
+
 const persistedReducer = persistReducer(persistConfig, reducers);
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: [thunk]
-});
 
-export const useContacts = () => {
-  return useSelector((state: RootState) => state.contact);
-};
-
-export const useContact = (contactId: string) => {
-  return useSelector((state: RootState) => state?.contact?.byKey[contactId]);
-};
-
+export const store = createStore(persistedReducer, enhancer);
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+setContactStore(store);

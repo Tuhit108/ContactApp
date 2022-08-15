@@ -1,32 +1,31 @@
 import * as React from "react";
 import { memo, useCallback } from "react";
-// @ts-ignore
 import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native";
-import { ICON } from "../assets/icons";
-import { useNavigation } from "@react-navigation/native";
+import { navigateToAddEditContactScreen, openDrawer } from "@/utils/navigation";
+import { IC_CAMERA, IC_MENU } from "@/assets";
 
 interface Props {
   title: string;
 }
 
 export const TabHeader = memo((props: Props) => {
-  const navigation = useNavigation<any>();
+
   const { title } = props;
   const onPressAddContact = useCallback(() => {
-    navigation.navigate("AddEditContactScreen", { id: "" });
+    navigateToAddEditContactScreen( { id: "" });
   }, []);
-  const onOpenDrawer = useCallback(() => {navigation.openDrawer()},[])
+
   return (
     <HeaderView>
       <TouchableOpacity
-        onPress={onOpenDrawer}>
-        <MenuImage source={ICON.MENU_IC} />
+        onPress={openDrawer}>
+        <MenuImage source={IC_MENU} />
       </TouchableOpacity>
       <HeaderText>{title}</HeaderText>
       <TouchableOpacity
         onPress={onPressAddContact}>
-        <CameraImage source={ICON.CAMERA_ICON} />
+        <CameraImage source={IC_CAMERA} />
       </TouchableOpacity>
     </HeaderView>
   );

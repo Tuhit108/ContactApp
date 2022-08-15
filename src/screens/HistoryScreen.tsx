@@ -1,10 +1,10 @@
 import * as React from "react";
-import styled from "styled-components/native";
-import { View} from "react-native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
-import { ICON } from "../assets/icons";
 import { memo } from "react";
-import { TabHeader } from "../components/TabHeader";
+import styled from "styled-components/native";
+import { View } from "react-native";
+import { getStatusBarHeight } from "react-native-status-bar-height";
+import { TabHeader } from "@/components/TabHeader";
+import { IC_DETAIL, IC_PHONE } from "@/assets";
 
 export const contacts = [
   { id: 1, name: "Nguyễn Tiến Nam", phone: "0327942405", time: "Hôm nay" },
@@ -20,6 +20,42 @@ export const contacts = [
   { id: 11, name: "Bùi Trọng Tùs", phone: "0327942405", time: "Hôm nay" },
   { id: 12, name: "Bùi Trọng T", phone: "0327942405", time: "Hôm nay" }
 ];
+
+
+const HistoryScreen = () => {
+  return (
+    <WrapperView>
+      <TabHeader title="Lịch Sử"/>
+      <ContentView>
+        <ContentScrollView>
+          {contacts.map(({ id , name, phone, time }) => (
+            <ListView key={id}>
+              <LeftItemView>
+                <IconPhoneImage source={IC_PHONE} />
+                <View>
+                  <NameText>
+                    {name}
+                  </NameText>
+                  <PhoneText>
+                    {phone}
+                  </PhoneText>
+                </View>
+              </LeftItemView>
+              <RightItemView>
+                <TimeText>
+                  {time}
+                </TimeText>
+                <IconDetailImage
+                  source={IC_DETAIL}
+                />
+              </RightItemView>
+            </ListView>
+          ))}
+        </ContentScrollView>
+      </ContentView>
+    </WrapperView>
+  );
+};
 const WrapperView = styled.View`
   flex: auto;
   background-color: white;
@@ -80,40 +116,5 @@ const TimeText = styled.Text`
   color: #828282;
 `;
 
-
-const HistoryScreen = () => {
-  return (
-    <WrapperView>
-      <TabHeader title="Lịch Sử"/>
-      <ContentView>
-        <ContentScrollView>
-          {contacts.map(({ id , name, phone, time }) => (
-            <ListView key={id}>
-              <LeftItemView>
-                <IconPhoneImage source={ICON.PHONE_IC} />
-                <View>
-                  <NameText>
-                    {name}
-                  </NameText>
-                  <PhoneText>
-                    {phone}
-                  </PhoneText>
-                </View>
-              </LeftItemView>
-              <RightItemView>
-                <TimeText>
-                  {time}
-                </TimeText>
-                <IconDetailImage
-                  source={ICON.DETAIL_IC}
-                />
-              </RightItemView>
-            </ListView>
-          ))}
-        </ContentScrollView>
-      </ContentView>
-    </WrapperView>
-  );
-};
 
 export default memo(HistoryScreen);

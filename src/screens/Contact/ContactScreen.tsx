@@ -1,29 +1,31 @@
 import * as React from "react";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components/native";
-import { statusBarHeight } from "../themes/styles";
+import { statusBarHeight } from "@/themes/styles";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
 import { AlphabetList } from "react-native-section-alphabet-list";
 import FastImage from "react-native-fast-image";
-import { ICON } from "../assets/icons";
-import { useContacts } from "../store";
-import { IMAGE } from "../assets/imgs";
-import { removeVietnamese } from "../helper";
-import { TabHeader } from "../components/TabHeader";
+import {useContacts} from "@/store/contact";
+import { removeVietnamese } from "@/utils/string";
+import { TabHeader } from "@/components/TabHeader";
+import { navigateToDetailScreen } from "@/utils/navigation";
+import { IC_SEARCH, IMG_DEFAULT_AVATAR } from "@/assets";
 
 const customIndex = [
   "a", "ă", "â", "b", "c", "d", "đ", "e", "ê", "g", "h", "i", "k", "l", "m", "n", "o", "ô", "ơ", "p", "q", "r", "s", "t", "u", "ư", "v", "w", "x", "y", "z"
 ];
 
-const ContactScreen = ({ navigation }: any) => {
+const ContactScreen = () => {
   const [searchText, onChangeSearchText] = useState("");
   const contacts = useContacts();
+
+
   const contactRenderLists = useMemo(() => {
-    return contacts.query["all"]?.map(key => {
+    return contacts?.query["all"]?.map(key => {
       return {
         ...contacts.byKey[key],
         key: key,
-        value: removeVietnamese(contacts.byKey[key].firstName + contacts.byKey[key].lastName)
+        value: contacts.byKey[key].firstName + contacts.byKey[key].lastName
       };
     });
   }, [contacts]);
@@ -32,16 +34,14 @@ const ContactScreen = ({ navigation }: any) => {
     return contactRenderLists.filter(contact => (removeVietnamese(contact.firstName + " " + contact.lastName) + (contact.firstName + " " + contact.lastName).toLowerCase()).includes(searchText.toLowerCase()))
   }, [searchText,contactRenderLists]);
 
-  const onPressContact = useCallback((id: string) => {
-    navigation.navigate("ContactDetailScreen", { id: id });
-  }, []);
-
-
   const _render = useCallback((item: any) => {
-    return <ItemListView onPress={() => onPressContact(item.id)}>
+    const onPressContact = useCallback(() => {
+      navigateToDetailScreen({ id: item.id });
+    }, [item]);
+    return <ItemListView onPress={onPressContact}>
       <AvatarView>
         <AvatarImage
-          source={item.avatar ? { uri: item.avatar } : IMAGE.EmptyAvatar}
+          source={item.avatar ? { uri: item.avatar } : IMG_DEFAULT_AVATAR}
           avatar={item.avatar}
         />
       </AvatarView>
@@ -62,7 +62,7 @@ const ContactScreen = ({ navigation }: any) => {
       <ContentView>
         <SearchView>
           <SearchChildView>
-            <SEARCH_IConImage source={ICON.SEARCH_IC} />
+            <IC_SEARCHonImage source={IC_SEARCH} />
             <SearchTextInput
               onChangeText={onChangeSearchText}
               value={searchText}
@@ -132,7 +132,7 @@ const SearchChildView = styled.View`
   flex-direction: row;
   border-radius: 6px;
 `;
-const SEARCH_IConImage = styled.Image`
+const IC_SEARCHonImage = styled.Image`
   width: 14px;
   height: 14px;
   margin-left: 10px;

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { memo, useCallback, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
-import { ICON } from "../assets/icons";
 import styled from "styled-components/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { IC_DELETE_RED, IC_GREEN_ADD } from "@/assets";
 
 interface InputProps {
   title: string;
@@ -25,27 +25,30 @@ export const InputList = memo((props: InputProps) => {
     newList.splice(index, 1);
     setList(newList);
   }, [list]);
+
   const addInputOnPress = useCallback(() => {
     setList((prev: any) => prev.concat([""]));
     setFocus(true);
-
   }, [list,focus]);
+
   const dateOnchange = useCallback((text: string) => {
     const newList = [...list];
-    newList.splice(num, 1, text);
+    newList[num] = text;
     setList(newList);
     setOpen(false);
     setFocus(false);
   }, [list, num,open,focus]);
+
   const inputOnChange = useCallback((index: number, text: string) => {
     const newList = [...list];
-    newList.splice(index, 1, text);
+    newList[index] = text;
     setList(newList);
   }, [list]);
-  const openDateModal = useCallback((index:number) => {
+
+  const openDateModal = useCallback((index: number) => {
     setOpen(true);
     setNum(index);
-  },[open,num]);
+  },[open, num]);
 
   return (
     <ContainerView>
@@ -53,9 +56,9 @@ export const InputList = memo((props: InputProps) => {
         return (
           <RemoveInfoView key={index}>
             <TouchableOpacity onPress={() => deleteInputOnPress(index)}>
-              <REMOVE_ICon>
-                <Image source={ICON.REMOVE_IC} />
-              </REMOVE_ICon>
+              <IC_DELETE_REDon>
+                <Image source={IC_DELETE_RED} />
+              </IC_DELETE_REDon>
             </TouchableOpacity>
             {title == "birthday" ? (<BirthdayView>
               <DateTimePickerModal
@@ -84,7 +87,7 @@ export const InputList = memo((props: InputProps) => {
         );
       })}
       <AddInfoView onPress={addInputOnPress}>
-        <PlusIconImage source={ICON.PLUS_IC} />
+        <PlusIconImage source={IC_GREEN_ADD} />
         <AddText>add {title}</AddText>
       </AddInfoView>
     </ContainerView>
@@ -117,7 +120,7 @@ const PlusIconImage = styled.Image`
 const RemoveInfoView = styled(AddInfoView)`
   margin-bottom: 0;
 `;
-const REMOVE_ICon = styled.View`
+const IC_DELETE_REDon = styled.View`
   width: 24px;
   height: 24px;
   border-radius: 50px;

@@ -1,8 +1,8 @@
 import * as React from "react";
 import styled from "styled-components/native";
-import { IMAGE } from "../assets/imgs";
-import { ICON } from "../assets/icons";
-import { memo, useCallback } from "react";
+import { memo } from "react";
+import { navigateToMainNavigation } from "@/utils/navigation";
+import { IC_LOADING, IMG_BACKGROUND, IMG_LOGO } from "@/assets";
 const Container = styled.View`
   flex: 1;
 `;
@@ -88,15 +88,13 @@ const TextLogin02 = styled.Text`
   font-size: 15px;
   font-weight: 500;
 `;
-const LoginScreen= ({ navigation }:any) => {
-  const onPressLogin = useCallback(() => {
-    navigation.navigate("MenuDrawerScreen");
-  },[navigation])
+const LoginScreen= () => {
+
   return (
     <Container>
       <Section1>
-        <GrBackGround source={IMAGE.GR_BACKGROUND}></GrBackGround>
-        <GrImage source={IMAGE.GR_LOGO}></GrImage>
+        <GrBackGround source={IMG_BACKGROUND}></GrBackGround>
+        <GrImage source={IMG_LOGO}></GrImage>
       </Section1>
       <Section2>
         <AppName>Base contacts</AppName>
@@ -104,12 +102,12 @@ const LoginScreen= ({ navigation }:any) => {
       </Section2>
       <Section3>
         <LoginView>
-          <LoadIcon source={ICON.LOADING_IC}></LoadIcon>
+          <LoadIcon source={IC_LOADING}></LoadIcon>
           <LoginText>Bạn chưa đăng nhập</LoginText>
-          <LoginBtn01 onPress={onPressLogin}>
+          <LoginBtn01 onPress={navigateToMainNavigation}>
             <TextLogin01>ĐĂNG NHẬP BẰNG BASEACCOUNT</TextLogin01>
           </LoginBtn01>
-          <LoginBtn02 onPress={onPressLogin}>
+          <LoginBtn02 onPress={navigateToMainNavigation}>
             <TextLogin02>ĐĂNG NHẬP THỦ CÔNG</TextLogin02>
           </LoginBtn02>
         </LoginView>
